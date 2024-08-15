@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロンプト最適化機能</title>
+</head>
+<body>
+    <!-- 最適化 -->
+    <button type="button" id="opt">最適化</button>
+
+    <!-- プロンプト送信のフォーム -->
+    <form id="fruitForm" action="/submit" method="post">
+        <label for="inputArea">お気に入りのフルーツ：</label>
+        <div class="input-wrapper">
+            <textarea id="inputArea" name="fruitInput" rows="4" cols="50"></textarea>
+            <div id="suggestion"></div>
+        </div>
+        <button type="submit">送信</button>
+    </form>
+
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>
