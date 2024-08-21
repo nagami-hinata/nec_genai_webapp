@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>テキスト補完機能</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="menu">
+        <div id="icon">アイコン</div>
+        <div id="config">設定</div>
+        <div id="ref">参照</div>
+    </div>
+
+    <div id="file">
+        <div>ファイル</div>
+    </div>
+
+    <div id="chat-container">
+        <div id="top-bar"></div>
+        <div id="watermark"></div>
+        <div id="display">
+            <!-- <div id="ai-chat">aaaa</div> -->
+            <!-- <div id="user-chat">iiii</div> -->
+        </div>
+        <div class="input-container">
+            <!-- <div id="textarea-wrapper"> -->
+            <div id="textarea" class="textarea" contenteditable="true" data-placeholder="Type your message here..."></div>  <!-- contenteditable="true"属性により、ユーザーがこのdiv内に直接テキストを入力できるようになる -->
+            <!-- <div id="suggestion"></div> -->
+            <!-- </div> -->
+            <div class="button-coutainer">
+                <button class="action-button" id="refresh-button">🔃</button>                
+                <button class="action-button" id="send-button">▶</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    
+    <script src="script.js"></script>
+</body>
+</html>
