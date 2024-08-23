@@ -14,10 +14,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function addMessage(text, isUser) {  //新しいメッセージを表示エリアに追加
         const messageDiv = document.createElement('div');  //新しいdiv要素を作成
-        messageDiv.textContent = text;  //作成したdivのテキストに第一引数を代入
-        messageDiv.className = isUser ? 'user-chat' : 'ai-chat';  //trueのときuser falseのときai
-        display.appendChild(messageDiv);  //displayの子要素にmessageDivを追加
-        display.scrollTop = display.scrollHeight;   //スクロール位置を最下部に移動
+        messageDiv.className = isUser ? 'message user-message' : 'message ai-message';  //trueのときuser falseのときai
+
+        const bubble = document.createElement('div');
+        bubble.className = 'message-bubble';
+        bubble.textContent = text;  //作成したdivのテキストに第一引数を代入
+        
+        messageDiv.appendChild(bubble);
+        display.appendChild(messageDiv);
+        display.scrollTop = display.scrollHeight;
+        // display.appendChild(messageDiv);  //displayの子要素にmessageDivを追加
+        // display.scrollTop = display.scrollHeight;   //スクロール位置を最下部に移動
     }
 
     textarea.addEventListener('input', adjustTextareaHeight);
@@ -39,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             setTimeout(() => {
                 addMessage("AIの応答", false);
-            }, 100);
+            }, 1000);
         }
     }
 

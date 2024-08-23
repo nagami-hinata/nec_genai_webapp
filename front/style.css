@@ -62,9 +62,10 @@ header {
     position: absolute;
     background-color: rgb(255, 255, 255);
     overflow-y: auto;
-    width: 90%;
-    height: 81%;
-    left: 5%;
+    width: 95%;
+    height: 80%;
+    left: 3%;
+    flex-direction: column;
 }
 .input-container {
     position: absolute;
@@ -97,6 +98,31 @@ header {
     content: attr(data-placeholder);
 }
 
+.message {
+    margin-bottom: 10px;
+    display: flex;
+}
+.user-message {
+    justify-content: flex-end;
+}
+.ai-message {
+    justify-content: flex-start;
+}
+.message-bubble {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 20px;
+}
+.user-message .message-bubble {
+    background-color: #e0e0e0;
+    border-bottom-right-radius: 0;
+}
+.ai-message .message-bubble {
+    background-color: #4a90e2;
+    color: white;
+    border-bottom-left-radius: 0;
+}
+
 
 
 /* spanのafterに予測　textareaのafterにTab */
@@ -122,28 +148,6 @@ header {
     font-size: 16px;
     color: #999;
 }
-
-
-
-
-/* #textarea::after {
-    content: var(--after-content);
-}
-.added-text {
-    color: #999;
-    user-select: none;  // テキスト選択を無効化
-    pointer-events: none;  // マウスイベントを無効化
-}
-.added-text::after {
-    content: 'Tab';
-    color: #908e8e;
-    font-size: 14px;
-    font-weight: 600;
-    border: 1px solid #5f5e5e;
-    border-radius: 3px;
-    padding: 1.3px 5px 0px 5px;
-} */
-
 
 .button-container {
     display: flex;
