@@ -1,0 +1,240 @@
+body {
+    overflow-x: hidden; /* 横スクロールバーのみ非表示 */
+}
+
+
+header {
+    position: absolute;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    height: 80px;
+    background-color: #ffffff;
+    display: flex;
+    align-items:end;
+    justify-content: flex-start; /* 全体を右寄せ */
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+h4 {
+    font-size: 30px;
+    color: #000000;
+    font-weight: 500;
+    margin: 0; /* 余白をリセット */
+    margin-top: 3px;
+    margin-bottom: -20px;
+    margin-left: 150px;
+    border-bottom:solid 1px #d6d6d6;
+    width: 80vw;
+    padding-bottom: 10px;
+}
+
+
+
+.profileImage {
+    position: absolute;
+    left: 20px; /* 画像を左端に固定 */
+    width: 45px;
+}
+
+#leftSidebar {
+    width: 70px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #102933;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    top: 0;
+    justify-content: flex-start; /* 画像を上に寄せる */
+    padding-top: 20px; /* 上部に少し余白を追加 */
+}
+
+.addfile{
+    background-color: #8080e2;
+    border-radius: 20px;
+}
+.hukidashi, .folder, .trashbox,.settings {
+    padding: 15px;
+    width: 35px; /* 画像の幅を統一 */
+    margin-bottom: 5px; /* 下のアイテムとの間隔 */
+}
+.deletefile:hover, .usechat:hover {
+    background-color: #6654E1; /* ホバー時の背景色を設定 */
+    border-radius: 20px; /* 背景を丸くする */
+    padding: 15px; /* アイコン周りに余白を追加 */
+}
+
+
+#wholeContent {
+    flex-grow: 1;
+    display: flex;
+    width: 80vw;
+    align-items: flex-start; /* 上詰めにする */
+    justify-content: flex-start;
+    background-color: #ffffff;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    margin-left:150px;
+    margin-top: 110px;
+}
+
+.file-list {
+    width: 60vw;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 各ファイル間の間隔 */
+    padding-left: 0;
+    border: none;
+    margin-left: -5px;
+}
+
+.file-item {
+    background-color: #ffffff;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: -25px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: solid 2px #e6e6e6;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.file-checkbox {
+    appearance: none; /* デフォルトのチェックボックススタイルを無効化 */
+    width: 20px;
+    height: 20px;
+    border: 2px solid #bebebe;
+    border-radius: 5px; /* 丸型にする */
+    cursor: pointer;
+    margin-right: 10px; /* ファイル名との間隔を調整 */
+    position: relative;
+}
+
+.file-checkbox:checked {
+    background-color: #1c81e0;
+    border-color: #1c81e0;
+}
+
+.file-checkbox:checked::before {
+    content: '✔';
+    display: block;
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    line-height: 16px;
+    position: absolute;
+    left: 2px;
+}
+
+.file-name {
+    margin-left: 20px;
+    font-size: 18px;
+    color: #333333;
+    flex-grow: 1;
+}
+
+.file-tags {
+    display: flex;
+    gap: 10px; /* タグ同士の間隔 */
+    margin-right: 10px; /* アクションボタンとの間隔 */
+}
+
+.tag {
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+/* タグの色を設定 */
+.tag-important {
+    background-color: #ff4545; /* 赤 */
+}
+
+.tag-engineer {
+    background-color: #54aa3f; /* 緑 */
+}
+
+.tag-designer {
+    background-color: #f39c12; /* オレンジ */
+}
+
+.tag-executive{
+    background-color: #3498db; /* 青 */
+}
+
+.tag-donttouch {
+    background-color: #9b59b6; /* 紫 */
+}
+.file-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.file-actions img {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    cursor: pointer;
+    border: solid 2px #e6e6e6;
+    border-radius: 10px;
+}
+
+.clear-all-button {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    padding: 10px 30px;
+    background-color: #ffffff;
+    color: #0f0f0f;
+    border: solid 2px #c4c4c4;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.clear-all-button:hover {
+    background-color: #f0f0f0;
+}
+
+.action-buttons-container {
+    position: fixed;
+    bottom: 39px;
+    right: 230px;
+    display: flex;
+    align-items: center;
+    gap: 15px; /* ボタン間のスペース */
+}
+
+.action-button {
+    background-color: #ffffff;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 10px;
+    border: solid 2px #c4c4c4;
+    transition: background-color 0.3s ease;
+}
+
+.action-button img {
+    width: 30px;
+    height: 30px;
+}
+
+.action-button:hover {
+    background-color: #f0f0f0;
+}
+
