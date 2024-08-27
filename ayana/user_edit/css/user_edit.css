@@ -1,0 +1,354 @@
+body{
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+header {
+    position: absolute;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    height: 80px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* 全体を右寄せ */
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+
+/* チェックボックスの処理 */
+/* input[type="checkbox"] { */
+    /* transform: scale(1.5); チェックボックス自体を大きくする */
+    /* margin-bottom: 20px; チェックボックス間のスペース */
+    /* margin-top: 20px; チェックボックス間のスペース */
+/* } */
+
+/* .chkbox {
+	margin:			0 0 10px 30px;
+} */
+/* ラベルのスタイル　*/
+/* .chkbox label { */
+	/* padding-left:		50px;			ラベルの位置 */
+	/* font-size:		24px;
+	line-height:		24px;
+	display:		inline-block;
+	cursor:			pointer;
+	position:		relative; */
+    /* margin-top: 10px; チェックボックス間のスペース */
+/* } */
+
+
+/* ボックスのスタイル */
+/* .chkbox label:before { */
+	/* content:		''; */
+	/* width:			24px;			ボックスの横幅 */
+	/* height:			24px;			ボックスの縦幅 */
+	/* display:		inline-block;
+	position:		absolute;
+	left:			0;
+	background-color:	#fff;
+	box-shadow:		inset 1px 1px 1px 1px #909090; */
+	/* border-radius:		6px 6px 6px 6px; */
+/* } */
+/* 元のチェックボックスを表示しない */
+/* .chkbox input[type=checkbox] { */
+	/* display:		none; */
+/* } */
+/* チェックした時のスタイル */
+/* .chkbox input[type=checkbox]:checked + label:before { */
+	/* font-size:		24px;			チェックのサイズ */
+	/* color:			#fff;			チェックの色 */
+	/* background-color:	#3D98BF;			チェックした時の色 */
+/* } */
+
+h1 {
+    width: calc(75vw - 130px);
+    font-size: 30px;
+    color: #000000;
+    font-weight: 5000;
+    margin-top: 10px; /* 必要に応じて調整 */
+    border-bottom: solid 1px #c4c4c4;
+    text-align: left; /* 左寄せ */
+    /* padding-left: 10px; liと同じ余白に設定 */
+    margin-left: -5px; /* 左マージンをリセット */
+    /* margin-bottom: 15px; */
+    margin-top: 30px;
+}
+
+.user-list {
+    width: 60vw;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 各ファイル間の間隔 */
+    padding-left: 0;
+    border: none;
+    margin-left: -5px;
+}
+
+.user-item {
+    background-color: #ffffff;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: -25px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /* border: solid 2px #e6e6e6; */
+    /* margin-bottom: 10px; */
+}
+
+.user-checkbox {
+    appearance: none; /* デフォルトのチェックボックススタイルを無効化 */
+    width: 20px;
+    height: 20px;
+    border: 2px solid #bebebe;
+    border-radius: 5px; /* 丸型にする */
+    cursor: pointer;
+    margin-right: 10px; /* ファイル名との間隔を調整 */
+    position: relative;
+}
+
+.user-checkbox:checked {
+    background-color: #1c81e0;
+    border-color: #1c81e0;
+}
+
+.user-checkbox:checked::before {
+    content: '✔';
+    display: block;
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    line-height: 16px;
+    position: absolute;
+    left: 2px;
+}
+
+.user-name {
+    margin-left: 20px;
+    font-size: 18px;
+    color: #333333;
+    flex-grow: 1;
+}
+
+.user-tags {
+    display: flex;
+    gap: 10px; /* タグ同士の間隔 */
+    margin-right: 10px; /* アクションボタンとの間隔 */
+}
+
+
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 20vw; /* searchInputの幅に合わせてコンテナの幅を設定 */
+    justify-content: flex-end; /* アイコンと検索入力を右寄せ */
+    margin-right: 117px;
+}
+
+.search-icon {
+    width: 24px; /* アイコンのサイズを設定 */
+    height: 24px;
+    margin-right: 10px; /* アイコンと入力フィールドの間にスペースを設定 */
+}
+
+#searchInput {
+    width: 100%; /* コンテナの中で全幅を使用 */
+    padding: 10px;
+    border-radius: 20px;
+    border: solid 1px #a5a5a5;
+    font-size: 16px;
+}
+
+
+.profileImage {
+    position: absolute;
+    left: 20px; /* 画像を左端に固定 */
+    width: 45px;
+}
+
+#leftSidebar {
+    width: 70px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #102933;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    top: 0;
+    justify-content: flex-start; /* 画像を上に寄せる */
+    padding-top: 20px; /* 上部に少し余白を追加 */
+}
+
+.addfile{
+    background-color: #8080e2;
+    border-radius: 20px;
+}
+
+.hukidashi, .folder, .trashbox,.settings {
+    padding: 15px;
+    width: 35px; /* 画像の幅を統一 */
+    bottom: 5px; /* 下のアイテムとの間隔 */
+}
+
+.upload {
+    padding: 15px;
+    width: 35px; /* 他のアイコンと同じサイズに揃える */
+    margin-top: auto; /* サイドバーの下部に配置する */
+    margin-bottom: 0px; /* サイドバーの底から少しスペースを追加 */
+}
+
+.profile {
+    padding: 15px;
+    width: 50px; /* 他のアイコンと同じサイズに揃える */
+    margin-bottom: 20px; /* サイドバーの底から少しスペースを追加 */
+}
+
+
+.deletefile:hover, .usechat:hover {
+    background-color: #6654E1; /* ホバー時の背景色を設定 */
+    border-radius: 20px; /* 背景を丸くする */
+    padding: 15px; /* アイコン周りに余白を追加 */
+}
+
+
+#wholeContent {
+    flex-grow: 1;
+    display: flex;
+    width: calc(100vw - 80px);
+    align-items: flex-start; /* 上詰めにする */
+    justify-content: center;
+    background-color: #ffffff;
+    height: calc(100vh - 100px);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    margin-left:80px;
+    margin-top: 80px;
+}
+
+
+.tag-edit {
+    position: relative;
+    padding: 20px;
+    height: calc(100vh - 80px);
+    box-sizing: border-box;
+    overflow-y: auto; /* コンテンツがあふれる場合にスクロールさせる */
+    padding-bottom: 60px; /* ボタンの高さ分だけ下に余白を確保 */
+    background-color: #ffffff;
+}
+
+.save-button {
+    position: fixed;
+    bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    bottom: 20px;
+    left: calc(50% - 40px);
+    width: 100px;
+}
+
+.save-button {
+    background-color: #3D98BF;
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #1d7ca5;
+}
+
+
+.tag {
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+/* タグの色を設定 */
+.tag-important {
+    background-color: #ff4545; /* 赤 */
+}
+
+.tag-engineer {
+    background-color: #54aa3f; /* 緑 */
+}
+
+.tag-designer {
+    background-color: #f39c12; /* オレンジ */
+}
+
+.tag-executive{
+    background-color: #3498db; /* 青 */
+}
+
+.tag-donttouch {
+    background-color: #9b59b6; /* 紫 */
+}
+.file-actions {
+    display: flex;
+    gap: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Webkit系 (Chrome, Safari) */
+.boss-upload-tag-content::-webkit-scrollbar {
+    width: 0px;  /* スクロールバーの幅をゼロに */
+    background: transparent;  /* スクロールバーの背景を透明に */
+}
+
+/* Firefox */
+.boss-upload-tag-content {
+    scrollbar-width: none;  /* スクロールバーの幅を無くす */
+    -ms-overflow-style: none;  /* Internet Explorer用のスタイル */
+}
+
+/* Edge, IE 10-11 */
+.boss-upload-tag-content {
+    -ms-overflow-style: none;  /* IE, Edge用 */
+}
+
+
+
+h2 {
+    width: calc(75vw - 130px);
+    font-size: 20px;
+    color: #000000;
+    font-weight: 5000;
+    text-align: left; /* 左寄せ */
+    padding-left: 10px; /* liと同じ余白に設定 */
+    margin-left: 20px; /* 左マージンをリセット */
+    margin-bottom: 0px;
+    margin-top: 0;
+}
+
+
+.hidden {
+    display: none;
+}
+
+

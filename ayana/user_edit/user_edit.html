@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link href="css/user_edit.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="search-container">
+            <img src="svg/search.svg" class="search-icon">
+            <input type="text" id="searchInput" placeholder="タグを検索...">
+        </div>
+    </header>
+    <aside id="leftSidebar">
+        <img src="svg/hukidashi.svg" class="hukidashi">
+        <img src="svg/folder.svg" class="folder">
+        <img src="svg/trashbox.svg" class="trashbox">
+        <img src="svg/settings.svg" class="settings">
+        <img src="svg/upload.svg" class="upload" onclick="openPopup()">
+        <img src="svg/profile.svg" class="profile">
+    </aside>
+    <div id="wholeContent">
+        <main>
+            <div class="user-edit">
+                <h1>あ</h1>
+                <div id="userList" class="user-list">
+                    <li class="user-item">
+                        <input type="checkbox" class="user-checkbox">
+                        <div class="user-name">青木 陽介</div>
+                        <div class="user-name">入社年度</div>
+                        <div class="user-tags">
+                            <span class="tag tag-designer">デザイナー</span>
+                            <span class="tag tag-important">重要</span>
+                        </div>
+                    </li>
+
+                    <li class="user-item">
+                        <input type="checkbox" class="user-checkbox">
+                        <div class="user-name">新井 さくら</div>
+                        <div class="user-name">入社年度</div>
+                        <div class="user-tags">
+                            <span class="tag tag-executive">幹部</span>
+                            <span class="tag tag-important">重要</span>
+                        </div>
+                    </li>
+                </div>
+                   
+
+                <h1>い</h1>
+                <div id="userList" class="user-list">
+                    <li class="user-item">
+                        <input type="checkbox" class="user-checkbox">
+                        <div class="user-name">井上 陽介</div>
+                        <div class="user-name">部署</div>
+                        <div class="user-tags">
+                            <span class="tag tag-engineer">エンジニア</span>
+                            <span class="tag tag-important">重要</span>
+                        </div>
+                    </li>
+
+                    <li class="user-item">
+                        <input type="checkbox" class="user-checkbox">
+                        <div class="user-name">井川 さくら</div>
+                        <div class="user-name">部署</div>
+                        <div class="user-tags">
+                            <span class="tag tag-engineer">エンジニア</span>
+                            <span class="tag tag-important">重要</span>
+                        </div>
+                    </li>
+
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/user_edit.js"></script>
+</body>
+</html>
