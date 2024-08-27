@@ -18,51 +18,128 @@ header {
 
 
 /* チェックボックスの処理 */
-input[type="checkbox"] {
-    transform: scale(1.5); /* チェックボックス自体を大きくする */
-    margin-bottom: 20px; /* チェックボックス間のスペース */
+/* input[type="checkbox"] { */
+    /* transform: scale(1.5); チェックボックス自体を大きくする */
+    /* margin-bottom: 20px; チェックボックス間のスペース */
     /* margin-top: 20px; チェックボックス間のスペース */
-}
+/* } */
 
-.chkbox {
+/* .chkbox {
 	margin:			0 0 10px 30px;
-}
+} */
 /* ラベルのスタイル　*/
-.chkbox label {
-	padding-left:		50px;			/* ラベルの位置 */
-	font-size:		24px;
+/* .chkbox label { */
+	/* padding-left:		50px;			ラベルの位置 */
+	/* font-size:		24px;
 	line-height:		24px;
 	display:		inline-block;
 	cursor:			pointer;
-	position:		relative;
-    margin-top: 10px; /* チェックボックス間のスペース */
-}
+	position:		relative; */
+    /* margin-top: 10px; チェックボックス間のスペース */
+/* } */
 
 
 /* ボックスのスタイル */
-.chkbox label:before {
-	content:		'';
-	width:			24px;			/* ボックスの横幅 */
-	height:			24px;			/* ボックスの縦幅 */
-	display:		inline-block;
+/* .chkbox label:before { */
+	/* content:		''; */
+	/* width:			24px;			ボックスの横幅 */
+	/* height:			24px;			ボックスの縦幅 */
+	/* display:		inline-block;
 	position:		absolute;
 	left:			0;
 	background-color:	#fff;
-	box-shadow:		inset 1px 1px 1px 1px #909090;
-	border-radius:		6px 6px 6px 6px;
-}
+	box-shadow:		inset 1px 1px 1px 1px #909090; */
+	/* border-radius:		6px 6px 6px 6px; */
+/* } */
 /* 元のチェックボックスを表示しない */
-.chkbox input[type=checkbox] {
-	display:		none;
-}
+/* .chkbox input[type=checkbox] { */
+	/* display:		none; */
+/* } */
 /* チェックした時のスタイル */
-.chkbox input[type=checkbox]:checked + label:before {
-	font-size:		24px;			/* チェックのサイズ */
-	color:			#fff;			/* チェックの色 */
-	background-color:	#3D98BF;			/* チェックした時の色 */
+/* .chkbox input[type=checkbox]:checked + label:before { */
+	/* font-size:		24px;			チェックのサイズ */
+	/* color:			#fff;			チェックの色 */
+	/* background-color:	#3D98BF;			チェックした時の色 */
+/* } */
+
+h1 {
+    width: calc(75vw - 130px);
+    font-size: 30px;
+    color: #000000;
+    font-weight: 5000;
+    margin-top: 10px; /* 必要に応じて調整 */
+    border-bottom: solid 1px #c4c4c4;
+    text-align: left; /* 左寄せ */
+    /* padding-left: 10px; liと同じ余白に設定 */
+    margin-left: -5px; /* 左マージンをリセット */
+    /* margin-bottom: 15px; */
+    margin-top: 30px;
 }
 
+.user-list {
+    width: 60vw;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 各ファイル間の間隔 */
+    padding-left: 0;
+    border: none;
+    margin-left: -5px;
+}
 
+.user-item {
+    background-color: #ffffff;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: -25px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /* border: solid 2px #e6e6e6; */
+    /* margin-bottom: 10px; */
+}
+
+.user-checkbox {
+    appearance: none; /* デフォルトのチェックボックススタイルを無効化 */
+    width: 20px;
+    height: 20px;
+    border: 2px solid #bebebe;
+    border-radius: 5px; /* 丸型にする */
+    cursor: pointer;
+    margin-right: 10px; /* ファイル名との間隔を調整 */
+    position: relative;
+}
+
+.user-checkbox:checked {
+    background-color: #1c81e0;
+    border-color: #1c81e0;
+}
+
+.user-checkbox:checked::before {
+    content: '✔';
+    display: block;
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    line-height: 16px;
+    position: absolute;
+    left: 2px;
+}
+
+.user-name {
+    margin-left: 20px;
+    font-size: 18px;
+    color: #333333;
+    flex-grow: 1;
+}
+
+.user-tags {
+    display: flex;
+    gap: 10px; /* タグ同士の間隔 */
+    margin-right: 10px; /* アクションボタンとの間隔 */
+}
 
 
 .search-container {
@@ -191,216 +268,37 @@ input[type="checkbox"] {
     background-color: #1d7ca5;
 }
 
-/* .popup .close {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    font-size: 20px;
-    cursor: pointer;
-} */
-
-.tags-container {
-    display: flex;
-    flex-wrap: wrap; /* タグを複数行に並べる */
-    gap: 20px; /* タグ間の間隔 */
-    padding: 10px;
-    padding-left: 20px;
-    margin-bottom: 40px;
-}
-
 
 .tag {
-    background-color: #503CE1; /* 未選択時の背景色 */
-    color: #ffffff; /* 未選択時のテキスト色 */
-    min-width: 90px; /* タグの最小幅を設定 */
-    padding: 4px 12px;
-    padding-top: 8px;
-    border-radius: 13px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* ボーダーカラーの変更にもトランジションを追加 */
-    text-align: center;
-    display: flex; /* テキストとアイコンを横並びに */
-    justify-content: space-between; /* テキストとアイコンを左右に配置 */
-    align-items: center; /* コンテンツを垂直方向に中央揃え */
-    font-size: 12px;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
 }
 
-.tag-icon img {
-    width: 16px; /* 必要に応じてアイコンのサイズを調整 */
-    height: 16px;
-    margin-left: 8px; /* テキストとアイコンの間隔 */
-    margin-top: 2px;
-}
-
-.check {
-    width: 35px; /* checkアイコンの幅を調整 */
-    height: 35px; /* checkアイコンの高さを調整 */
-}
-
-.hidden {
-    display: none; /* 非表示にするクラス */
-}
-
-.tag-icon img.plus-purple {
-    width: 10px; /* plus-purpleアイコンの幅 */
-    height: 10px; /* plus-purpleアイコンの高さ */
-    margin-right: -3px;
-}
-
-
-.tag:hover {
-    border-color: #503CE1; /* ホバー時のボーダー色 */
+/* タグの色を設定 */
+.tag-important {
+    background-color: #ff4545; /* 赤 */
 }
 
 .tag-engineer {
-    background-color: #503CE1; /* エンジニア */
+    background-color: #54aa3f; /* 緑 */
 }
 
 .tag-designer {
-    background-color: #54aa3f; /* デザイナー */
+    background-color: #f39c12; /* オレンジ */
 }
 
-.tag-sales {
-    background-color: #3434ff; /* 営業 */
+.tag-executive{
+    background-color: #3498db; /* 青 */
 }
 
-.tag-development {
-    background-color: #ff4545; /* 開発 */
+.tag-donttouch {
+    background-color: #9b59b6; /* 紫 */
 }
-
-.tag-hr {
-    background-color: #ffcc00; /* 人事 */
-}
-
-h1 {
-    width: calc(75vw - 130px);
-    font-size: 30px;
-    color: #000000;
-    font-weight: 5000;
-    margin-top: 10px; /* 必要に応じて調整 */
-    border-bottom: solid 1px #c4c4c4;
-    text-align: left; /* 左寄せ */
-    padding-left: 10px; /* liと同じ余白に設定 */
-    margin-left: 20px; /* 左マージンをリセット */
-    margin-bottom: 15px;
-    margin-top: 30px;
-}
-
-
-.new-tag-container {
-    position: absolute;
-    bottom: 20px; /* ポップアップの下端からの距離 */
-    left: 50%;
-    transform: translateX(-50%);
+.file-actions {
     display: flex;
-    gap: 10px; /* 各要素間の間隔 */
-    align-items: center; /* 垂直方向に中央揃え */
-    padding: 10px 30px;
-    border-radius: 10px;
-    border: solid 1px #ccc;
-    background-color: #ffffff;
-}
-
-.color-ball {
-    width: 27px;
-    height: 27px;
-    background-color: #6654E1; /* デフォルトの色 */
-    border-radius: 50%;
-    cursor: pointer;
-    margin-right: 5px;
-}
-
-.color-palette {
-    display: grid;
-    grid-template-columns: repeat(6, 25px); /* 6列のグリッド */
-    grid-template-rows: repeat(2, 25px); /* 2行のグリッド */
-    gap: 3px;
-    position: fixed;
-    padding: 5px;
-    padding-bottom: 0px;
-    padding-right: 2px;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    bottom: 77px; /* カラーボールの下に表示 */
-    left: 37%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 9999; /* z-indexを高く設定して最前面に表示 */
-}
-
-
-.color-option {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.hidden {
-    display: none;
-}
-
-
-
-/* オーバーレイのスタイルを強化 */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
-    z-index: 9999; /* ポップアップの背面に表示 */
-    pointer-events: auto; /* オーバーレイのクリックを有効化 */
-}
-
-/* オーバーレイを非表示にするクラス */
-.overlay.hidden {
-    display: none;
-}
-
-
-
-/* ポップアップのスタイル */
-.popup {
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 10000;
-    width: 80vw; /* 必要に応じて幅を調整 */
-    height: 80vh;
-}
-
-.popup.hidden {
-    display: none; /* 非表示にするクラス */
-}
-
-/* ポップアップとオーバーレイが非表示の場合 */
-.hidden {
-    display: none;
-    pointer-events: none; /* クリックできないようにする */
-}
-
-.popup .close {
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    font-size: 40px;
-    cursor: pointer;
-}
-.upload-content{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #54aa3f;
+    gap: 10px;
 }
 
 
@@ -409,39 +307,13 @@ h1 {
 
 
 
-.upload-container {
-    position: absolute;
-    top: calc(40vh - 10px);
-    width:calc(80vw - 140px);
-    height:calc(40vh - 90px);
-    padding: 20px;
-    padding-bottom: 0px;
-    border: 2px solid #f1f1f1; /* 線の太さと色を設定 */
-    border-radius: 30px; /* 角を丸くする */
-    background-color: #ffffff;
-    margin-top: 20px; /* 他の要素とスペースを作るために追加 */
-}
-
-.upload-tags-container {
-    display: flex;
-    flex-wrap: wrap; /* タグを複数行に並べる */
-    gap: 20px; /* タグ間の間隔 */
-    padding: 10px;
-    padding-left: 20px;
-    margin-bottom: 10px;
-}
-
-.upload-tag-content{
-    background-color: #ffffff;
-    padding-bottom: 10px;
-}
 
 
-.boss-upload-tag-content{
-    height:calc(40vh - 160px);
-    overflow-y: auto;
-    gap: 0;
-}
+
+
+
+
+
 
 /* Webkit系 (Chrome, Safari) */
 .boss-upload-tag-content::-webkit-scrollbar {

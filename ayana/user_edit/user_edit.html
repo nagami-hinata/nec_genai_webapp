@@ -23,53 +23,51 @@
         <main>
             <div class="user-edit">
                 <h1>あ</h1>
-
-                <!-- <input type="checkbox" name="q1" value="その1"> 姓名1 <br>
-                <input type="checkbox" name="q1" value="その2"> 姓名2 <br>
-                <input type="checkbox" name="q1" value="その3"> 姓名3 <br>
-                 -->
-                <div class="chkbox">
-                    <input type="checkbox" id="chkbox3" name="chkbox03" value="1" />
-                    <label for="chkbox3">姓名4　部署</label> 
-                    <!-- <pl>部署</p><br> -->
-
-                    <div class="tags-container">
-                        <div class="tag tag-designer" onclick="toggleIcon(this)">
-                            デザイナー
-                            <span class="tag-icon">
-                                <img src="svg/batu.svg" alt="icon" class="plus-purple">
-                            </span>
+                <div id="userList" class="user-list">
+                    <li class="user-item">
+                        <input type="checkbox" class="user-checkbox">
+                        <div class="user-name">青木 陽介</div>
+                        <div class="user-name">入社年度</div>
+                        <div class="user-tags">
+                            <span class="tag tag-designer">デザイナー</span>
+                            <span class="tag tag-important">重要</span>
                         </div>
-                    </div>
+                    </li>
 
-                    <input type="checkbox" id="chkbox3" name="chkbox03" value="1" />
-                    <label for="chkbox3">姓名5　部署</label>
+                    <li class="user-item">
+                        <input type="checkbox" class="user-checkbox">
+                        <div class="user-name">新井 さくら</div>
+                        <div class="user-name">入社年度</div>
+                        <div class="user-tags">
+                            <span class="tag tag-executive">幹部</span>
+                            <span class="tag tag-important">重要</span>
+                        </div>
+                    </li>
                 </div>
+                   
 
                 <h1>い</h1>
-                <div class="chkbox">
-                    <input type="checkbox" id="chkbox3" name="chkbox03" value="1" />
-                    <label for="chkbox3">姓名6　部署</label> <br>
+                <div id="userList" class="user-list">
+                    <li class="user-item">
+                        <input type="checkbox" class="user-checkbox">
+                        <div class="user-name">井上 陽介</div>
+                        <div class="user-name">部署</div>
+                        <div class="user-tags">
+                            <span class="tag tag-engineer">エンジニア</span>
+                            <span class="tag tag-important">重要</span>
+                        </div>
+                    </li>
 
-                <div class="tags-container">
-                    <div class="tag tag-engineer" onclick="toggleIcon(this)">
-                        エンジニア
-                        <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
-                        </span>
-                    </div>
-                    <div class="tag tag-development" onclick="toggleIcon(this)">
-                        開発
-                        <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
-                    </span>
-                    </div>
-                </div>
+                    <li class="user-item">
+                        <input type="checkbox" class="user-checkbox">
+                        <div class="user-name">井川 さくら</div>
+                        <div class="user-name">部署</div>
+                        <div class="user-tags">
+                            <span class="tag tag-engineer">エンジニア</span>
+                            <span class="tag tag-important">重要</span>
+                        </div>
+                    </li>
 
-                
-
-                    <input type="checkbox" id="chkbox3" name="chkbox03" value="1" />
-                    <label for="chkbox3">姓名7　部署</label>
                 </div>
 
             </div>
