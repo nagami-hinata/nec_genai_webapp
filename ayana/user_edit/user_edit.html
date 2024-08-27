@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link href="css/user_edit.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="search-container">
+            <img src="svg/search.svg" class="search-icon">
+            <input type="text" id="searchInput" placeholder="タグを検索...">
+        </div>
+    </header>
+    <aside id="leftSidebar">
+        <img src="svg/hukidashi.svg" class="hukidashi">
+        <img src="svg/folder.svg" class="folder">
+        <img src="svg/trashbox.svg" class="trashbox">
+        <img src="svg/settings.svg" class="settings">
+        <img src="svg/upload.svg" class="upload" onclick="openPopup()">
+        <img src="svg/profile.svg" class="profile">
+    </aside>
+    <div id="wholeContent">
+        <main>
+            <div class="user-edit">
+                <h1>あ</h1>
+
+                <!-- <input type="checkbox" name="q1" value="その1"> 姓名1 <br>
+                <input type="checkbox" name="q1" value="その2"> 姓名2 <br>
+                <input type="checkbox" name="q1" value="その3"> 姓名3 <br>
+                 -->
+                <div class="chkbox">
+                    <input type="checkbox" id="chkbox3" name="chkbox03" value="1" />
+                    <label for="chkbox3">姓名4　部署</label> 
+                    <!-- <pl>部署</p><br> -->
+
+                    <div class="tags-container">
+                        <div class="tag tag-designer" onclick="toggleIcon(this)">
+                            デザイナー
+                            <span class="tag-icon">
+                                <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            </span>
+                        </div>
+                    </div>
+
+                    <input type="checkbox" id="chkbox3" name="chkbox03" value="1" />
+                    <label for="chkbox3">姓名5　部署</label>
+                </div>
+
+                <h1>い</h1>
+                <div class="chkbox">
+                    <input type="checkbox" id="chkbox3" name="chkbox03" value="1" />
+                    <label for="chkbox3">姓名6　部署</label> <br>
+
+                <div class="tags-container">
+                    <div class="tag tag-engineer" onclick="toggleIcon(this)">
+                        エンジニア
+                        <span class="tag-icon">
+                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                        </span>
+                    </div>
+                    <div class="tag tag-development" onclick="toggleIcon(this)">
+                        開発
+                        <span class="tag-icon">
+                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                    </span>
+                    </div>
+                </div>
+
+                
+
+                    <input type="checkbox" id="chkbox3" name="chkbox03" value="1" />
+                    <label for="chkbox3">姓名7　部署</label>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/user_edit.js"></script>
+</body>
+</html>
