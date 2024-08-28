@@ -41,6 +41,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // batuアイコンをクリックしたときにタグを削除する処理
+    document.querySelectorAll('.tag-icon img.batu').forEach(function(icon) {
+        icon.addEventListener('click', function(event) {
+            event.stopPropagation(); // タグのクリックイベントが発生しないようにする
+            const tag = this.closest('.tag'); // 親のタグ要素を取得
+            tag.remove(); // タグを削除
+        });
+    });
+
     // 色パレットのクリックイベント処理
     document.querySelectorAll('.color-option').forEach(function(option) {
         option.addEventListener('click', function() {
@@ -145,8 +154,32 @@ function changeColor(color, ballSelector) {
     document.querySelector('.upload-color-palette').classList.add('hidden'); // パレットを閉じる
 }
 
+// ファイルリストの生成関数
+function createFileListItem(file) {
+    const fileItem = document.createElement('div');
+
+    const fileNameSpan = document.createElement('span');
+    fileNameSpan.textContent = file.name;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = '削除';
+    deleteButton.addEventListener('click', function() {
+        fileItem.remove(); // ファイルアイテムを削除
+    });
+
+    fileItem.appendChild(fileNameSpan);
+    fileItem.appendChild(deleteButton);
+
+    return fileItem;
+}
+
 document.getElementById('fileUpload').addEventListener('change', function(event) {
-    // ファイルが選択された時の処理をここに追加
     const fileList = event.target.files;
-    console.log(fileList);
+    const fileListContainer = document.getElementById('fileList');
+
+    // 各ファイルをリストに追加
+    Array.from(fileList).forEach(file => {
+        const fileItem = createFileListItem(file);
+        fileListContainer.appendChild(fileItem);
+    });
 });
