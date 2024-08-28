@@ -28,31 +28,31 @@
                     <div class="tag tag-engineer" onclick="toggleIcon(this)">
                         エンジニア
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-designer" onclick="toggleIcon(this)">
                         デザイナー
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-sales" onclick="toggleIcon(this)">
                         営業
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-development" onclick="toggleIcon(this)">
                         開発
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-hr" onclick="toggleIcon(this)">
                         人事
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
 
@@ -64,31 +64,31 @@
                     <div class="tag tag-engineer" onclick="toggleIcon(this)">
                         1999年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-designer" onclick="toggleIcon(this)">
                         2000年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-sales" onclick="toggleIcon(this)">
                         2001年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-development" onclick="toggleIcon(this)">
                         2002年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-hr" onclick="toggleIcon(this)">
                         2003年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                 </div>
@@ -125,12 +125,17 @@
         <div id="uploadPopup" class="popup hidden">
             <span class="close" onclick="closePopup()">×</span>
             <div id="dropZone" class="dropZone">
-                <p>ここにファイルをドラッグ＆ドロップ<br>または</p>
-                <div class="file-upload-container">
-                    <label for="fileUpload" class="file-upload-label">ファイルを選択</label>
-                    <input type="file" id="fileUpload" multiple accept=".pdf">
+                <div class="upload-instructions">
+                    <p>ここにファイルをドラッグ＆ドロップ<br>または</p>
+                    <div class="file-upload-container">
+                        <label for="fileUpload" class="file-upload-label">ファイルを選択</label>
+                        <input type="file" id="fileUpload" multiple accept=".pdf">
+                    </div>
                 </div>
+                <!-- ファイルリストを表示するための要素 -->
+                <div id="fileList" class="file-list"></div>
             </div>
+
             <div class="upload-container">
                 <div class="boss-upload-tag-content">
                     <div class="upload-tag-content">
@@ -140,7 +145,7 @@
                             <div class="tag tag-engineer" onclick="toggleIcon(this)">
                                 エンジニア
                                 <span class="tag-icon">
-                                    <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                                    <img src="svg/batu.svg" alt="icon" class="batu">
                                 </span>
                             </div>
                         </div>
@@ -152,7 +157,7 @@
                             <div class="tag tag-engineer" onclick="toggleIcon(this)">
                                 エンジニア
                                 <span class="tag-icon">
-                                    <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                                    <img src="svg/batu.svg" alt="icon" class="batu">
                                 </span>
                             </div>
                         </div>

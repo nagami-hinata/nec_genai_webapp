@@ -115,3 +115,6 @@ function changeColor(color) {
     colorBall.style.backgroundColor = color; // カラーボールの色を変更
     toggleColorPalette(); // パレットを閉じる
 }
+
+// popupに関係する部分のコード開始
+
