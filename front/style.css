@@ -1,47 +1,279 @@
 * {
     margin: 0;
     padding: 0;
+    /* box-sizing: border-box; */
 }
 
-header {
-    position: absolute;
-    background-color: #252234;
-    height: 100%;
+
+
+/* サイドバーの設定 */
+#leftSidebar {
     width: 70px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #102933;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    top: 0;
+    justify-content: flex-start;
+    /* 画像を上に寄せる */
+    padding-top: 45px;
+    /* 上部に少し余白を追加 */
+    z-index: 100;
+}
+.hukidashi,
+.folder,
+.trashbox,
+.settings {
+    /*ここが15pxだと上手くいかないので0に修正*/
+    width: 35px;
+    /* 画像の幅を統一 */
+    margin-bottom: 35px;
+    /* 下のアイテムとの間隔,上の修正を受けての調整*/
+}
+
+
+
+
+/* スレッドの欄 */
+.threads {
+    position: absolute;
+    left: 70px;
+    width: 195px;
+    height: 100%;
+    background-color: #F0F0F0;
+    border-right: 1px solid #343541;
+    overflow-y: auto;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* flex-shrink: 0; */
+    z-index: 120;
+    transition: width 0.2s ease;
+}
+.threads.hidden {
+    width: 0;
+    border-right: none;
+}
+.new-chat-button {
+    display: flex;
+    align-items: center;
+    padding: 8px 13px;
+    margin: 12px;
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid #565869;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.new-chat-button:hover {
+    background-color: #3D98BF;
+}
+.new-chat-icon {
+    margin-right: 10px;
+    font-size: 20px;
+}
+.thread-list {
+    overflow-y: auto;
+    padding: 5px;
+    background: #F0F0F0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+/* スレッドの表示 */
+.thread {
+    padding: 5px;
+    color: black;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+.thread-name {
+    border: #F0F0F0;
+    border-radius: 10px;
+    padding: 10px;
+    display: inline-block;
+    min-width: 50px;
+}
+.thread-name:hover {
+    background: #E3E3E3;
+}
+.thread-name.active {
+    background: #E3E3E3;
+}
+.thread-name-input {
+    width: 100%;
+    padding: 5px;
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid #565869;
+    border-radius: 3px;
+}
+
+
+
+/* ソースを表示の部分 */
+.toggle-file-list {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ffffff;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
     z-index: 100;
 }
 
-
-
-
-#chat-menu {
-    background-color: rgb(210, 210, 210);
-    width: 20%;
-    height: 100%;
-    position: absolute;
-}
-
-#file {
-    background-color: antiquewhite;
-    width: 15%;
-    position: absolute;
-    left: 85%;
-    height: 100%;
+.toggle-file-list:hover {
+    background-color: #ffffff;
 }
 
 
 
 
+/* ファイルリストの部分 */
+.file-list-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #ffffff;
+    color: black;
+    padding: 20px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+.file-list-container.show {
+    transform: translateX(0);
+}
+.file-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.file-list-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+.close-file-list {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+}
+.file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.file-item {
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.file-item:hover {
+    background-color: #ffffff;
+}
+.file-icon {
+    margin-right: 10px;
+    font-size: 20px;
+}
+.file-info {
+    display: flex;
+    flex-direction: column;
+}
+.file-name {
+    font-weight: 500;
+}
+.file-meta {
+    font-size: 12px;
+    color: black;
+}
 
-#chat-container {
+
+
+/* チャット欄の設定 */
+.chat-container {
     position: absolute;
-    left: 20%;
-    width: 80%;
+    left: 265px;
+    width: calc(100% - 265px);
     height: 100%;
     display: flex;
+    border-left: #565869;
     background-color: rgb(255, 255, 255);
     overflow: hidden;
+    transition: width 0.2s ease;
 }
+.chat-container.action {
+    position: absolute;
+    left: 70px;
+    width: calc(100% - 70px);
+    height: 100%;
+    display: flex;
+    border-left: #565869;
+    background-color: rgb(255, 255, 255);
+    overflow: hidden;   
+}
+
+
+
+/* ページ上部の部分 */
+.chat-header {
+    width: 100%;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    /* padding: 10px 15px; */
+    background-color: #ffffff;
+    border-bottom: 1px solid #565869;
+    color: black;
+}
+.toggle-threads {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 13px;
+    transition: transform 0.3s ease;
+    transform: rotate(180deg);
+    /* 初期状態で右向き */
+    transition: transform 0.3s ease;
+}
+.toggle-threads.open {
+    transform: rotate(0deg);
+    /* クリックで左向き */
+}
+#thread-title {
+    margin-left: 7px;
+    font-size: 16px;
+    font-weight: 600;
+    z-index: 10;
+}
+
+
+
+/* 
 #top-bar {
     position: absolute;
     top: 0px;
@@ -57,14 +289,19 @@ header {
     height: 55px;
     z-index: 10;
     background: linear-gradient(to bottom, rgb(210, 210, 210), rgba(78, 205, 196, 0));
-}
+} */
+
+
+
+
 #display {
     position: absolute;
+    top: 60px;
     background-color: rgb(255, 255, 255);
     overflow-y: auto;
     width: 95%;
-    height: 80%;
-    left: 3%;
+    height: 72%;
+    left: 2.5%;
     flex-direction: column;
 }
 .input-container {
@@ -72,9 +309,10 @@ header {
     display: flex;
     align-items: flex-end;
     padding: 10px;
-    background-color: rgb(210, 210, 210);
+    background-color: rgb(222, 222, 222);
+    /* background-color: #dedcdc; */
     width: 80%;
-    border-radius: 18px;
+    border-radius: 10px;
     box-sizing: border-box;
     bottom: 3%;
     left: 10%;
@@ -85,7 +323,7 @@ header {
     min-height: 24px;
     padding: 14px 12px 0px 12px;
     border: 1.5px solid #616161;
-    border-radius: 15px;
+    border-radius: 8px;
     outline: none;
     resize: none;
     overflow-y: auto;
@@ -176,66 +414,3 @@ background-color: #4673fa;
 }
 
 
-
-/* 
-form {
-    max-width: 400px;
-    margin: 20px auto;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.input-wrapper {
-    position: relative;
-}
-
-#inputArea,
-#suggestion {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    font-size: 16px;
-    line-height: 1.5;
-    box-sizing: border-box;
-}
-
-#inputArea {
-    border: 1px solid #ccc;
-    resize: vertical;
-}
-
-#suggestion {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: #999;
-    background: transparent;
-    pointer-events: none;
-    white-space: pre-wrap;
-    overflow: hidden;
-}
-
-#matchedText {
-    color: #999;
-}
-#remainingText {
-    color: #ccc;
-}
-
-
-button {
-    margin-top: 10px;
-   padding: 10px 20px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
-} */

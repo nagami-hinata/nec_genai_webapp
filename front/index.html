@@ -7,26 +7,54 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <!-- <div id="menu">
-            <div id="icon">アイコン</div>
-            <div id="config">設定</div>
-            <div id="ref">参照</div>
-        </div> -->
-    </header>
+    <!-- サイドバー -->
+    <aside id="leftSidebar">
+        <img src="svg/hukidashi.svg" class="hukidashi">
+        <img src="svg/folder.svg" class="folder">
+        <img src="svg/trashbox.svg" class="trashbox">
+        <img src="svg/settings.svg" class="settings">
+    </aside>
 
-    <div id="chat-menu">
-
+    <!-- スレッドの欄 -->
+    <div class="threads" id="threads">
+        <div class="new-chat-button" id="new-chat-button">
+            <span class="new-chat-icon">+</span>
+            新しいスレッド
+        </div>
+        <div class="thread-list" id="thread-list">
+            <!-- 初期スレッドなし -->
+        </div>
     </div>
+    
+    
+    
+    
+    
+    
+    <div class="chat-container">
+        
+        <!-- 上部のソースを表示の部分 -->
+        <button class="toggle-file-list" id="toggle-file-list">ソースを表示</button>
+        
+        <!-- ソースを表示のメニュー -->
+        <div class="file-list-container" id="file-list-container">
+            <div class="file-list-header">
+                <span class="file-list-title">参照ファイル一覧</span>
+                <button class="close-file-list" id="close-file-list">&times;</button>
+            </div>
+            <div class="file-list" id="file-list">
+                <!-- ファイルアイテムがここに動的に追加されます -->
+            </div>
+        </div>
+        
+        <!-- ページ上部の部分 -->
+        <div class="chat-header">
+            <button class="toggle-threads" id="toggle-threads">&#x00BB;</button>
+            <span id="thread-title"></span>
+        </div>
 
-
-    <!-- <div id="file">
-        <div>ファイル</div>
-    </div> -->
-
-    <div id="chat-container">
-        <div id="top-bar"></div>
-        <div id="watermark"></div>
+        <!-- <div id="top-bar"></div>
+        <div id="watermark"></div> -->
         <div id="display">
             <!-- <div id="ai-chat">aaaa</div> -->
             <!-- <div id="user-chat">iiii</div> -->
