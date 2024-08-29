@@ -117,4 +117,3 @@ function changeColor(color) {
 }
 
 // popupに関係する部分のコード開始
-

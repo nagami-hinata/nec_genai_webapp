@@ -32,8 +32,19 @@
                             <span class="tag tag-designer">デザイナー</span>
                             <span class="tag tag-important">重要</span>
                         </div>
-                    </li>
 
+                        <span class="tag-menu-open">∨</span>
+
+                        <!-- ∨を右クリックしたときに表示 -->
+                        <div class="tag-menu">
+                            <ul>
+                                <!-- <li>ファイル名の変更</li> -->
+                                <li>タグ情報の変更</li>
+                                <li>削除</li>
+                            </ul>
+                        </div>
+                    </li>
+                        
                     <li class="user-item">
                         <input type="checkbox" class="user-checkbox">
                         <div class="user-name">新井 さくら</div>
@@ -41,6 +52,17 @@
                         <div class="user-tags">
                             <span class="tag tag-executive">幹部</span>
                             <span class="tag tag-important">重要</span>
+                        </div>
+
+                        <span class="tag-menu-open">∨</span>
+
+                        <!-- ∨を右クリックしたときに表示 -->
+                        <div class="tag-menu">
+                            <ul>
+                                <!-- <li>ファイル名の変更</li> -->
+                                <li>タグ情報の変更</li>
+                                <li>削除</li>
+                            </ul>
                         </div>
                     </li>
                 </div>
@@ -56,6 +78,17 @@
                             <span class="tag tag-engineer">エンジニア</span>
                             <span class="tag tag-important">重要</span>
                         </div>
+
+                        <span class="tag-menu-open">∨</span>
+
+                        <!-- ∨を右クリックしたときに表示 -->
+                        <div class="tag-menu">
+                            <ul>
+                                <!-- <li>ファイル名の変更</li> -->
+                                <li>タグ情報の変更</li>
+                                <li>削除</li>
+                            </ul>
+                        </div>
                     </li>
 
                     <li class="user-item">
@@ -66,11 +99,142 @@
                             <span class="tag tag-engineer">エンジニア</span>
                             <span class="tag tag-important">重要</span>
                         </div>
+                        <span class="tag-menu-open">∨</span>
+
+                        <!-- ∨を右クリックしたときに表示 -->
+                        <div class="tag-menu">
+                            <ul>
+                                <!-- <li>ファイル名の変更</li> -->
+                                <li>タグ情報の変更</li>
+                                <li>削除</li>
+                            </ul>
+                        </div>
                     </li>
 
                 </div>
 
             </div>
+
+            <!-- ポップアップとオーバーレイ -->
+            <div id="overlay" class="overlay"></div>
+            <div id="popup" class="popup">
+                <div class="popup-content">
+                    <h3>所属部署</h3>
+                    <div class="tags-edit-container">
+                        <!-- タグ要素 -->
+                        <div class="tagedit" onclick="toggleIcon(this)">
+                            エンジニア
+                            <span class="tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                        <div class="tagedit" onclick="toggleIcon(this)">
+                            デザイナー
+                            <span class="tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                        <div class="tagedit" onclick="toggleIcon(this)">
+                            営業
+                            <span class="tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                        <div class="tagedit" onclick="toggleIcon(this)">
+                            開発
+                            <span class="tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                        <div class="tagedit" onclick="toggleIcon(this)">
+                            人事
+                            <span class="tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                        <!-- 他のタグが続きます -->
+                    </div>
+                    <h3>入社年度</h3>
+                    <div class="tags-edit-container">
+                        <!-- タグ要素 -->
+                        <div class="tagedit" onclick="toggleIcon(this)">
+                            1999年
+                            <span class="tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                        <div class="tagedit" onclick="toggleIcon(this)">
+                            1999年
+                            <span class="tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                        <div class="tagedit" onclick="toggleIcon(this)">
+                            1999年
+                            <span class="tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                        <div class="tagedit" onclick="toggleIcon(this)">
+                            1999年
+                            <span class="tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                        <div class="tagedit" onclick="toggleIcon(this)">
+                            1999年
+                            <span class="tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                        <!-- 他のタグが続きます -->
+                    </div>
+                    <!-- 新規タグ作成セクション -->
+                    <div class="new-tag-container">
+                        <div class="color-ball" onclick="toggleColorPalette()"></div> <!-- カラーボール -->
+                        <select id="genreSelect" class="new-tag-genre" onchange="toggleNewGenreInput()">
+                            <option value="">ジャンルを選択</option>
+                            <option value="入社年度">入社年度</option>
+                            <option value="所属部署">所属部署</option>
+                            <option value="new">ジャンルを新規作成</option>
+                        </select>
+                        <input type="text" id="newGenreName" class="new-genre-input hidden" placeholder="新しいジャンル名を入力">
+                        <input type="text" id="newTagName" class="new-tag-input" placeholder="タグ名を入力">
+                        <button class="create-new-tag-button" onclick="createNewTag()">新規作成</button>
+                    </div>
+                    <div class="popup-buttons">
+                        <button class="save-button">保存</button>
+                    </div>
+                    <div class="color-palette hidden">
+                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
+                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
+                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
+                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
+                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
+                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
+                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
+                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
+                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
+                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
+                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
+                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
+                        <!-- 他の色も追加可能 -->
+                    </div>
+                </div>
+            </div>
+
+
+            
         </main>
     </div>
 
