@@ -1,0 +1,109 @@
+
+* {
+    box-sizing: border-box;
+    }
+    
+    *:focus {
+      outline: none;
+    }
+    
+    body {
+    font-family: Arial;
+    background-color: #fffeee;
+    padding: 50px;
+    }
+  
+    .login {
+    /* margin: 20px auto; */
+    /* width: 300px; */
+    display: flex;
+    justify-content: space-around;
+    /* align-items: flex-end; */
+    /* bottom:10px; */
+    /* background-color: #247699; */
+    bottom: 30px;
+    }
+  
+ 
+    .user-login{
+    /* padding: 20px; */
+    text-align: center;
+    }
+
+    .author-login{
+    /* padding: 20px; */
+    text-align: center;
+    } 
+  
+    /* .login-screen {
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 5px
+    } */
+/*     
+    .login-form {
+    text-align: center;
+    } */
+
+    
+    .login-button {
+      border: 2px solid transparent;
+      background: #3D98BF;
+      color: #ffffff;
+      font-size: 16px;
+      line-height: 25px;
+      padding: 4px 0;
+      text-decoration: none;
+      text-shadow: none;
+      border-radius: 10px;
+      box-shadow: none;
+      transition: 0.25s;
+      display: block;
+      width: 150px;
+      /* margin: 0 auto; */
+      margin-top: 16px;
+      /* margin-left: 40px; */
+    }
+  
+    .SignUp-button {
+      border: 2px solid transparent;
+      background:transparent;
+      color: #3D98BF;
+      font-size: 16px;
+      line-height: 25px;
+      padding: 12px 0;
+      text-decoration: none;
+      text-shadow: none;
+      /* border-radius: px; */
+      box-shadow: none;
+      /* transition: 0.25s; */
+      display: block;
+      width: 150px;
+      margin-top: 12px;
+      /* margin-left: 40px; */
+    }
+    
+    .login-button:hover {
+      background-color: #247699;
+    }
+
+    label {
+       margin-bottom: 20px;
+    }
+
+
+/*     
+    .login-link {
+      font-size: 12px;
+      color: #444;
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 20px;
+    } */
+  
+    /* .signin-link {
+      font-size: 12px;
+      color: #4393ad;
+      display: block;
+      margin-top: 24px;
+    } */
