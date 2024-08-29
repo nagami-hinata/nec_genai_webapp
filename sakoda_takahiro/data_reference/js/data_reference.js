@@ -1,4 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // ファイル名の変更がクリックされたときの処理
+    document.querySelectorAll('.tab-menu li').forEach(function(menuItem) {
+        menuItem.addEventListener('click', function() {
+            if (menuItem.textContent.trim() === "ファイル名の変更") {
+                const folderItem = menuItem.closest('.folder-item');
+                const fileNameSpan = folderItem.querySelector('.text');
+
+                enableEditing(fileNameSpan);
+            }
+        });
+    });
+
     // タブメニューの表示切り替え
     document.querySelectorAll('.ellipsis').forEach(ellipsis => {
         ellipsis.addEventListener('click', function(event) {
@@ -40,14 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('popup').style.display = "none";
     });
 
-    // キャンセルボタンがクリックされたときの処理
-    document.querySelector(".cancel-button").addEventListener('click', function () {
-        if (confirm("変更はすべて失われます。キャンセルしてもよろしいですか？")) {
-            document.getElementById('overlay').style.display = "none";
-            document.getElementById('popup').style.display = "none";
-        }
-    });
-
     // 保存ボタンがクリックされたときの処理
     document.querySelector(".save-button").addEventListener('click', function () {
         document.getElementById('overlay').style.display = "none";
@@ -61,8 +65,15 @@ document.addEventListener("DOMContentLoaded", function () {
             this.classList.toggle('selected'); // selected クラスをトグルして背景色を変更
         });
     });
+
+    // 閉じるボタンがクリックされたときの処理
+    document.querySelector(".close-button").addEventListener('click', function () {
+        document.getElementById('popup').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    });
 });
 
+// アイコンの切り替え処理
 function toggleIcon(element) {
     const icon1 = element.querySelector('.plus-purple');
     const icon2 = element.querySelector('.check');
@@ -71,6 +82,7 @@ function toggleIcon(element) {
     icon2.classList.toggle('hidden');
 }
 
+// 新しいジャンル入力フィールドの切り替え処理
 function toggleNewGenreInput() {
     const genreSelect = document.getElementById('genreSelect');
     const newGenreInput = document.getElementById('newGenreName');
@@ -82,6 +94,7 @@ function toggleNewGenreInput() {
     }
 }
 
+// 新しいタグの作成処理
 function createNewTag() {
     let genre = document.getElementById('genreSelect').value;
     const newGenreName = document.getElementById('newGenreName').value;
@@ -105,16 +118,68 @@ function createNewTag() {
         alert('ジャンルとタグ名を入力してください。');
     }
 }
+
+// カラーパレットの表示・非表示を切り替える処理
 function toggleColorPalette() {
     const palette = document.querySelector('.color-palette');
     palette.classList.toggle('hidden'); // パレットの表示・非表示を切り替える
 }
 
+// カラーボールの色を変更する処理
 function changeColor(color) {
     const colorBall = document.querySelector('.color-ball');
     colorBall.style.backgroundColor = color; // カラーボールの色を変更
     toggleColorPalette(); // パレットを閉じる
 }
 
-// popupに関係する部分のコード開始
+// ファイル名編集の有効化処理
+function enableEditing(spanElement) {
+    // 既存のテキストを取得
+    const currentText = spanElement.textContent.trim();
+
+    // 新しいinput要素を作成し、既存のテキストを設定
+    const inputElement = document.createElement("input");
+    inputElement.type = "text";
+    inputElement.value = currentText;
+    inputElement.classList.add("edit-input");
+
+    // 元のspanをinputに置き換え
+    spanElement.replaceWith(inputElement);
+
+    // 入力フィールドにフォーカスを当てる
+    inputElement.focus();
+
+    // フォーカスが外れたときに元のspanに戻す処理
+    inputElement.addEventListener("blur", function() {
+        saveFileName(inputElement, currentText);
+    });
+
+    // Enterキーが押されたときに元のspanに戻す処理
+    inputElement.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            saveFileName(inputElement, currentText);
+        }
+    });
+}
+
+// ファイル名保存処理
+function saveFileName(inputElement, originalText) {
+    const newFileName = inputElement.value.trim();
+    const spanElement = document.createElement("span");
+
+    if (newFileName === "") {
+        alert("ファイル名は空にできません。");
+        spanElement.textContent = originalText; // 元のファイル名を設定
+    } else {
+        spanElement.textContent = newFileName;
+    }
+
+    spanElement.classList.add("text");
+    spanElement.setAttribute("onclick", "enableEditing(this)");
+
+    // input要素をspanに置き換え
+    inputElement.replaceWith(spanElement);
+}
+
+
 
