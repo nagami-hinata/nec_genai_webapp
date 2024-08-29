@@ -127,14 +127,6 @@ h1 {
     margin-bottom: -20px;
 }
 
-.ellipsis {
-    margin-left: 0px;
-    margin-top: 5px;
-    cursor: pointer;
-    display: inline-block;
-    vertical-align: middle; /* 上下中央に配置するために追加 */
-    line-height: 1; /* テキストの行間を調整 */
-}
 
 .tab-menu {
     display: none;
@@ -272,11 +264,19 @@ h1 {
 .ellipsis {
     flex-shrink: 0;
     position: absolute;
+    width: 15px;
     top: 20px;
     right: 10px;
     background: white; /* 三点リーダーの背景色を設定 */
     padding-left: 5px;
+    margin-left: 0px;
+    margin-top: 5px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle; /* 上下中央に配置するために追加 */
+    line-height: 1; /* テキストの行間を調整 */
 }
+
 
 .folder-item {
     width: 100%; /* 幅をグリッド内で自動調整 */
