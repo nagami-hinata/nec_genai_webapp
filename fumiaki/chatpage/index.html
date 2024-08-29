@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>洗練されたモダンチャットUI</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <aside id="leftSidebar">
+        <img src="svg/hukidashi.svg" class="hukidashi">
+        <img src="svg/folder.svg" class="folder">
+        <img src="svg/trashbox.svg" class="trashbox">
+        <img src="svg/settings.svg" class="settings">
+    </aside>
+    <div class="threads" id="threads">
+        <div class="new-chat-button" id="new-chat-button">
+            <span class="new-chat-icon">+</span>
+            新しいスレッド
+        </div>
+        <div class="thread-list" id="thread-list">
+            <!-- 初期スレッドなし -->
+        </div>
+    </div>
+    <div class="main-chat">
+        <div class="chat-header">
+            <button class="toggle-threads" id="toggle-threads">&#x00BB;</button>
+            <span id="thread-title"></span>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message assistant-message">新しいチャットを開始するには、左側の「新しいチャット」ボタンをクリックしてください。</div>
+        </div>
+        <div class="input-area">
+            <textarea id="user-input" placeholder="メッセージを入力..." disabled></textarea>
+            <button id="send-button" disabled>▶</button>
+        </div>
+    </div>
+
+    <button class="toggle-file-list" id="toggle-file-list">ソースを表示</button>
+
+    <div class="file-list-container" id="file-list-container">
+        <div class="file-list-header">
+            <span class="file-list-title">参照ファイル一覧</span>
+            <button class="close-file-list" id="close-file-list">&times;</button>
+        </div>
+        <div class="file-list" id="file-list">
+            <!-- ファイルアイテムがここに動的に追加されます -->
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
