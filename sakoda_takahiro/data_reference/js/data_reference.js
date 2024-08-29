@@ -132,6 +132,7 @@ function changeColor(color) {
     toggleColorPalette(); // パレットを閉じる
 }
 
+
 // ファイル名編集の有効化処理
 function enableEditing(spanElement) {
     // 既存のテキストを取得
@@ -180,6 +181,3 @@ function saveFileName(inputElement, originalText) {
     // input要素をspanに置き換え
     inputElement.replaceWith(spanElement);
 }
-
-
-

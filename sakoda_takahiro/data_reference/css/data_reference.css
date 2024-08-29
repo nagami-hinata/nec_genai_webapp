@@ -138,7 +138,7 @@ h1 {
 
 .tab-menu {
     display: none;
-    position: absolute;
+    /* position: absolute; */
     background-color: #ffffff;
     border: 1px solid #c4c4c4;
     border-radius: 8px;
