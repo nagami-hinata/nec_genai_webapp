@@ -41,12 +41,12 @@ function createNewChat() {
     newThread.innerHTML = `<span class="thread-name">${threadName}</span>`;
     threadList.prepend(newThread);
 
-    const activeThread = threadList.querySelector('.active');
-    if (activeThread) {
-        activeThread.classList.remove('active');
+    const activeThreadName = threadList.querySelector('.thread-name.active');
+    if (activeThreadName) {
+        activeThreadName.classList.remove('active');
     }
 
-    newThread.classList.add('active');
+    newThread.querySelector('.thread-name').classList.add('active');
     chatMessages.innerHTML = '';
     addMessage("新しいチャットを開始しました。何かお手伝いできますか？", false);
     
@@ -72,8 +72,11 @@ function makeThreadNameEditable(threadElement) {
         const newSpan = document.createElement('span');
         newSpan.textContent = newName;
         newSpan.classList.add('thread-name');
+        if (threadNameSpan.classList.contains('active')) {
+            newSpan.classList.add('active');
+        }
         input.replaceWith(newSpan);
-        if (threadElement.classList.contains('active')) {
+        if (threadElement.querySelector('.thread-name.active')) {
             threadTitle.textContent = newName;
         }
     }
@@ -110,15 +113,15 @@ toggleThreadsButton.addEventListener('click', toggleThreads);
 threadList.addEventListener('click', (e) => {
     const threadElement = e.target.closest('.thread');
     if (threadElement) {
-        const activeThread = threadList.querySelector('.active');
-        if (activeThread) {
-            activeThread.classList.remove('active');
+        const activeThreadName = threadList.querySelector('.thread-name.active');
+        if (activeThreadName) {
+            activeThreadName.classList.remove('active');
         }
-        threadElement.classList.add('active');
+        const threadName = threadElement.querySelector('.thread-name');
+        threadName.classList.add('active');
         chatMessages.innerHTML = '';
-        const threadName = threadElement.querySelector('.thread-name').textContent;
-        addMessage(`${threadName}が選択されました。ここに過去のメッセージが表示されます。`, false);
-        threadTitle.textContent = threadName;
+        addMessage(`${threadName.textContent}が選択されました。ここに過去のメッセージが表示されます。`, false);
+        threadTitle.textContent = threadName.textContent;
     }
 });
 
