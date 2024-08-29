@@ -161,3 +161,43 @@ function changeColor(color, ballSelector) {
     document.querySelector('.color-palette').classList.add('hidden'); // パレットを閉じる
     document.querySelector('.upload-color-palette').classList.add('hidden'); // パレットを閉じる
 }
+
+
+//削除機能
+document.getElementById('trashButton').addEventListener('click', function() {
+    // すべてのチェックされた file-checkbox を取得
+    const checkboxes = document.querySelectorAll('.file-checkbox:checked');
+
+    if (checkboxes.length > 0) {
+        // 確認ダイアログを表示
+        const userConfirmed = confirm('本当に削除しますか？');
+
+        // ユーザーが「はい」をクリックした場合
+        if (userConfirmed) {
+            // 各チェックボックスをループ処理
+            checkboxes.forEach(function(checkbox) {
+                // 親の file-item 要素を取得し、削除
+                const fileItem = checkbox.closest('.file-item');
+                fileItem.remove();
+            });
+        }
+    } else {
+        alert('削除するファイルを選択してください。');
+    }
+});
+
+document.getElementById('clearAllButton').addEventListener('click', function() {
+    // 確認ダイアログを表示
+    const userConfirmed = confirm('すべてのファイルを本当に削除しますか？');
+
+    // ユーザーが「はい」をクリックした場合
+    if (userConfirmed) {
+        // すべてのファイルアイテムを取得
+        const fileItems = document.querySelectorAll('.file-item');
+
+        // 各ファイルアイテムを削除
+        fileItems.forEach(function(fileItem) {
+            fileItem.remove();
+        });
+    }
+});

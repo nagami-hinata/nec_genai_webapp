@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ポップアップを開く関数
 function openPopup() {
-    const overlay = document.getElementById('overlay');
+    const overlay = document.getElementById('upload-overlay');
     const uploadPopup = document.getElementById('uploadPopup');
 
     uploadPopup.classList.remove('hidden');
@@ -79,7 +79,7 @@ function openPopup() {
 
 // ポップアップを閉じる関数
 function closePopup() {
-    const overlay = document.getElementById('overlay');
+    const overlay = document.getElementById('upload-overlay');
     const uploadPopup = document.getElementById('uploadPopup');
 
     uploadPopup.classList.add('hidden');

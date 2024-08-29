@@ -640,3 +640,21 @@ h2 {
 .upload-button:hover {
     background-color: #1d7ca5;
 }
+
+.close{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px; /* バツ印のサイズ */
+    font-weight: bold;
+    color: #aaa; /* バツ印の色 */
+    cursor: pointer;
+    z-index: 1600; /* 必要に応じて値を調整 */
+}
+
+.close:hover,
+.close:focus {
+    color: #000; /* ホバーやフォーカス時の色 */
+    text-decoration: none;
+    cursor: pointer;
+}
