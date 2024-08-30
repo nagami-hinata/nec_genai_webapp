@@ -69,23 +69,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ポップアップを開く関数
 function openPopup() {
-    const overlay = document.getElementById('upload-overlay');
+    const overlay = document.getElementById('overlay'); // IDを修正してオーバーレイ要素を取得
     const uploadPopup = document.getElementById('uploadPopup');
 
-    uploadPopup.classList.remove('hidden');
-    overlay.classList.remove('hidden');
+    overlay.classList.remove('hidden'); // オーバーレイを表示
+    uploadPopup.classList.remove('hidden'); // ポップアップを表示
+
     overlay.style.pointerEvents = 'auto'; // オーバーレイをクリック可能にする
 }
 
 // ポップアップを閉じる関数
 function closePopup() {
-    const overlay = document.getElementById('upload-overlay');
+    const overlay = document.getElementById('overlay'); // IDを修正してオーバーレイ要素を取得
     const uploadPopup = document.getElementById('uploadPopup');
 
-    uploadPopup.classList.add('hidden');
-    overlay.classList.add('hidden');
+    overlay.classList.add('hidden'); // オーバーレイを非表示
+    uploadPopup.classList.add('hidden'); // ポップアップを非表示
+
     overlay.style.pointerEvents = 'none'; // オーバーレイをクリック不可にする
 }
+
+
 
 // パレットの表示/非表示を切り替え
 function toggleColorPalette() {
@@ -114,7 +118,7 @@ function toggleNewGenreInput() {
     }
 
     // upload_new_tag_genre のジャンル選択
-    if (uploadGenreSelect && uploadGenreSelect.value === 'new') { 
+    if (uploadGenreSelect && uploadGenreSelect.value === 'new') {
         uploadNewGenreInput.classList.remove('hidden');  // 新しいジャンル名入力フィールドを表示
     } else if (uploadGenreSelect) {
         uploadNewGenreInput.classList.add('hidden');    // フィールドを非表示
@@ -126,15 +130,91 @@ function createNewTag() {
     let genre = document.getElementById('genreSelect').value;
     const newGenreName = document.getElementById('newGenreName').value;
     const tagName = document.getElementById('newTagName').value;
+    const color = document.querySelector('.color-ball').style.backgroundColor; // カラーボールの色を取得
 
     // 新しいジャンルが入力されている場合、そのジャンルを使用
     if (genre === 'new' && newGenreName) {
+        const genreSelect = document.getElementById('genreSelect');
+        const existingOptions = Array.from(genreSelect.options).map(option => option.value);
+
+        // ジャンルの重複チェック
+        if (existingOptions.includes(newGenreName)) {
+            alert(`ジャンル「${newGenreName}」は既に存在しています。`);
+            return; // 処理を中断
+        }
+
         genre = newGenreName;
+
+        // 新しいジャンルをプルダウンメニューに追加
+        const newOption = document.createElement('option');
+        newOption.value = newGenreName;
+        newOption.textContent = newGenreName;
+        genreSelect.insertBefore(newOption, genreSelect.querySelector('option[value="new"]'));
+
+        // 「ジャンルを新規作成」オプションを最後に移動
+        const newOptionElement = genreSelect.querySelector('option[value="new"]');
+        genreSelect.appendChild(newOptionElement);
+
+        // 新しいジャンルのセクションを作成
+        const newSection = document.createElement('div');
+        newSection.className = 'tag-section';
+
+        // h1要素を作成して追加
+        const newH1 = document.createElement('h1');
+        newH1.textContent = genre;
+        newSection.appendChild(newH1);
+
+        // 新しいtags-containerを作成して追加
+        const newTagsContainer = document.createElement('div');
+        newTagsContainer.className = 'tags-container';
+        newSection.appendChild(newTagsContainer);
+
+        // tag-editの最後に新しいセクションを追加
+        document.querySelector('.tag-edit').appendChild(newSection);
     }
 
     if (genre && tagName) {
-        // 新しいタグの処理を追加（例：サーバーに送信、リストに追加など）
-        console.log(`新規タグ作成: ジャンル=${genre}, タグ名=${tagName}`);
+        // タグの重複チェック
+        const existingTags = Array.from(document.querySelectorAll('.tags-container .tag')).map(tag => tag.textContent.trim());
+        if (existingTags.includes(tagName)) {
+            alert(`タグ「${tagName}」は既に存在しています。`);
+            return; // 処理を中断
+        }
+
+        // 新しいタグ要素を作成
+        const newTag = document.createElement('div');
+        newTag.className = 'tag'; // タグの基本スタイルを設定
+        newTag.style.backgroundColor = color; // カラーボールの色をタグに反映
+        newTag.textContent = tagName; // タグ名を設定
+
+        // batuアイコンを追加
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'tag-icon';
+        const batuIcon = document.createElement('img');
+        batuIcon.src = 'svg/batu.svg';
+        batuIcon.alt = 'icon';
+        batuIcon.className = 'batu';
+
+        // アイコンのクリックイベントを追加
+        batuIcon.addEventListener('click', function(event) {
+            event.stopPropagation();
+            newTag.remove();
+        });
+
+        // アイコンをタグに追加
+        iconSpan.appendChild(batuIcon);
+        newTag.appendChild(iconSpan);
+
+        // 新しいジャンルが作成されている場合、それに対応するtags-containerに追加
+        const matchingH1 = Array.from(document.querySelectorAll('h1')).find(h1 => h1.textContent.trim() === genre);
+        if (matchingH1) {
+            const tagsContainer = matchingH1.nextElementSibling;
+            if (tagsContainer && tagsContainer.classList.contains('tags-container')) {
+                tagsContainer.appendChild(newTag); // タグを対応するtags-containerに追加
+            }
+        } else {
+            alert(`ジャンル「${genre}」に対応するセクションが見つかりません。`);
+        }
 
         // 入力欄をクリアする
         document.getElementById('genreSelect').value = '';
@@ -145,6 +225,12 @@ function createNewTag() {
         alert('ジャンルとタグ名を入力してください。');
     }
 }
+
+
+
+
+
+
 
 // 色を変更する関数
 function changeColor(color, ballSelector) {
@@ -181,5 +267,29 @@ document.getElementById('fileUpload').addEventListener('change', function(event)
     Array.from(fileList).forEach(file => {
         const fileItem = createFileListItem(file);
         fileListContainer.appendChild(fileItem);
+    });
+});
+
+document.querySelectorAll('.upload-tag-icon img.plus-purple').forEach(function(icon) {
+    icon.addEventListener('click', function(event) {
+        event.stopPropagation(); // タグのクリックイベントが発生しないようにする
+
+        const checkIcon = this.nextElementSibling; // checkアイコンを取得
+        if (checkIcon) {
+            this.classList.add('hidden'); // plus-purpleアイコンを非表示
+            checkIcon.classList.remove('hidden'); // checkアイコンを表示
+        }
+    });
+});
+
+document.querySelectorAll('.upload-tag-icon img.check').forEach(function(icon) {
+    icon.addEventListener('click', function(event) {
+        event.stopPropagation(); // タグのクリックイベントが発生しないようにする
+
+        const plusIcon = this.previousElementSibling; // plus-purpleアイコンを取得
+        if (plusIcon) {
+            this.classList.add('hidden'); // checkアイコンを非表示
+            plusIcon.classList.remove('hidden'); // plus-purpleアイコンを表示
+        }
     });
 });

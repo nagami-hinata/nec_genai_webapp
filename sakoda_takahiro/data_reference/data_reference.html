@@ -30,7 +30,7 @@
                     <img src="svg/dataname.svg" class="dataImg">
                     <div class="dataName">
                         <span class="text">長いファイル名の場合どうなるかな～</span>
-                        <span class="ellipsis">∨</span>
+                        <img src="svg/down.svg" class="ellipsis">
                     </div>
                     <div class="tab-menu">
                         <ul>
@@ -51,7 +51,7 @@
                     <img src="svg/dataname.svg" class="dataImg">
                     <div class="dataName">
                         <span class="text">長いファイル名の場合どうなるかな～</span>
-                        <span class="ellipsis">∨</span>
+                        <img src="svg/down.svg" class="ellipsis">
                     </div>
                     <div class="tab-menu">
                         <ul>
@@ -93,19 +93,6 @@
                         </span>
                     </div>
                     <!-- 以下、他のタグ要素が続きます -->
-                </div>
-                <!-- 新規タグ作成セクション -->
-                <div class="new-tag-container">
-                    <div class="color-ball" onclick="toggleColorPalette()"></div> <!-- カラーボール -->
-                    <select id="genreSelect" class="new-tag-genre" onchange="toggleNewGenreInput()">
-                        <option value="">ジャンルを選択</option>
-                        <option value="入社年度">入社年度</option>
-                        <option value="所属部署">所属部署</option>
-                        <option value="new">ジャンルを新規作成</option>
-                    </select>
-                    <input type="text" id="newGenreName" class="new-genre-input hidden" placeholder="新しいジャンル名を入力">
-                    <input type="text" id="newTagName" class="new-tag-input" placeholder="タグ名を入力">
-                    <button class="create-new-tag-button" onclick="createNewTag()">新規作成</button>
                 </div>
                 <div class="popup-buttons">
                     <button class="save-button">保存</button>
