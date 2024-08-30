@@ -311,7 +311,7 @@ h1 {
     background-color: #d6d6d6;
 }
 
-/* オーバーレイのスタイルを強化 */
+/* オーバーレイのスタイル */
 .overlay {
     position: fixed;
     top: 0;
@@ -319,7 +319,7 @@ h1 {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
-    z-index: 9999; /* ポップアップの背面に表示 */
+    z-index: 1000; /* ポップアップの背面に表示 */
     pointer-events: auto; /* オーバーレイのクリックを有効化 */
 }
 
@@ -341,7 +341,7 @@ h1 {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 10000;
+    z-index: 10000; /* オーバーレイの前面に表示 */
     width: 80vw; /* 必要に応じて幅を調整 */
     height: 80vh;
 }
@@ -544,6 +544,47 @@ h2 {
     border-radius: 10px;
     background-color: #ffffff;
 }
+.upload-tag {
+    background-color: #503CE1; /* 未選択時の背景色 */
+    color: #ffffff; /* 未選択時のテキスト色 */
+    min-width: 90px; /* タグの最小幅を設定 */
+    padding: 5px 15px;
+    padding-bottom: 4px;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* ボーダーカラーの変更にもトランジションを追加 */
+    text-align: center;
+    display: flex; /* テキストとアイコンを横並びに */
+    justify-content: space-between; /* テキストとアイコンを左右に配置 */
+    align-items: center; /* コンテンツを垂直方向に中央揃え */
+    font-size: 16px;
+}
+.upload-tag-icon img.plus-purple {
+    width: 25px; /* plus-purpleアイコンの幅 */
+    height: 25px; /* plus-purpleアイコンの高さ */
+    margin-right: -3px;
+    margin-left: 3px;
+    margin-top: 3px;
+}
+
+.upload-tag-icon img.check {
+    width: 20px; /* checkアイコンの幅を調整 */
+    height: 20px; /* checkアイコンの高さを調整 */
+    padding: 2.5px;
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: -3px;
+
+}
+
+.upload-tag.selected {
+    background-color: #503CE1 !important; /* 選択時の背景色を紫に変更 */
+    color: #fff !important; /* テキスト色を白に変更 */
+    padding: 5px 15px; /* 選択時のパディングも同じに設定 */
+    border: 2px solid #503CE1; /* 選択時のボーダー幅も同じに設定 */
+    padding-right:15px;
+}
+
 
 .upload-color-ball {
     width: 27px;

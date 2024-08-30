@@ -145,26 +145,33 @@ function enableEditing(spanElement) {
     inputElement.classList.add("edit-input");
 
     // 元のspanをinputに置き換え
-    spanElement.replaceWith(inputElement);
+    const parentElement = spanElement.parentElement;
+    parentElement.replaceChild(inputElement, spanElement);
+
+    // ellipsisを非表示にする
+    const ellipsis = parentElement.querySelector('.ellipsis');
+    if (ellipsis) {
+        ellipsis.style.display = "none";
+    }
 
     // 入力フィールドにフォーカスを当てる
     inputElement.focus();
 
     // フォーカスが外れたときに元のspanに戻す処理
     inputElement.addEventListener("blur", function() {
-        saveFileName(inputElement, currentText);
+        saveFileName(inputElement, currentText, ellipsis);
     });
 
     // Enterキーが押されたときに元のspanに戻す処理
     inputElement.addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
-            saveFileName(inputElement, currentText);
+            saveFileName(inputElement, currentText, ellipsis);
         }
     });
 }
 
 // ファイル名保存処理
-function saveFileName(inputElement, originalText) {
+function saveFileName(inputElement, originalText, ellipsis) {
     const newFileName = inputElement.value.trim();
     const spanElement = document.createElement("span");
 
@@ -176,8 +183,13 @@ function saveFileName(inputElement, originalText) {
     }
 
     spanElement.classList.add("text");
-    spanElement.setAttribute("onclick", "enableEditing(this)");
 
     // input要素をspanに置き換え
-    inputElement.replaceWith(spanElement);
+    const parentElement = inputElement.parentElement;
+    parentElement.replaceChild(spanElement, inputElement);
+
+    // ellipsisを再表示
+    if (ellipsis) {
+        ellipsis.style.display = "inline-block";
+    }
 }
