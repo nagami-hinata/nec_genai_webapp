@@ -19,7 +19,8 @@
     justify-content:center;
     font-size: 32px;
     color: #3D98BF;
-    margin-bottom: 60px;
+    margin-bottom: 160px; /*ログインフィールドとの距離*/
+    margin-top: 40px;
     }
       
   .icon {
@@ -79,8 +80,8 @@
     border: 2px solid transparent;
     background: #3D98BF;
     color: #ffffff;
-    font-size: 16px;
-    line-height: 25px;
+    font-size: 20px;
+    line-height: 30px;
     padding: 4px 0;
     text-decoration: none;
     text-shadow: none;
@@ -88,9 +89,9 @@
     box-shadow: none;
     transition: 0.25s;
     display: block;
-    width: 150px;
+    width: 160px;
     /* margin: 0 auto; */
-    margin-top: 16px;
+    margin-top: 24px;
     /* margin-left: 40px; */
   }
 
@@ -98,7 +99,7 @@
     border: 2px solid transparent;
     background:transparent;
     color: #3D98BF;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 25px;
     padding: 12px 0;
     text-decoration: none;
@@ -107,7 +108,7 @@
     box-shadow: none;
     /* transition: 0.25s; */
     display: block;
-    width: 150px;
+    width: 160px;
     margin-top: 12px;
     /* margin-left: 40px; */
   }
@@ -120,9 +121,10 @@
    color: #247699;
   }
 
-  /* label {
-       margin-bottom: 20px; 
-  } */
+  label {
+       /* margin-bottom: 20px; */
+       font-size: 24px;
+  } 
 
 
 /*     
