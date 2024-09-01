@@ -1,60 +1,60 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // タブメニューの表示切り替え
-    document.querySelectorAll('.tag-menu-open').forEach(openmenubutton => {
-        openmenubutton.addEventListener('click', function(event) {
-            event.stopPropagation();  // イベントのバブリングを防止
-            const tabMenu = this.parentElement.nextElementSibling;
+// document.addEventListener("DOMContentLoaded", function () {
+//     // タブメニューの表示切り替え
+//     // document.querySelectorAll('.tag-menu-open').forEach(openmenubutton => {
+//     //     openmenubutton.addEventListener('click', function(event) {
+//     //         event.stopPropagation();  // イベントのバブリングを防止
+//     //         const tabMenu = this.parentElement.nextElementSibling;
 
-            // 他のメニューを閉じる
-            document.querySelectorAll('.tab-menu').forEach(menu => {
-                if (menu !== tabMenu) {
-                    menu.style.display = 'none';
-                }
-            });
+//     //         // 他のメニューを閉じる
+//     //         document.querySelectorAll('.tab-menu').forEach(menu => {
+//     //             if (menu !== tabMenu) {
+//     //                 menu.style.display = 'none';
+//     //             }
+//     //         });
 
-            // 現在のメニューの表示/非表示を切り替える
-            tabMenu.style.display = tabMenu.style.display === 'block' ? 'none' : 'block';
-        });
-    });
+//     //         // 現在のメニューの表示/非表示を切り替える
+//     //         tabMenu.style.display = tabMenu.style.display === 'block' ? 'none' : 'block';
+//     //     });
+//     // });
 
-    // ドキュメント全体でクリックイベントを監視し、タブメニューを閉じる
-    document.addEventListener('click', function() {
-        document.querySelectorAll('.tab-menu').forEach(menu => {
-            menu.style.display = 'none';
-        });
-    });
+//     // ドキュメント全体でクリックイベントを監視し、タブメニューを閉じる
+//     document.addEventListener('click', function() {
+//         document.querySelectorAll('.tab-menu').forEach(menu => {
+//             menu.style.display = 'none';
+//         });
+//     });
 
-    // タグ情報の変更がクリックされたときの処理
-    // document.querySelectorAll('.tab-menu li').forEach(function(menuItem) {
-    //     menuItem.addEventListener('click', function() {
-    //         if (menuItem.textContent.trim() === "タグ情報の変更") {
-    //             document.getElementById('popup').style.display = 'block';
-    //             document.getElementById('overlay').style.display = 'block';
-    //         }
-    //     });
-    // });
+//     // タグ情報の変更がクリックされたときの処理
+//     // document.querySelectorAll('.tab-menu li').forEach(function(menuItem) {
+//     //     menuItem.addEventListener('click', function() {
+//     //         if (menuItem.textContent.trim() === "タグ情報の変更") {
+//     //             document.getElementById('popup').style.display = 'block';
+//     //             document.getElementById('overlay').style.display = 'block';
+//     //         }
+//     //     });
+//     // });
 
-    // // タグをクリックしたときに色を変える処理
-    // document.querySelectorAll('.tag').forEach(function(tag) {
-    //     tag.addEventListener('click', function () {
-    //         this.classList.toggle('selected'); // selected クラスをトグルして背景色を変更
-    //     });
-    // });
+//     // // タグをクリックしたときに色を変える処理
+//     // document.querySelectorAll('.tag').forEach(function(tag) {
+//     //     tag.addEventListener('click', function () {
+//     //         this.classList.toggle('selected'); // selected クラスをトグルして背景色を変更
+//     //     });
+//     // });
 
-    // // 色パレットのクリックイベント処理
-    // document.querySelectorAll('.color-option').forEach(function(option) {
-    //     option.addEventListener('click', function() {
-    //         changeColor(this.style.backgroundColor, '.color-ball');
-    //     });
-    // });
+//     // // 色パレットのクリックイベント処理
+//     // document.querySelectorAll('.color-option').forEach(function(option) {
+//     //     option.addEventListener('click', function() {
+//     //         changeColor(this.style.backgroundColor, '.color-ball');
+//     //     });
+//     // });
 
-    // // アップロード用の色パレットのクリックイベント処理
-    // document.querySelectorAll('.upload-color-option').forEach(function(option) {
-    //     option.addEventListener('click', function() {
-    //         changeColor(this.style.backgroundColor, '.upload-color-ball');
-    //     });
-    // });
-});
+//     // // アップロード用の色パレットのクリックイベント処理
+//     // document.querySelectorAll('.upload-color-option').forEach(function(option) {
+//     //     option.addEventListener('click', function() {
+//     //         changeColor(this.style.backgroundColor, '.upload-color-ball');
+//     //     });
+//     // });
+// });
 
 // popupに関係する部分のコード開始
 
@@ -102,14 +102,14 @@ function closePopup() {
 
 
 
-/* ∨を右クリックしたときの処理 */
+/* ∨をクリックしたときの処理 */
 document.addEventListener("DOMContentLoaded", function () {
     const menuOpeners = document.querySelectorAll('.tag-menu-open');
     // タブメニューの表示切り替え
     menuOpeners.forEach(opener => {
         const tabMenu = opener.nextElementSibling;
 
-        opener.addEventListener('contextmenu', function (event) {
+        opener.addEventListener('click', function (event) {
             event.preventDefault();
             event.stopPropagation();  // イベントのバブリングを防止
 
