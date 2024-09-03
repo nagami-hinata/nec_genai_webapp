@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>NNNchatbot</title>
-    <link href="css/data_deleted.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/data_deleted.css') }}" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -179,8 +179,6 @@
     </div>
 
 
-
-
-    <script src="js/data_deleted.js"></script>
+    <script src="{{ url_for('static', filename='scripts/data_deleted.js') }}"></script>
 </body>
 </html>

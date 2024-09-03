@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <link href="css/tag_edit.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/tag_edit.css') }}" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -171,6 +171,6 @@
 
     </div>
 
-    <script src="js/tag_edit.js"></script>
+    <script src="{{ url_for('static', filename='scripts/tag_edit.js') }}"></script>
 </body>
 </html>

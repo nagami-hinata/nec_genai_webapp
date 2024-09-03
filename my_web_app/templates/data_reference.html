@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <link href="css/data_reference.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/data_reference.css') }}" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -108,6 +108,6 @@
     </div>
 
 
-    <script src="js/data_reference.js"></script>
+    <script src="{{ url_for('static', filename='scripts/data_reference.js') }}"></script>
 </body>
 </html>

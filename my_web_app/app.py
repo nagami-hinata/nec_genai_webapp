@@ -40,6 +40,19 @@ def chatpage():
 def other_page():
     return render_template('admin_sign_up.html')
 """
+
+@app.route('/data_reference')
+def data_reference():
+    return render_template('data_reference.html')
+
+@app.route('/tag_edit')
+def tag_edit():
+    return render_template('tag_edit.html')
+
+@app.route('/data_deleted')
+def data_deleted():
+    return render_template('data_deleted.html')
+
 # データベース操作の例
 @app.route('/add_message', methods=['POST'])
 def add_message():
