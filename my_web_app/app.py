@@ -11,35 +11,26 @@ def get_db_connection():
 @app.route('/')
 def index():
     return render_template('index.html')
-"""
+
 @app.route('/user_sign_up')
-def other_page():
+def user_sign_up():
     return render_template('user_sign_up.html')
 
 @app.route('/user_login')
-def other_page():
+def user_login():
     return render_template('user_login.html')
 
 @app.route('/admin_sign_up')
-def other_page():
+def admin_sign_up():
     return render_template('admin_sign_up.html')
 
 @app.route('/admin_login')
-def other_page():
+def admin_login():
     return render_template('admin_login.html')
 
-@app.route('/admin_sign_up')
-def other_page():
-    return render_template('admin_sign_up.html')
-"""
 @app.route('/chatpage')
 def chatpage():
     return render_template('chatpage.html')
-"""
-@app.route('/admin_sign_up')
-def other_page():
-    return render_template('admin_sign_up.html')
-"""
 
 @app.route('/data_reference')
 def data_reference():
