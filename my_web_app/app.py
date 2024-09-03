@@ -82,7 +82,7 @@ def author_register():
         conn.commit()
         conn.close()
         
-        return redirect(url_for('login'))
+        return redirect(url_for('author_login'))
     
     return render_template('author_register.html')
 
