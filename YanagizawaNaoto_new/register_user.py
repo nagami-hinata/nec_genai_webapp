@@ -39,6 +39,9 @@ def register_user():
             break
         print("無効なメールアドレスです。もう一度試してください。")
 
+    # 役職（タグ）の入力
+    tag = input("役職（タグ）を入力してください: ")
+
     # 所属グループの入力
     group_ids = []
     while True:
@@ -63,9 +66,9 @@ def register_user():
     # ユーザーをデータベースに挿入
     try:
         cursor.execute('''
-        INSERT INTO User (name, password, unique_id, e_mail, last_page, group_unique_ids)
-        VALUES (?, ?, ?, ?, ?, ?)
-        ''', (user_name, password, unique_id, email, last_page, group_unique_ids))
+        INSERT INTO User (name, password, unique_id, e_mail, last_page, group_unique_ids, tag)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (user_name, password, unique_id, email, last_page, group_unique_ids, tag))
         
         conn.commit()
         print(f"ユーザー '{user_name}' が正常に登録されました。ユニークID: {unique_id}")
@@ -75,4 +78,5 @@ def register_user():
         conn.close()
 
 # 関数を実行
-register_user()
+if __name__ == "__main__":
+    register_user()

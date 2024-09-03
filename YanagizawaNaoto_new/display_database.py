@@ -32,4 +32,5 @@ def display_database_info():
     conn.close()
 
 # 関数を実行
-display_database_info()
+if __name__ == "__main__":
+    display_database_info()

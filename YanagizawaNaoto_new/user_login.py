@@ -55,4 +55,5 @@ def get_group_info(group_id, user_id, cursor):
     return "不明なグループ", False
 
 # 関数を実行
-user_login()
+if __name__ == "__main__":
+    user_login()

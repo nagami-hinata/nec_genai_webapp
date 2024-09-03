@@ -50,13 +50,9 @@ def get_chat_messages():
         if messages:
             print("取得されたチャットメッセージ:")
             for msg in messages:
-                print(f"データ構造: {msg}")  # デバッグ用に全データを表示
-                print(f"ID: {msg[0]}, "
-                      f"内容: {msg[1]}, "
-                      f"時間: {msg[2]}, "
-                      f"ユーザーID: {msg[3]}, "
-                      f"スレッド番号: {msg[6]}, "
-                      f"ユーザー名: {msg[7] if len(msg) > 7 else '不明'}")
+                print(f"ID: {msg[0]}, 内容: {msg[1]}, 時間: {msg[2]}, "
+                      f"ユーザーID: {msg[3]}, スレッド番号: {msg[6]}, "
+                      f"ユーザー名: {msg[7] if msg[7] else '不明'}")
                 print("-" * 50)
         else:
             print("条件に一致するチャットメッセージが見つかりません。")

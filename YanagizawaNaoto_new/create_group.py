@@ -2,8 +2,8 @@ import sqlite3
 import uuid
 import re
 
-def get_user_id_by_name(cursor, username):
-    cursor.execute('SELECT unique_id FROM User WHERE name = ?', (username,))
+def get_user_id_by_email(cursor, email):
+    cursor.execute('SELECT unique_id FROM User WHERE e_mail = ?', (email,))
     result = cursor.fetchone()
     return result[0] if result else None
 
@@ -43,18 +43,21 @@ def create_group():
         # メールアドレスをカンマ区切りの文字列に変換
         emails = ','.join(email_list)
 
-        # 責任者の名前を入力（任意）
+        # 責任者のメールアドレスを入力（任意）
         leader_id = None
         while True:
-            leader_name = input("グループ責任者のユーザー名を入力してください（スキップする場合は空白のまま Enter）: ")
-            if not leader_name:
+            leader_email = input("グループ責任者のメールアドレスを入力してください（スキップする場合は空白のまま Enter）: ")
+            if not leader_email:
                 print("責任者の指定をスキップします。")
                 break
-            leader_id = get_user_id_by_name(cursor, leader_name)
+            if not re.match(r"[^@]+@[^@]+\.[^@]+", leader_email):
+                print("無効なメールアドレスです。もう一度試してください。")
+                continue
+            leader_id = get_user_id_by_email(cursor, leader_email)
             if leader_id:
-                print(f"責任者として {leader_name} (ID: {leader_id}) が設定されました。")
+                print(f"責任者として {leader_email} (ID: {leader_id}) が設定されました。")
                 break
-            print("指定されたユーザーが見つかりません。正しいユーザー名を入力するか、スキップしてください。")
+            print("指定されたメールアドレスに対応するユーザーが見つかりません。正しいメールアドレスを入力するか、スキップしてください。")
 
         # グループをデータベースに挿入
         cursor.execute('''
@@ -76,7 +79,7 @@ def create_group():
         conn.commit()
         print(f"グループ '{group_name}' が正常に作成されました。ユニークID: {unique_id}")
         if leader_id:
-            print(f"責任者: {leader_name} (ID: {leader_id})")
+            print(f"責任者: {leader_email} (ID: {leader_id})")
         else:
             print("責任者は指定されていません。")
 

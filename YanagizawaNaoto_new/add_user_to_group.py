@@ -59,4 +59,5 @@ def add_user_to_group():
         conn.close()
 
 # 関数を実行
-add_user_to_group()
+if __name__ == "__main__":
+    add_user_to_group()

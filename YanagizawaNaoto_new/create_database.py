@@ -24,11 +24,12 @@ CREATE TABLE IF NOT EXISTS User (
     unique_id TEXT PRIMARY KEY,
     e_mail TEXT,
     last_page TEXT,
-    group_unique_ids TEXT
+    group_unique_ids TEXT,
+    tag TEXT
 )
 ''')
 
-# Chatテーブルの作成（スレッド番号の項目を追加）
+# Chatテーブルの作成（スレッド番号の項目を含む）
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Chat (
     content TEXT,

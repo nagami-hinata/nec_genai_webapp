@@ -89,4 +89,5 @@ def remove_user_from_group():
         conn.close()
 
 # 関数を実行
-remove_user_from_group()
+if __name__ == "__main__":
+    remove_user_from_group()
