@@ -24,17 +24,17 @@
 
         <div class="user-login">
             <label class="user"><b>グループ管理者用アカウントに</b></label>
-            <button id="loginButton" class="login-button" onclick="location.href='{{ url_for('login') }}'">ログイン</button>
-            <button id="signUpButton" class="SignUp-button"
-                onclick="location.href='{{ url_for('register') }}'">サインアップ</button>
-        </div>
-
-        <div class="author-login">
-            <label class="author"><b>個人用アカウントに</b></label>
             <button id="loginButton" class="login-button"
                 onclick="location.href='{{ url_for('author_login') }}'">ログイン</button>
             <button id="signUpButton" class="SignUp-button"
                 onclick="location.href='{{ url_for('author_register') }}'">サインアップ</button>
+        </div>
+
+        <div class="author-login">
+            <label class="author"><b>個人用アカウントに</b></label>
+            <button id="loginButton" class="login-button" onclick="location.href='{{ url_for('login') }}'">ログイン</button>
+            <button id="signUpButton" class="SignUp-button"
+                onclick="location.href='{{ url_for('register') }}'">サインアップ</button>
         </div>
 
     </div>
