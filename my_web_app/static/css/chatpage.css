@@ -26,6 +26,7 @@
     /* 上部に少し余白を追加 */
     z-index: 100;
 }
+
 .hukidashi,
 .folder,
 .trashbox,
@@ -55,10 +56,12 @@
     z-index: 120;
     transition: width 0.2s ease;
 }
+
 .threads.hidden {
     width: 0;
     border-right: none;
 }
+
 .new-chat-button {
     display: flex;
     align-items: center;
@@ -71,13 +74,16 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
 .new-chat-button:hover {
     background-color: #3D98BF;
 }
+
 .new-chat-icon {
     margin-right: 10px;
     font-size: 20px;
 }
+
 .thread-list {
     overflow-y: auto;
     padding: 5px;
@@ -97,6 +103,7 @@
     user-select: none;
     transition: background-color 0.3s ease;
 }
+
 .thread-name {
     border: #F0F0F0;
     border-radius: 10px;
@@ -104,12 +111,15 @@
     display: inline-block;
     min-width: 50px;
 }
+
 .thread-name:hover {
     background: #E3E3E3;
 }
+
 .thread-name.active {
     background: #E3E3E3;
 }
+
 .thread-name-input {
     width: 100%;
     padding: 5px;
@@ -157,19 +167,23 @@
     transition: transform 0.3s ease;
     z-index: 1000;
 }
+
 .file-list-container.show {
     transform: translateX(0);
 }
+
 .file-list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
+
 .file-list-title {
     font-size: 18px;
     font-weight: bold;
 }
+
 .close-file-list {
     background: none;
     border: none;
@@ -177,11 +191,13 @@
     font-size: 20px;
     cursor: pointer;
 }
+
 .file-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
+
 .file-item {
     background-color: #ffffff;
     padding: 10px;
@@ -191,20 +207,25 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
 .file-item:hover {
     background-color: #ffffff;
 }
+
 .file-icon {
     margin-right: 10px;
     font-size: 20px;
 }
+
 .file-info {
     display: flex;
     flex-direction: column;
 }
+
 .file-name {
     font-weight: 500;
 }
+
 .file-meta {
     font-size: 12px;
     color: black;
@@ -224,6 +245,7 @@
     overflow: hidden;
     transition: width 0.2s ease;
 }
+
 .chat-container.action {
     position: absolute;
     left: 70px;
@@ -232,7 +254,7 @@
     display: flex;
     border-left: #565869;
     background-color: rgb(255, 255, 255);
-    overflow: hidden;   
+    overflow: hidden;
 }
 
 
@@ -248,6 +270,7 @@
     border-bottom: 1px solid #565869;
     color: black;
 }
+
 .toggle-threads {
     background: none;
     border: none;
@@ -260,10 +283,12 @@
     /* 初期状態で右向き */
     transition: transform 0.3s ease;
 }
+
 .toggle-threads.open {
     transform: rotate(0deg);
     /* クリックで左向き */
 }
+
 #thread-title {
     margin-left: 7px;
     font-size: 16px;
@@ -304,6 +329,7 @@
     left: 2.5%;
     flex-direction: column;
 }
+
 .input-container {
     position: absolute;
     display: flex;
@@ -317,6 +343,7 @@
     bottom: 3%;
     left: 10%;
 }
+
 #textarea {
     flex-grow: 1;
     max-height: 150px;
@@ -331,6 +358,7 @@
     font-size: 16px;
     line-height: 1.5;
 }
+
 #textarea:empty:before {
     color: #888;
     content: attr(data-placeholder);
@@ -340,21 +368,26 @@
     margin-bottom: 10px;
     display: flex;
 }
+
 .user-message {
     justify-content: flex-end;
 }
+
 .ai-message {
     justify-content: flex-start;
 }
+
 .message-bubble {
     max-width: 70%;
     padding: 10px;
     border-radius: 20px;
 }
+
 .user-message .message-bubble {
     background-color: #e0e0e0;
     border-bottom-right-radius: 0;
 }
+
 .ai-message .message-bubble {
     background-color: #4a90e2;
     color: white;
@@ -375,14 +408,17 @@
     border: var(--tab-border, none);
     padding: var(--tab-padding, 0);
 }
+
 .added-text {
     user-select: none;
     /* テキスト選択を無効化 */
     pointer-events: none;
     /* マウスイベントを無効化 */
 }
+
 .added-text::after {
-    content: var(--suggestion);;
+    content: var(--suggestion);
+    ;
     font-size: 16px;
     color: #999;
 }
@@ -408,9 +444,7 @@
     justify-content: center;
     font-size: 18px;
 }
-        
+
 .action-button:hover {
-background-color: #4673fa;
+    background-color: #4673fa;
 }
-
-

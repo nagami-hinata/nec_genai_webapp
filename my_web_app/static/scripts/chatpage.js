@@ -103,10 +103,10 @@ function toggleThreads() {
 // sendButton.addEventListener('click', handleUserInput);
 // userInput.addEventListener('input', adjustTextareaHeight);
 // userInput.addEventListener('keypress', (e) => {
-    // if (e.key === 'Enter' && !e.shiftKey) {
-        // e.preventDefault();
-        // handleUserInput();
-    // }
+// if (e.key === 'Enter' && !e.shiftKey) {
+// e.preventDefault();
+// handleUserInput();
+// }
 // });
 newChatButton.addEventListener('click', createNewChat);
 toggleThreadsButton.addEventListener('click', toggleThreads);
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const bubble = document.createElement('div');
         bubble.className = 'message-bubble';
         bubble.textContent = text;  //作成したdivのテキストに第一引数を代入
-        
+
         messageDiv.appendChild(bubble);
         display.appendChild(messageDiv);
         display.scrollTop = display.scrollHeight;
@@ -295,10 +295,10 @@ function removeSpecificSpans() {
 function updateSuggestion() {  //入力に基づいて候補を更新
     removeSpecificSpans();  //spanを削除
     const input = textarea.textContent;
-    
+
     let tabContent = '';
     // if (input.length > 0 && !input.includes('\n')) {
-    
+
     let suggestion = '';
     if (input.length > 0 && !input.includes('\n')) {
         const matchedTerm = terms.find(term => term.startsWith(input) && term !== input);
@@ -307,13 +307,13 @@ function updateSuggestion() {  //入力に基づいて候補を更新
 
             let newSpan = document.createElement('span');
             newSpan.className = 'added-text';  // CSSクラスを適用
-            
+
             // 新しいspan要素をdivに追加
             textarea.appendChild(newSpan);
-            
+
             //afterのcontentにsuggestionを代入
             document.querySelector('.added-text').style.setProperty('--suggestion', '"' + suggestion + ' "');
-            
+
             if (suggestion) {
                 tabContent = "Tab";
             }
@@ -328,7 +328,7 @@ function updateSuggestion() {  //入力に基づいて候補を更新
         console.log('入力がありません');
         clearSuggestion();
     }
-    
+
     updateTabContent(tabContent);
     return suggestion;
 }
@@ -338,7 +338,7 @@ function updateSuggestion() {  //入力に基づいて候補を更新
 function clearSuggestion() {
     removeSpecificSpans();
     updateTabContent();
-    console.log('検索候補とTabマーク削除');    
+    console.log('検索候補とTabマーク削除');
 }
 
 // Tabマークの更新
@@ -362,7 +362,7 @@ function completeWithSuggestion() {  //currentSuggestionをtextareaに代入
     if (currentSuggestion) {
         removeSpecificSpans();  //spanを削除
         document.getElementById('textarea').textContent += currentSuggestion;
-        
+
         // カーソルを文末に移動
         const range = document.createRange();
         const sel = window.getSelection();
@@ -442,15 +442,15 @@ function keyDownFnc(e) {
         } else {
             console.log('改行含まれてる');
         }
-        
+
         setTimeout(() => {
             isProcessingEnter = false;
             updateSuggestion();
         }, 0);
     }
 }
-   
-   
+
+
 // Tab押したときに補完
 textarea.addEventListener('keydown', keyDownFnc);
 
