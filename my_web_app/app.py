@@ -14,8 +14,42 @@ def get_db_connection():
 def index():
     return render_template('index.html')
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        user_name = request.form['user-name']
+        email = request.form['e-mail']
+        password = request.form['password']
+        group_unique_ids = request.form['group-id']
+
+        # パスワードをハッシュ化
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        # ユニークIDの生成
+        unique_id = str(uuid.uuid4())
+
+        # データベース接続
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Group_tableにgroup_unique_idが存在するか確認
+        cur.execute("SELECT COUNT(*) FROM Group_table WHERE unique_id = ?", (group_unique_ids,))
+        if cur.fetchone()[0] == 0:
+            conn.close()
+            flash("入力されたグループIDは存在しません。")
+            return redirect(url_for('register'))
+
+        # Userテーブルにデータを挿入
+        cur.execute('''
+            INSERT INTO User (name, password, unique_id, e_mail, last_page, group_unique_ids, tag)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (user_name, hashed_password, unique_id, email, None, group_unique_ids, None))
+
+        conn.commit()
+        conn.close()
+
+        return redirect(url_for('login'))
+
     return render_template('register.html')
 
 @app.route('/login')
