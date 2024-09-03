@@ -1,0 +1,144 @@
+
+* {
+    box-sizing: border-box;
+    }
+    
+  *:focus {
+    outline: none;
+  }
+
+  .app-copy{
+    font-size: 20px;
+    margin-left: 20px;
+  }
+
+  .app-info{
+    display: flex;
+    align-items: center;
+    /* width: 100vw;  */
+    justify-content:center;
+    font-size: 32px;
+    color: #3D98BF;
+    margin-bottom: 160px; /*ログインフィールドとの距離*/
+    margin-top: 40px;
+    }
+      
+  .icon {
+    width: 56px; /* アイコンのサイズを設定 */
+    height: 56px;
+    margin-right: 60px; /*アプリ名との距離*/
+  }
+  
+  
+  body {
+  font-family: Arial;
+  background-color: #fffcf0;
+  padding: 50px;
+
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* justify-content: flex-end; 下側に配置 */
+  /* align-items: center; */
+  /* height: 50%; 下半分に配置するために高さを50%に設定 */
+  /* width: 100%; */
+  }
+
+  .login-field {
+  /* margin: 20px auto; */
+  /* width: 300px; */
+  display: flex;
+  justify-content: space-around;
+  /* align-items: flex-end; */
+  /* bottom:10px; */
+  /* background-color: #247699; */
+  /* bottom: 30px; */
+  }
+
+  .user-login{
+  /* padding: 20px; */
+  /* align-items: center; */
+
+  }
+
+  .author-login{
+  /* padding: 20px; */
+  text-align: center;
+  } 
+
+  /* .login-screen {
+  background-color: #FFF;
+  padding: 20px;
+  border-radius: 5px
+  } */
+/*     
+  .login-form {
+  text-align: center;
+  } */
+
+  
+  .login-button {
+    border: 2px solid transparent;
+    background: #3D98BF;
+    color: #ffffff;
+    font-size: 20px;
+    line-height: 30px;
+    padding: 4px 0;
+    text-decoration: none;
+    text-shadow: none;
+    border-radius: 10px;
+    box-shadow: none;
+    transition: 0.25s;
+    display: block;
+    width: 160px;
+    /* margin: 0 auto; */
+    margin-top: 24px;
+    /* margin-left: 40px; */
+  }
+
+  .SignUp-button {
+    border: 2px solid transparent;
+    background:transparent;
+    color: #3D98BF;
+    font-size: 20px;
+    line-height: 25px;
+    padding: 12px 0;
+    text-decoration: none;
+    text-shadow: none;
+    /* border-radius: px; */
+    box-shadow: none;
+    /* transition: 0.25s; */
+    display: block;
+    width: 160px;
+    margin-top: 12px;
+    /* margin-left: 40px; */
+  }
+  
+  .login-button:hover {
+    background-color: #247699;
+  }
+
+  .SignUp-button:hover {
+   color: #247699;
+  }
+
+  label {
+       /* margin-bottom: 20px; */
+       font-size: 24px;
+  } 
+
+
+/*     
+    .login-link {
+      font-size: 12px;
+      color: #444;
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 20px;
+    } */
+  
+    /* .signin-link {
+      font-size: 12px;
+      color: #4393ad;
+      display: block;
+      margin-top: 24px;
+    } */
