@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スレッド管理機能付きUI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+        .threads {
+            width: 250px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        .threads.hidden {
+            display: none;
+        }
+        .new-chat-button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .thread {
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .thread:hover {
+            background-color: #34495e;
+        }
+        .thread-name.active {
+            font-weight: bold;
+            color: #3498db;
+        }
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+        .tag-button {
+            background-color: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tag-button:hover {
+            background-color: #3498db;
+            color: #fff;
+        }
+        .tag-button.selected {
+            background-color: #2980b9;
+            color: #fff;
+        }
+        .input-container {
+            margin-top: 2rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .textarea {
+            width: 100%;
+            min-height: 100px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        .textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        .action-button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .action-button:hover {
+            background-color: #2980b9;
+        }
+        .hidden {
+            display: none;
+        }
+        .thread-name-input {
+            background-color: transparent;
+            border: none;
+            color: #ecf0f1;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .thread-name-input:focus {
+            outline: none;
+            border-bottom: 1px solid #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="threads" id="threads">
+            <div class="new-chat-button" id="new-chat-button">
+                <span class="new-chat-icon">+</span>
+                新しいスレッド
+            </div>
+            <div class="thread-list" id="thread-list">
+                <!-- 初期スレッドなし -->
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="container">
+                <h2 id="thread-title">スレッドタイトル</h2>
+                <div id="tag-selection-ui">
+                    <h3>興味のあるトピックを選択してください</h3>
+                    <p class="mb-4 text-gray-600">あなたに合ったコンテンツをおすすめします。</p>
+                    <div id="tagContainer" class="flex flex-wrap gap-2 mb-4"></div>
+                    <div class="mt-4">
+                        <h4 class="font-semibold mb-2">選択されたタグ:</h4>
+                        <div id="selectedTagsContainer" class="flex flex-wrap gap-2"></div>
+                    </div>
+                    <button id="submitButton" class="mt-6 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                        次へ進む
+                    </button>
+                </div>
+
+                <div class="input-container mt-6">
+                    <div id="textarea" class="textarea" contenteditable="true" data-placeholder="Type your message here..."></div>
+                    <div class="button-container">
+                        <button class="action-button" id="toggle-ui-button">UI切替</button>
+                        <button class="action-button" id="refresh-button">🔃</button>                
+                        <button class="action-button" id="send-button">▶</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // スレッド管理用のJavaScriptコード
+        let currentThreadId = 0;
+        const threadList = document.getElementById('thread-list');
+        const newChatButton = document.getElementById('new-chat-button');
+        const threadTitle = document.getElementById('thread-title');
+        const threadsContainer = document.getElementById('threads');
+        const tagSelectionUI = document.getElementById('tag-selection-ui');
+        const toggleUIButton = document.getElementById('toggle-ui-button');
+
+        // スレッドの状態を保持するオブジェクト
+        let threadStates = {};
+
+        function createNewChat() {
+            currentThreadId++;
+            const newThread = document.createElement('div');
+            newThread.classList.add('thread');
+            const threadName = `スレッド${currentThreadId}`;
+            newThread.innerHTML = `<span class="thread-name">${threadName}</span>`;
+            newThread.dataset.threadId = currentThreadId;
+            threadList.prepend(newThread);
+
+            // 新しいスレッドの状態を初期化
+            threadStates[currentThreadId] = {
+                name: threadName,
+                showTagSelection: true
+            };
+
+            setActiveThread(newThread);
+        }
+
+        function setActiveThread(threadElement) {
+            const activeThreadName = threadList.querySelector('.thread-name.active');
+            if (activeThreadName) {
+                activeThreadName.classList.remove('active');
+            }
+
+            const threadName = threadElement.querySelector('.thread-name');
+            threadName.classList.add('active');
+            threadTitle.textContent = threadName.textContent;
+
+            const threadId = threadElement.dataset.threadId;
+            updateUIState(threadId);
+        }
+
+        function updateUIState(threadId) {
+            const state = threadStates[threadId];
+            if (state.showTagSelection) {
+                tagSelectionUI.classList.remove('hidden');
+                toggleUIButton.textContent = 'タグ選択UIを隠す';
+            } else {
+                tagSelectionUI.classList.add('hidden');
+                toggleUIButton.textContent = 'タグ選択UIを表示';
+            }
+        }
+
+        function makeThreadNameEditable(threadElement) {
+            const threadNameSpan = threadElement.querySelector('.thread-name');
+            const currentName = threadNameSpan.textContent;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentName;
+            input.classList.add('thread-name-input');
+
+            threadNameSpan.replaceWith(input);
+            input.focus();
+            input.select();
+
+            function handleBlur() {
+                const newName = input.value.trim() || currentName;
+                const newSpan = document.createElement('span');
+                newSpan.textContent = newName;
+                newSpan.classList.add('thread-name');
+                if (input.classList.contains('active')) {
+                    newSpan.classList.add('active');
+                }
+                input.replaceWith(newSpan);
+                if (threadElement.querySelector('.thread-name.active')) {
+                    threadTitle.textContent = newName;
+                }
+
+                // スレッドの状態を更新
+                const threadId = threadElement.dataset.threadId;
+                threadStates[threadId].name = newName;
+            }
+
+            input.addEventListener('blur', handleBlur);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleBlur();
+                }
+            });
+        }
+
+        newChatButton.addEventListener('click', createNewChat);
+
+        threadList.addEventListener('click', (e) => {
+            const threadElement = e.target.closest('.thread');
+            if (threadElement) {
+                setActiveThread(threadElement);
+            }
+        });
+
+        threadList.addEventListener('dblclick', (e) => {
+            const threadElement = e.target.closest('.thread');
+            if (threadElement) {
+                makeThreadNameEditable(threadElement);
+            }
+        });
+
+        toggleUIButton.addEventListener('click', function() {
+            const activeThread = threadList.querySelector('.thread-name.active');
+            if (activeThread) {
+                const threadId = activeThread.closest('.thread').dataset.threadId;
+                threadStates[threadId].showTagSelection = !threadStates[threadId].showTagSelection;
+                updateUIState(threadId);
+            }
+        });
+
+        // 初期スレッドの作成
+        createNewChat();
+    </script>
+</body>
+</html>
