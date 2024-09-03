@@ -12,21 +12,21 @@ def get_db_connection():
 def index():
     return render_template('index.html')
 
-@app.route('/user_sign_up')
-def user_sign_up():
-    return render_template('user_sign_up.html')
+@app.route('/register')
+def register():
+    return render_template('register.html')
 
-@app.route('/user_login')
-def user_login():
-    return render_template('user_login.html')
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
-@app.route('/admin_sign_up')
-def admin_sign_up():
-    return render_template('admin_sign_up.html')
+@app.route('/author_register')
+def author_register():
+    return render_template('author_register.html')
 
-@app.route('/admin_login')
-def admin_login():
-    return render_template('admin_login.html')
+@app.route('/author_login')
+def author_login():
+    return render_template('author_login.html')
 
 @app.route('/chatpage')
 def chatpage():
