@@ -3,30 +3,28 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Author Registration</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/author_register.css') }}">
 </head>
 
+<body>
+  <div class="registration-form">
+    <form action="{{ url_for('author_register') }}" method="post">
+      <h2>ユーザ登録</h2>
+      <label for="user-name">会社名 (必須)</label>
+      <input id="user-name" type="text" name="user-name" placeholder="山田株式会社" required>
 
-<div class="registration-form">
-  <form action="https://www.my-server.com" method="post">
-    <!-- <div class="login_button"> -->
-    <!-- <div class = "reg"> -->
-    <h2>ユーザ登録</h2>
-    <label for="user-name">会社名 (必須)</label>
-    <input id="user-name" type="text" name="user-name" placeholder="山田株式会社">
+      <label for="e-mail">Eメール (必須)</label>
+      <input id="e-mail" type="email" name="e-mail" placeholder="taro.yammada@google.com" required>
 
-    <label for="e-mail">Eメール (必須)</label>
-    <input id="e-mail" type="email" name="e-mail" placeholder="taro.yammada@google.com">
+      <label for="password">パスワード</label>
+      <input id="password" type="password" name="password" required>
 
-    <label for="password">パスワード</label>
-    <input id="password" name="password"></input>
-    <!-- </div> -->
-  </form>
-
-  <div class="login_button">
-    <button type="submit">登録する</button>
+      <div class="login_button">
+        <button type="submit">登録する</button>
+      </div>
+    </form>
   </div>
-</div>
+</body>
 
 </html>

@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
+import uuid
+import bcrypt
 
 app = Flask(__name__)
 
@@ -20,8 +22,34 @@ def register():
 def login():
     return render_template('login.html')
 
-@app.route('/author_register')
+@app.route('/author_register', methods=['GET', 'POST'])
 def author_register():
+    if request.method == 'POST':
+        company_name = request.form['user-name']
+        email = request.form['e-mail']
+        password = request.form['password']
+        
+        # Hash the password
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        
+        # Generate a unique ID
+        unique_id = str(uuid.uuid4())
+        
+        # Connect to the database
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # Insert data into the Group_table
+        cur.execute('''
+            INSERT INTO Group_table (name, e_mail, password, unique_id, leader_id)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (company_name, email, hashed_password, unique_id, None))
+        
+        conn.commit()
+        conn.close()
+        
+        return redirect(url_for('login'))
+    
     return render_template('author_register.html')
 
 @app.route('/author_login')
@@ -44,7 +72,6 @@ def tag_edit():
 def data_deleted():
     return render_template('data_deleted.html')
 
-# データベース操作の例
 @app.route('/add_message', methods=['POST'])
 def add_message():
     message = request.form['message']
