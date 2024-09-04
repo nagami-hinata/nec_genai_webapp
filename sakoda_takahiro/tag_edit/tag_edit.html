@@ -28,31 +28,31 @@
                     <div class="tag tag-engineer" onclick="toggleIcon(this)">
                         エンジニア
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-designer" onclick="toggleIcon(this)">
                         デザイナー
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-sales" onclick="toggleIcon(this)">
                         営業
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-development" onclick="toggleIcon(this)">
                         開発
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-hr" onclick="toggleIcon(this)">
                         人事
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
 
@@ -64,31 +64,31 @@
                     <div class="tag tag-engineer" onclick="toggleIcon(this)">
                         1999年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-designer" onclick="toggleIcon(this)">
                         2000年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-sales" onclick="toggleIcon(this)">
                         2001年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-development" onclick="toggleIcon(this)">
                         2002年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-hr" onclick="toggleIcon(this)">
                         2003年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="plus-purple">
+                            <img src="svg/batu.svg" alt="icon" class="batu">
                         </span>
                     </div>
                 </div>
@@ -122,74 +122,52 @@
                 </div>
             </div>
         </main>
+        <div id="overlay" class="overlay hidden"></div>
         <div id="uploadPopup" class="popup hidden">
-            <span class="close" onclick="closePopup()">×</span>
+            <span class="close" onclick="closePopup()">&times;</span>
             <div id="dropZone" class="dropZone">
-                <p>ここにファイルをドラッグ＆ドロップ<br>または</p>
-                <div class="file-upload-container">
-                    <label for="fileUpload" class="file-upload-label">ファイルを選択</label>
-                    <input type="file" id="fileUpload" multiple accept=".pdf">
+                <div class="upload-instructions">
+                    <p>ここにファイルをドラッグ＆ドロップ<br>または</p>
+                    <div class="file-upload-container">
+                        <label for="fileUpload" class="file-upload-label">ファイルを選択</label>
+                        <input type="file" id="fileUpload" multiple accept=".pdf">
+                    </div>
                 </div>
+                <!-- ファイルリストを表示するための要素 -->
+                <div id="fileList" class="file-list"></div>
             </div>
+
             <div class="upload-container">
                 <div class="boss-upload-tag-content">
                     <div class="upload-tag-content">
-                        <h2>所属部署</h2>
+                        <h2>入社年度</h2>
                         <div class="upload-tags-container">
                             <!-- タグ要素 -->
-                            <div class="tag tag-engineer" onclick="toggleIcon(this)">
-                                エンジニア
-                                <span class="tag-icon">
-                                    <img src="svg/batu.svg" alt="icon" class="plus-purple">
-                                </span>
-                            </div>
+                            <div class="upload-tag" onclick="toggleIcon(this)">
+                            2002年
+                            <span class="upload-tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
                         </div>
                     </div>
+                    <!-- 以下、他のタグ要素が続きます -->
                     <div class="upload-tag-content">
                         <h2>所属部署</h2>
                         <div class="upload-tags-container">
                             <!-- タグ要素 -->
-                            <div class="tag tag-engineer" onclick="toggleIcon(this)">
-                                エンジニア
-                                <span class="tag-icon">
-                                    <img src="svg/batu.svg" alt="icon" class="plus-purple">
-                                </span>
-                            </div>
+                            <div class="upload-tag" onclick="toggleIcon(this)">
+                            エンジニア
+                            <span class="upload-tag-icon">
+                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                            </span>
                         </div>
                     </div>
-                </div>
-                <!-- 新規タグ作成セクション -->
-                <div class="upload-new-tag-container">
-                    <div class="upload-color-ball" onclick="toggleUploadColorPalette()"></div> <!-- カラーボール -->
-                    <select id="upload-new-tag-genre" class="upload-new-tag-genre" onchange="toggleNewGenreInput()">
-                        <option value="">ジャンルを選択</option>
-                        <option value="入社年度">入社年度</option>
-                        <option value="所属部署">所属部署</option>
-                        <option value="new">ジャンルを新規作成</option>
-                    </select>
-                    <input type="text" id="upload-new-genre-input" class="upload-new-genre-input hidden" placeholder="新しいジャンル名を入力">
-                    <input type="text" id="newTagName" class="upload-new-tag-input" placeholder="タグ名を入力">
-                    <button class="upload-create-new-tag-button" onclick="createNewTag()">新規作成</button>
-                </div>
-                <div class="upload-color-palette hidden">
-                    <div class="upload-color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
-                    <div class="upload-color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
-                    <div class="upload-color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
-                    <div class="upload-color-option" style="background-color: #503CE1;" onclick="changeColor('#ff4545')"></div>
-                    <div class="upload-color-option" style="background-color: #ffcc00;" onclick="changeColor('#54aa3f')"></div>
-                    <div class="upload-color-option" style="background-color: #ff7979;" onclick="changeColor('#3434ff')"></div>
-                    <div class="upload-color-option" style="background-color: #acee60;" onclick="changeColor('#ff4545')"></div>
-                    <div class="upload-color-option" style="background-color: #51cece;" onclick="changeColor('#54aa3f')"></div>
-                    <div class="upload-color-option" style="background-color: #c05abb;" onclick="changeColor('#3434ff')"></div>
-                    <div class="upload-color-option" style="background-color: #f945ff;" onclick="changeColor('#ff4545')"></div>
-                    <div class="upload-color-option" style="background-color: #396fb4;" onclick="changeColor('#54aa3f')"></div>
-                    <div class="upload-color-option" style="background-color: #646464;" onclick="changeColor('#3434ff')"></div>
-                    <!-- 他の色も追加可能 -->
                 </div>
                 <button class="upload-button">アップロード</button>
             </div>
         </div>
-        <div id="overlay" class="overlay hidden"></div>
 
     </div>
 
