@@ -1,6 +1,4 @@
-// const chatMessages = document.getElementById('chat-messages');
-// const userInput = document.getElementById('user-input');
-// const sendButton = document.getElementById('send-button');
+
 const newChatButton = document.getElementById('new-chat-button');
 const threadList = document.getElementById('thread-list');
 const threadsContainer = document.getElementById('threads');
@@ -10,28 +8,6 @@ const chatContainer = document.querySelector('.chat-container');
 
 let currentThreadId = 0;
 
-// function addMessage(content, isUser) {
-//     const messageElement = document.createElement('div');
-//     messageElement.classList.add('message');
-//     messageElement.classList.add(isUser ? 'user-message' : 'assistant-message');
-//     messageElement.textContent = content;
-//     chatMessages.appendChild(messageElement);
-//     chatMessages.scrollTop = chatMessages.scrollHeight;
-// }
-
-// function handleUserInput() {
-//     const message = userInput.value.trim();
-//     if (message) {
-//         addMessage(message, true);
-
-//         userInput.value = '';
-//         adjustTextareaHeight();
-//         setTimeout(() => {
-//             const response = "質問ありがとうございます。";
-//             addMessage(response, false);
-//         }, 1000);
-//     }
-// }
 
 function createNewChat() {
     currentThreadId++;
@@ -47,10 +23,7 @@ function createNewChat() {
     }
 
     newThread.querySelector('.thread-name').classList.add('active');
-    // chatMessages.innerHTML = '';
-    // addMessage("新しいチャットを開始しました。何かお手伝いできますか？", false);
-    // userInput.disabled = false;
-    // sendButton.disabled = false;
+
     console.log('新しいスレッドが作られた');
     threadTitle.textContent = threadName;
 }
@@ -95,19 +68,6 @@ function toggleThreads() {
     chatContainer.classList.toggle('action');
 }
 
-// function adjustTextareaHeight() {
-//     userInput.style.height = 'auto';
-//     userInput.style.height = (userInput.scrollHeight) + 'px';
-// }
-
-// sendButton.addEventListener('click', handleUserInput);
-// userInput.addEventListener('input', adjustTextareaHeight);
-// userInput.addEventListener('keypress', (e) => {
-// if (e.key === 'Enter' && !e.shiftKey) {
-// e.preventDefault();
-// handleUserInput();
-// }
-// });
 newChatButton.addEventListener('click', createNewChat);
 toggleThreadsButton.addEventListener('click', toggleThreads);
 
@@ -120,8 +80,6 @@ threadList.addEventListener('click', (e) => {
         }
         const threadName = threadElement.querySelector('.thread-name');
         threadName.classList.add('active');
-        // chatMessages.innerHTML = '';
-        // addMessage(`${threadName.textContent}が選択されました。ここに過去のメッセージが表示されます。`, false);
         threadTitle.textContent = threadName.textContent;
     }
 });
@@ -207,8 +165,6 @@ document.addEventListener('click', (event) => {
 
 
 
-
-
 /* 入力欄に関する処理 */
 document.addEventListener('DOMContentLoaded', function () {
     const textarea = document.getElementById('textarea');
@@ -217,63 +173,86 @@ document.addEventListener('DOMContentLoaded', function () {
     const display = document.getElementById('display');
     // const inputContainer = document.querySelector('.input-container');
 
-    function adjustTextareaHeight() {  //入力テキストに応じてテキストエリアの高さを調節
-        textarea.style.height = 'auto';
-        const newHeight = Math.min(textarea.scrollHeight, 150);
-        textarea.style.height = newHeight + 'px';
-    }
-
-    function addMessage(text, isUser) {  //新しいメッセージを表示エリアに追加
-        const messageDiv = document.createElement('div');  //新しいdiv要素を作成
-        messageDiv.className = isUser ? 'message user-message' : 'message ai-message';  //trueのときuser falseのときai
-
-        const bubble = document.createElement('div');
-        bubble.className = 'message-bubble';
-        bubble.textContent = text;  //作成したdivのテキストに第一引数を代入
-
-        messageDiv.appendChild(bubble);
-        display.appendChild(messageDiv);
-        display.scrollTop = display.scrollHeight;
-        // display.appendChild(messageDiv);  //displayの子要素にmessageDivを追加
-        // display.scrollTop = display.scrollHeight;   //スクロール位置を最下部に移動
-    }
 
     textarea.addEventListener('input', adjustTextareaHeight);
 
-    textarea.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    });
-
-    function sendMessage() {
-        const message = textarea.textContent.trim();
-        if (message) {
-            addMessage(message, true);
-            textarea.textContent = '';
-            adjustTextareaHeight();
-            // ここでAIバックエンドにメッセージを送信する処理を追加
-
-            setTimeout(() => {
-                addMessage("AIの応答", false);
-            }, 1000);
-        }
-    }
+    // textarea.addEventListener('keydown', function (e) {
+    //     if (e.key === 'Enter' && !e.shiftKey) {
+    //         e.preventDefault();
+    //         sendMessage();
+    //     }
+    // });
 
     // メッセージ送信のイベント
     sendButton.addEventListener('click', sendMessage);
-
+    
     // プロンプト最適化のイベント
     refreshButton.addEventListener('click', function () {
         // プロンプト最適化機能の実装
         console.log('最適化されました');
     });
-
+    
     // 初期調整
     adjustTextareaHeight();
 });
 
+function adjustTextareaHeight() {  //入力テキストに応じてテキストエリアの高さを調節
+    textarea.style.height = 'auto';
+    const newHeight = Math.min(textarea.scrollHeight, 150);
+    textarea.style.height = newHeight + 'px';
+}
+
+function addMessage(text, isUser) {  //新しいメッセージを表示エリアに追加
+    const messageDiv = document.createElement('div');  //新しいdiv要素を作成
+    messageDiv.className = isUser ? 'message user-message' : 'message ai-message';  //trueのときuser falseのときai
+
+    const bubble = document.createElement('div');
+    bubble.className = 'message-bubble';
+    bubble.textContent = text;  //作成したdivのテキストに第一引数を代入
+
+    messageDiv.appendChild(bubble);
+    display.appendChild(messageDiv);
+    display.scrollTop = display.scrollHeight;
+    // display.appendChild(messageDiv);  //displayの子要素にmessageDivを追加
+    // display.scrollTop = display.scrollHeight;   //スクロール位置を最下部に移動
+}
+
+// プロンプトをバックエンドに送る　レスポンスをaddMessage関数でdisplayに追加
+async function sendMessage() {
+    const message = textarea.textContent.trim();
+    if (message) {
+        addMessage(message, true);
+        textarea.textContent = '';
+        adjustTextareaHeight();
+
+        // ここでAIバックエンドにメッセージを送信する処理を追加
+        try {
+            const response = await fetch('../../send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+
+            console.log(data);  // デバック用　レスポンスがコンソールに表示される
+
+            const text = data.response;  // APIレスポンスのテキストデータをtextに
+            
+            addMessage(text, false);
+
+        } catch (error) {
+            console.error('Error:', error);
+            addMessage("エラーが発生しました");
+        }
+    }
+}
 
 
 
