@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <link href="{{ url_for('static', filename='css/data_reference.css') }}" rel="stylesheet">
 </head>
+
 <body>
     <header>
         <div class="search-container">
@@ -12,12 +14,16 @@
         </div>
     </header>
     <aside id="leftSidebar">
-        <img src="svg/hukidashi.svg" class="hukidashi">
-        <img src="svg/folder.svg" class="folder">
-        <img src="svg/trashbox.svg" class="trashbox">
-        <img src="svg/settings.svg" class="settings">
-        <img src="svg/upload.svg" class="upload" onclick="openPopup()">
-        <img src="svg/profile.svg" class="profile">
+        <a href="{{ url_for('chatpage') }}"><img src="{{ url_for('static', filename='images/hukidashi.svg') }}"
+                class="hukidashi"></a>
+        <a href="{{ url_for('data_reference') }}"><img src="{{ url_for('static', filename='images/folder.svg') }}"
+                class="folder"></a>
+        <!-- <img src="{{ url_for('static', filename='images/trashbox.svg') }}" class="trashbox"> -->
+        <a href="{{ url_for('tag_edit') }}"><img src="{{ url_for('static', filename='images/settings.svg') }}"
+                class="settings"></a>
+        <img src="{{ url_for('static', filename='images/upload.svg') }}" class="upload" onclick="openPopup()">
+        <a href="{{ url_for('user_edit') }}"><img src="{{ url_for('static', filename='images/profile.svg') }}"
+                class="profile"></a>
     </aside>
     <div id="wholeContent">
         <main>
@@ -110,4 +116,5 @@
 
     <script src="{{ url_for('static', filename='scripts/data_reference.js') }}"></script>
 </body>
+
 </html>

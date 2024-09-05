@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <link href="{{ url_for('static', filename='css/tag_edit.css') }}" rel="stylesheet">
 </head>
+
 <body>
     <header>
         <div class="search-container">
@@ -12,12 +14,16 @@
         </div>
     </header>
     <aside id="leftSidebar">
-        <img src="svg/hukidashi.svg" class="hukidashi">
-        <img src="svg/folder.svg" class="folder">
-        <img src="svg/trashbox.svg" class="trashbox">
-        <img src="svg/settings.svg" class="settings">
-        <img src="svg/upload.svg" class="upload" onclick="openPopup()">
-        <img src="svg/profile.svg" class="profile">
+        <a href="{{ url_for('chatpage') }}"><img src="{{ url_for('static', filename='images/hukidashi.svg') }}"
+                class="hukidashi"></a>
+        <a href="{{ url_for('data_reference') }}"><img src="{{ url_for('static', filename='images/folder.svg') }}"
+                class="folder"></a>
+        <!-- <img src="{{ url_for('static', filename='images/trashbox.svg') }}" class="trashbox"> -->
+        <a href="{{ url_for('tag_edit') }}"><img src="{{ url_for('static', filename='images/settings.svg') }}"
+                class="settings"></a>
+        <img src="{{ url_for('static', filename='images/upload.svg') }}" class="upload" onclick="openPopup()">
+        <a href="{{ url_for('user_edit') }}"><img src="{{ url_for('static', filename='images/profile.svg') }}"
+                class="profile"></a>
     </aside>
     <div id="wholeContent">
         <main>
@@ -144,33 +150,34 @@
                         <div class="upload-tags-container">
                             <!-- タグ要素 -->
                             <div class="upload-tag" onclick="toggleIcon(this)">
-                            2002年
-                            <span class="upload-tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
-                            </span>
+                                2002年
+                                <span class="upload-tag-icon">
+                                    <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                    <img src="svg/check.svg" alt="icon" class="check hidden">
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <!-- 以下、他のタグ要素が続きます -->
-                    <div class="upload-tag-content">
-                        <h2>所属部署</h2>
-                        <div class="upload-tags-container">
-                            <!-- タグ要素 -->
-                            <div class="upload-tag" onclick="toggleIcon(this)">
-                            エンジニア
-                            <span class="upload-tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
-                            </span>
+                        <!-- 以下、他のタグ要素が続きます -->
+                        <div class="upload-tag-content">
+                            <h2>所属部署</h2>
+                            <div class="upload-tags-container">
+                                <!-- タグ要素 -->
+                                <div class="upload-tag" onclick="toggleIcon(this)">
+                                    エンジニア
+                                    <span class="upload-tag-icon">
+                                        <img src="svg/plus.svg" alt="icon" class="plus-purple">
+                                        <img src="svg/check.svg" alt="icon" class="check hidden">
+                                    </span>
+                                </div>
+                            </div>
                         </div>
+                        <button class="upload-button">アップロード</button>
                     </div>
                 </div>
-                <button class="upload-button">アップロード</button>
+
             </div>
-        </div>
 
-    </div>
-
-    <script src="{{ url_for('static', filename='scripts/tag_edit.js') }}"></script>
+            <script src="{{ url_for('static', filename='scripts/tag_edit.js') }}"></script>
 </body>
+
 </html>

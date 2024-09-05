@@ -62,7 +62,7 @@ def login():
         # データベース接続
         conn = get_db_connection()
         cur = conn.cursor()
-        
+
         # Userテーブルからメールアドレスでユーザー情報を取得
         cur.execute("SELECT * FROM User WHERE e_mail = ?", (email,))
         user = cur.fetchone()
@@ -89,28 +89,28 @@ def author_register():
         company_name = request.form['user-name']
         email = request.form['e-mail']
         password = request.form['password']
-        
+
         # Hash the password
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        
+
         # Generate a unique ID
         unique_id = str(uuid.uuid4())
-        
+
         # Connect to the database
         conn = get_db_connection()
         cur = conn.cursor()
-        
+
         # Insert data into the Group_table
         cur.execute('''
             INSERT INTO Group_table (name, e_mail, password, unique_id, leader_id)
             VALUES (?, ?, ?, ?, ?)
         ''', (company_name, email, hashed_password, unique_id, None))
-        
+
         conn.commit()
         conn.close()
-        
+
         return redirect(url_for('author_login'))
-    
+
     return render_template('author_register.html')
 
 @app.route('/author_login', methods=['GET', 'POST'])
@@ -154,6 +154,10 @@ def data_reference():
 @app.route('/tag_edit')
 def tag_edit():
     return render_template('tag_edit.html')
+
+@app.route('/user_edit')
+def user_edit():
+    return render_template('user_edit.html')
 
 @app.route('/data_deleted')
 def data_deleted():
