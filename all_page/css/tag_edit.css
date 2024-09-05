@@ -86,11 +86,7 @@ header {
     margin-bottom: 20px; /* サイドバーの底から少しスペースを追加 */
 }
 
-.deletefile:hover, .usechat:hover {
-    background-color: #6654E1; /* ホバー時の背景色を設定 */
-    border-radius: 20px; /* 背景を丸くする */
-    padding: 15px; /* アイコン周りに余白を追加 */
-}
+
 
 #wholeContent {
     flex-grow: 1;
