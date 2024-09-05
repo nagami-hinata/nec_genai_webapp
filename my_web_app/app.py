@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 import uuid
 import bcrypt
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
 def get_db_connection():
     conn = sqlite3.connect('chat_app.db')
@@ -52,8 +53,34 @@ def register():
 
     return render_template('register.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        email = request.form['e-mail']
+        password = request.form['password']
+
+        # データベース接続
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # Userテーブルからメールアドレスでユーザー情報を取得
+        cur.execute("SELECT * FROM User WHERE e_mail = ?", (email,))
+        user = cur.fetchone()
+        conn.close()
+
+        if user is None:
+            flash('メールアドレスが見つかりません。')
+            return redirect(url_for('login'))
+
+        # パスワードの照合
+        if bcrypt.checkpw(password.encode('utf-8'), user['password']):
+            # 認証成功時にセッション情報を保持
+            # session['user_id'] = user['unique_id']
+            return redirect(url_for('chatpage'))
+        else:
+            flash('パスワードが間違っています。')
+            return redirect(url_for('login'))
+
     return render_template('login.html')
 
 @app.route('/author_register', methods=['GET', 'POST'])
@@ -86,8 +113,34 @@ def author_register():
     
     return render_template('author_register.html')
 
-@app.route('/author_login')
+@app.route('/author_login', methods=['GET', 'POST'])
 def author_login():
+    if request.method == 'POST':
+        email = request.form['e-mail']
+        password = request.form['password']
+
+        # データベース接続
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Group_tableからメールアドレスでグループ情報を取得
+        cur.execute("SELECT * FROM Group_table WHERE e_mail = ?", (email,))
+        group = cur.fetchone()
+        conn.close()
+
+        if group is None:
+            flash('メールアドレスが見つかりません。')
+            return redirect(url_for('author_login'))
+
+        # パスワードの照合
+        if bcrypt.checkpw(password.encode('utf-8'), group['password']):
+            # 認証成功時にセッション情報を保持
+            # session['group_id'] = group['unique_id']
+            return redirect(url_for('chatpage'))
+        else:
+            flash('パスワードが間違っています。')
+            return redirect(url_for('author_login'))
+
     return render_template('author_login.html')
 
 @app.route('/chatpage')

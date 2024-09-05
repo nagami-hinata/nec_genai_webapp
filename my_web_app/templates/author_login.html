@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>ログイン</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/author_login.css') }}">
 </head>
 
@@ -15,22 +15,23 @@
       </div>
 
       <div class="login-form">
-        <div class="control-group">
-          <input type="text" class="login-field" value="" placeholder="e-mail" id="e-mail">
-          <label class="login-field-icon fui-user" for="login-name"></label>
-        </div>
+        <form action="{{ url_for('author_login') }}" method="post">
+          <div class="control-group">
+            <input type="text" class="login-field" name="e-mail" placeholder="e-mail" id="e-mail" required>
+            <label class="login-field-icon fui-user" for="e-mail"></label>
+          </div>
 
-        <div class="control-group">
-          <input type="password" class="login-field" value="" placeholder="password" id="login-pass">
-          <label class="login-field-icon fui-lock" for="login-pass"></label>
-        </div>
+          <div class="control-group">
+            <input type="password" class="login-field" name="password" placeholder="password" id="password" required>
+            <label class="login-field-icon fui-lock" for="password"></label>
+          </div>
 
-        <a class="btn btn-primary btn-large btn-block" href="#">login</a>
+          <button type="submit" class="btn btn-primary btn-large btn-block">login</button>
+        </form>
+
         <a class="login-link" href="#">Lost your password?</a>
         <a class="btn2 btn-primary btn-large btn-block" href="#">sign in</a>
         <a class="btn2 btn-primary btn-large btn-block" href="#">create new group</a>
-
-        <!-- <a class="signin-link" href="#">Sign in</a> -->
       </div>
     </div>
   </div>
