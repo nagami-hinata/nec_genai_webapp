@@ -267,6 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // プロンプト最適化のイベント
     refreshButton.addEventListener('click', function () {
         // プロンプト最適化機能の実装
+        
         console.log('最適化されました');
     });
 

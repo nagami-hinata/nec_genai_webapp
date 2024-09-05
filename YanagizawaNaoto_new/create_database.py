@@ -43,19 +43,29 @@ CREATE TABLE IF NOT EXISTS Chat (
 )
 ''')
 
-# Dataテーブルの作成
+# Folderテーブルの構造
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Folder (
+    group_unique_id TEXT,
+    folder_unique_id TEXT PRIMARY KEY,
+    FOREIGN KEY (group_unique_id) REFERENCES Group_table(unique_id)
+)
+''')
+
+# Dataテーブルの修正（file_nameを追加）
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Data (
     content TEXT,
     group_unique_id TEXT,
+    folder_unique_id TEXT,
     page INTEGER,
     file_name TEXT,
-    FOREIGN KEY (group_unique_id) REFERENCES Group_table(unique_id)
+    FOREIGN KEY (group_unique_id) REFERENCES Group_table(unique_id),
+    FOREIGN KEY (folder_unique_id) REFERENCES Folder(folder_unique_id)
 )
 ''')
 
 # 変更を保存し、接続を閉じる
 conn.commit()
 conn.close()
-
 print("データベースとテーブルが正常に作成されました。")
