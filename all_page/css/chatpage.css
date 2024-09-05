@@ -252,12 +252,13 @@ body {
     padding-right: 60px; /* 送信ボタンのための余白を追加 */
     background-color: #F0F0F0;
     color: black;
-    border-radius: 10px;
+    border-radius: 15px;
     font-size: 16px;
     resize: none;
     min-height: 100px;
     max-height: 200px;
     overflow-y: auto;
+    border: none;
 }
 #user-input:focus {
     outline: none;

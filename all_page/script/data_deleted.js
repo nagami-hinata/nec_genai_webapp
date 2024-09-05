@@ -201,3 +201,21 @@ document.getElementById('clearAllButton').addEventListener('click', function() {
         });
     }
 });
+
+// plus-purpleをクリックしたとき、checkに切り替える
+document.querySelectorAll('.upload-tag-icon img.plus-purple').forEach(function(plusIcon) {
+    plusIcon.addEventListener('click', function() {
+        const checkIcon = this.nextElementSibling; // 次の要素がcheckアイコン
+        this.classList.add('hidden'); // plus-purpleアイコンを非表示
+        checkIcon.classList.remove('hidden'); // checkアイコンを表示
+    });
+});
+
+// checkをクリックしたとき、plus-purpleに切り替える
+document.querySelectorAll('.upload-tag-icon img.check').forEach(function(checkIcon) {
+    checkIcon.addEventListener('click', function() {
+        const plusIcon = this.previousElementSibling; // 前の要素がplus-purpleアイコン
+        this.classList.add('hidden'); // checkアイコンを非表示
+        plusIcon.classList.remove('hidden'); // plus-purpleアイコンを表示
+    });
+});
