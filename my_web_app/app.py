@@ -150,7 +150,15 @@ def chatpage():
 
 @app.route('/data_reference')
 def data_reference():
-    return render_template('data_reference.html')
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Dataテーブルのすべてのファイルを取得
+    cur.execute('SELECT * FROM Data')
+    data_files = cur.fetchall()
+    conn.close()
+
+    return render_template('data_reference.html', data_files=data_files)
 
 @app.route('/tag_edit', methods=['GET', 'POST'])
 def tag_edit():
