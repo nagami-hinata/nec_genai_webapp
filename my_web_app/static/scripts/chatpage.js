@@ -185,13 +185,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // メッセージ送信のイベント
     sendButton.addEventListener('click', sendMessage);
-    
+
     // プロンプト最適化のイベント
     refreshButton.addEventListener('click', function () {
         // プロンプト最適化機能の実装
         console.log('最適化されました');
     });
-    
+
     // 初期調整
     adjustTextareaHeight();
 });
@@ -232,19 +232,22 @@ async function sendMessage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: message }),
+                body: JSON.stringify({
+                    message: message,
+                    index: index
+                }),
             });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const data = await response.json();
 
             console.log(data);  // デバック用　レスポンスがコンソールに表示される
 
             const text = data.response;  // APIレスポンスのテキストデータをtextに
-            
+
             addMessage(text, false);
 
         } catch (error) {

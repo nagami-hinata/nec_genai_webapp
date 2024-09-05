@@ -153,8 +153,7 @@ if __name__ == "__main__":
 
 
 
-
-
+# 文章登録用
 
 HTTP_HEADER_REQUEST_ID = 'x-nec-cotomi-request-id'
 HTTP_HEADER_TANANT_ID = "x-nec-cotomi-tenant-id"
@@ -163,6 +162,7 @@ HTTP_HEADER_TANANT_ID = "x-nec-cotomi-tenant-id"
 SUCCESS_CODE = 0
 FAILURE_CODE = 1
 
+# エンコード関数
 def encode_file_to_base64(file_path):
     """
     ファイルをBase64エンコードします。
@@ -177,6 +177,7 @@ def encode_file_to_base64(file_path):
         encoded_string = base64.b64encode(file.read()).decode("ascii")
     return encoded_string
 
+# URL作成関数
 def generate_file_url(base_url, file_path, root_dir):
     """
     ファイルのURLを生成します。
@@ -192,7 +193,7 @@ def generate_file_url(base_url, file_path, root_dir):
     relative_path = os.path.relpath(file_path, root_dir)
     return os.path.join(base_url, relative_path).replace("\\", "/")
 
-
+# ファイルを処理しAPIに送信
 def process_file(
     api_url, auth_token, tenantId, vector_index, file_path,
     url=None, overwrite=True, custom_metadata=None, kwargs=None
@@ -214,7 +215,7 @@ def process_file(
     Returns:
         int: 成功時は0、失敗時はエラーステータスコードまたは1を返します。
     """
-    encoded_file = encode_file_to_base64(file_path)
+    encoded_file = encode_file_to_base64(file_path)     # 1個目の関数
     filename = os.path.basename(file_path)
 
     if kwargs is None:
@@ -266,6 +267,7 @@ def process_file(
         print(f"Error occurred at: {now}")
         return FAILURE_CODE  # 失敗時のデフォルトエラーステータスコード
 
+# ファイルをAPIに送る
 def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, url=None, 
          overwrite=True, custom_metadata=None, kwargs=None
         ):
@@ -292,9 +294,9 @@ def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, ur
         for root, _, files in os.walk(directory_or_file_path):
             for file in files:
                 file_path = os.path.join(root, file)
-                file_url = generate_file_url(url, file_path, directory_or_file_path) if url else None
+                file_url = generate_file_url(url, file_path, directory_or_file_path) if url else None       # 2個目の関数
                 print(f"Processing file: {file_path}")
-                status_code = process_file(
+                status_code = process_file(                                                                 # 3個目の関数
                     api_url, auth_token, tenantId, vector_index, file_path,
                     url=file_url, overwrite=overwrite, custom_metadata=custom_metadata, kwargs=kwargs
                 )
@@ -302,7 +304,7 @@ def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, ur
                     return status_code
     elif os.path.isfile(directory_or_file_path):
         print(f"Processing single file: {directory_or_file_path}")
-        status_code = process_file(
+        status_code = process_file(                                                                         # 3個目の関数
             api_url, auth_token, tenantId, vector_index, directory_or_file_path, 
             url, overwrite, custom_metadata, kwargs
         )
@@ -345,20 +347,22 @@ if __name__ == "__main__":
 
 
 
+# 検索対話用
+
 # 使用するモデル名.
 MODEL = "cotomi-core-pro-v1.0-awq"
 
 # 検索対話を行う関数. ストリーミングはオフ.
 def search_chat(
-    user_content, # ユーザプロンプト.
-    vector_index, # インデックス名.
+    user_content, # ユーザプロンプト.       # 実質的な引数
+    vector_index, # インデックス名.         # 実質的な引数
     system_content="あなたはAIアシスタントです", # システムプロンプト.
     client_id="DEFAULT", # クライアントID.
     history_id="new", # 会話履歴ID.
     temperature=1,  # LLMのランダム性パラメータ.
     search_option={"searchType": "hybrid", "chunkSize": 16, "topK": 4}, # 検索オプション.
     is_oneshot=False, # 単発の会話にするかどうか.
-    max_tokens=1024 # LLMトークンの最大値.
+    max_tokens=8096 # LLMトークンの最大値.
     ):
     
     # APIエンドポイントのURL.
@@ -463,25 +467,10 @@ def search_chat(
 if __name__ == "__main__":
     # ストリーミング無しの検索対話の呼び出し
     print(search_chat("<prompt>", "<index name>").text)
-    
+    print(search_chat("<prompt>", "<index name>"))
     # # ストリーミングありの検索対話の呼び出し
     # for talk in search_chat_streaming("<prompt>", "<index name>"):
     #     print(talk, end="")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -491,26 +480,17 @@ if __name__ == "__main__":
 def send_message():
     data = request.json
     user_message = data['message']
+    index = data['index']
 
     # Cotomiとのやり取り
     try:
-        # Cotomi APIを呼び出す
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": key}
-        payload = {
-            "messages": [
-                {"role": "system", "content": "あなたは親切なアシスタントです。"},
-                {"role": "user", "content": user_message}
-            ],
-            "max_tokens": 150
-        }
+        ai_response = search_chat(user_message, index).text
         
-        response = requests.post(COTOMI_API_URL, headers=headers, json=payload)
-        response.raise_for_status()  # エラーがあれば例外を発生させる
+        # response = requests.post(COTOMI_API_URL, headers=headers, json=payload)
+        # response.raise_for_status()  # エラーがあれば例外を発生させる
         
-        cotomi_response = response.json()
-        ai_response = cotomi_response['choices'][0]['message']['content'].strip()
+        # cotomi_response = response.json()
+        # ai_response = cotomi_response['choices'][0]['message']['content'].strip()
         
         return jsonify({"response": ai_response})
     except requests.exceptions.RequestException as e:
