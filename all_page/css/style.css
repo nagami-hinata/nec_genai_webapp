@@ -1,0 +1,345 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    width: calc(100vw - 70px);
+    height: 100vh;
+    background-color: #ffffff;
+    margin-left:70px;
+}
+
+.profileImage {
+    left: 20px; /* 画像を左端に固定 */
+    width: 45px;
+}
+
+#leftSidebar {
+    width: 70px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #102933;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    justify-content: flex-start; /* 画像を上に寄せる */
+    padding-top: 45px; /* 上部に少し余白を追加 */
+}
+
+.addfile{
+    background-color: #8080e2;
+    border-radius: 20px;
+}
+.hukidashi, .folder, .trashbox,.settings {
+    /*ここが15pxだと上手くいかないので0に修正*/
+    width: 35px; /* 画像の幅を統一 */
+    margin-bottom: 35px; /* 下のアイテムとの間隔,上の修正を受けての調整*/
+}
+
+.hukidashi:hover {
+    background-color:#22576c ;
+    padding:10px;
+}
+.folder:hover {
+    background-color:#22576c ;
+}
+ .trashbox:hover {
+    background-color:#22576c ;
+}
+.settings:hover {
+    background-color:#22576c ;
+}
+
+
+.threads {
+    width: 195px;
+    background-color:#F0F0F0;
+    border-right: 1px solid #343541;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    flex-shrink: 0;
+}
+.threads.hidden {
+    width: 0;
+    border-right: none;
+}
+.new-chat-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    margin: 12px;
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid #565869;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.new-chat-button:hover {
+    background-color:#5f9fbc;
+}
+.new-chat-icon {
+    margin-right: 10px;
+    font-size: 20px;
+}
+.thread-list {
+    overflow-y: auto;
+    padding:5px;
+    background: #F0F0F0;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.thread {
+    padding: 5px;
+    color: black;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+.thread-name {
+    border: #F0F0F0;
+    border-radius: 10px;
+    padding: 10px;
+    display: inline-block;
+    min-width: 50px;
+}
+.thread-name:hover {
+    background: #E3E3E3;
+}
+.thread-name.active {
+    background: #E3E3E3;
+}
+
+
+.thread-name-input {
+    width: 100%;
+    padding: 5px;
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid #565869;
+    border-radius: 3px;
+}
+
+.main-chat {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    padding: 5px 15px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #565869;
+    color: black;
+}
+.toggle-threads {
+    padding:8px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background:none;
+    border: none;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: transform 0.3s ease;
+    transform: rotate(180deg);  /* 初期状態で右向き */
+    transition: transform 0.3s ease;
+}
+
+.toggle-threads:hover{
+    background-color: #E3E3E3;
+    border-radius:3px;
+}
+
+.toggle-threads.open {
+    transform: rotate(0deg);  /* クリックで左向き */
+}
+
+#thread-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    padding-left:185px;
+    padding-right:315px;
+    padding-bottom: 180px;
+}
+.message {
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    max-width: 20%;
+    line-height: 1.5;
+    overflow-y: auto;
+}
+.user-message {
+    border-radius: 18px;
+    opacity: var(--sds-size-stroke-border);
+    background: #F0F0F0;
+    margin-bottom: 10px;
+    max-width: 70%;
+    clear: both;
+    float: right;
+    margin: 20px auto;
+}
+
+.assistant-message {
+    border-radius: 18px;
+    opacity: var(--sds-size-stroke-border);
+    background: #DBEFF8;    
+    margin-bottom: 10px;
+    max-width: 70%;
+    clear: both;
+    float: left;
+    margin: 20px auto;
+}
+
+.input-area {
+    display: flex;
+    padding: 20px;
+    background-color: #fffff;
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 12px 15px;
+    background-color: #F0F0F0;
+    color: black;
+    border: 1px solid #565869;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;
+    min-height: 40px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+#user-input:focus {
+    outline: none;
+    border-color: #102933 ;
+}
+#send-button {
+    width: 40px;
+    height: 40px;
+    background-color: #102933 ;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+}
+#send-button:hover {
+    background-color: #22576c;
+}
+#send-button:disabled {
+    background-color: #5b5b5b;
+    cursor: not-allowed;
+}
+
+
+.file-list-container {
+    position: fixed;
+    top: 55px;
+    right: 10px;
+    width: 300px;
+    height: 90%;
+    background-color:#ffffff;
+    color:black;
+    padding: 20px;
+    overflow-y: auto;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+    border-radius: 20px;
+    border: 1px solid #565869;
+}
+.file-list-container.show {
+    transform: translateX(0);
+}
+.file-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.file-list-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+.close-file-list {
+    background: none;
+    border: none;
+    color:black;
+    font-size: 20px;
+    cursor: pointer;
+}
+.file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.file-item {
+    background-color:#F0F0F0;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.file-item:hover {
+    background-color:black;
+}
+.file-icon {
+    margin-right: 10px;
+    font-size: 20px;
+}
+.file-info {
+    display: flex;
+    flex-direction: column;
+}
+.file-name {
+    font-weight: 500;
+}
+.file-meta {
+    font-size: 12px;
+    color: black;
+}
+.toggle-file-list {
+    position: fixed;
+    top: 3px;
+    right: 20px;
+    background-color:#102933 ;
+    color:white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.toggle-file-list:hover {
+    background-color:#22576c ;
+}
+

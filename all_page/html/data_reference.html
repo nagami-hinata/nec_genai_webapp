@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link href="../css/data_reference.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="search-container">
+            <img src="../svg/search.svg" class="search-icon">
+            <input type="text" id="searchInput" placeholder="タグで検索...">
+        </div>
+    </header>
+    <aside id="leftSidebar">
+        <img src="../svg/hukidashi.svg" class="hukidashi">
+        <img src="../svg/folder.svg" class="folder">
+        <img src="../svg/trashbox.svg" class="trashbox">
+        <img src="../svg/settings.svg" class="settings">
+        <img src="../svg/upload.svg" class="upload" onclick="openPopup()">
+        <img src="../svg/profile.svg" class="profile">
+    </aside>
+    <div id="wholeContent">
+        <main>
+            <div class="h1-container">
+                <div class="circle"></div>
+                <h1>今月</h1>
+            </div>
+            <div class="folders" id="foldersContainer">
+                <div class="folder-item">
+                    <img src="../svg/dataname.svg" class="dataImg">
+                    <div class="dataName">
+                        <span class="text">長いファイル名の場合どうなるかな～</span>
+                        <img src="../svg/down.svg" class="ellipsis">
+                    </div>
+                    <div class="tab-menu">
+                        <ul>
+                            <li>ファイル名の変更</li>
+                            <li>タグ情報の変更</li>
+                            <li>削除</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 以下、他の folder-item 要素が続きます -->
+            </div>
+            <div class="h1-container">
+                <div class="circle"></div>
+                <h1>先月</h1>
+            </div>
+            <div class="folders" id="foldersContainer">
+                <div class="folder-item">
+                    <img src="../svg/dataname.svg" class="dataImg">
+                    <div class="dataName">
+                        <span class="text">長いファイル名の場合どうなるかな～</span>
+                        <img src="../svg/down.svg" class="ellipsis">
+                    </div>
+                    <div class="tab-menu">
+                        <ul>
+                            <li>ファイル名の変更</li>
+                            <li>タグ情報の変更</li>
+                            <li>削除</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 以下、他の folder-item 要素が続きます -->
+            </div>
+        </main>
+
+        <!-- ポップアップとオーバーレイ -->
+        <div id="overlay" class="overlay"></div>
+        <div id="popup" class="popup">
+            <span class="close-button">&times;</span> <!-- バツ印の要素 -->
+            <div class="popup-content">
+                <h3>所属部署</h3>
+                <div class="tags-container">
+                    <!-- タグ要素 -->
+                    <div class="tag" onclick="toggleIcon(this)">
+                        エンジニア
+                        <span class="tag-icon">
+                            <img src="../svg/down.svg" class="ellipsis">
+                            <img src="../svg/check.svg" alt="icon" class="check hidden">
+                        </span>
+                    </div>
+                    <!-- 以下、他のタグ要素が続きます -->
+                </div>
+                <h3>入社年度</h3>
+                <div class="tags-container">
+                    <!-- タグ要素 -->
+                    <div class="tag" onclick="toggleIcon(this)">
+                        1999年
+                        <span class="tag-icon">
+                            <img src="../svg/plus.svg" alt="icon" class="plus-purple">
+                            <img src="../svg/check.svg" alt="icon" class="check hidden">
+                        </span>
+                    </div>
+                    <!-- 以下、他のタグ要素が続きます -->
+                </div>
+                <div class="popup-buttons">
+                    <button class="save-button">保存</button>
+                </div>
+                <div class="color-palette hidden">
+                    <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
+                    <!-- 他の色オプションが続きます -->
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <script src="../script/data_reference.js"></script>
+</body>
+</html>
