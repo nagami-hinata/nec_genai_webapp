@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 import uuid
 import bcrypt
+import PyPDF2
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -151,8 +152,54 @@ def chatpage():
 def data_reference():
     return render_template('data_reference.html')
 
-@app.route('/tag_edit')
+@app.route('/tag_edit', methods=['GET', 'POST'])
 def tag_edit():
+    if request.method == 'POST':
+        # アップロードされたファイルを取得
+        if 'file' not in request.files:
+            flash('ファイルが選択されていません。')
+            return redirect(url_for('tag_edit'))
+
+        uploaded_file = request.files['file']
+        
+        if uploaded_file.filename == '':
+            flash('ファイルが選択されていません。')
+            return redirect(url_for('tag_edit'))
+
+        if not uploaded_file.filename.endswith('.pdf'):
+            flash('PDFファイルのみが許可されています。')
+            return redirect(url_for('tag_edit'))
+
+        # PDFファイルを読み込み
+        try:
+            pdf_reader = PyPDF2.PdfReader(uploaded_file)
+            extracted_text = ''
+
+            # 全ページからテキストを抽出
+            for page_num in range(len(pdf_reader.pages)):
+                page = pdf_reader.pages[page_num]
+                extracted_text += page.extract_text()
+
+        except Exception as e:
+            flash('PDFからテキストを抽出できませんでした。')
+            return redirect(url_for('tag_edit'))
+
+        # データベースに保存
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # content カラムに抽出したテキストを保存 (group_unique_id, folder_unique_id, pageはNULL)
+        cur.execute('''
+            INSERT INTO Data (content, group_unique_id, folder_unique_id, page, file_name)
+            VALUES (?, NULL, NULL, NULL, ?)
+        ''', (extracted_text, uploaded_file.filename))
+
+        conn.commit()
+        conn.close()
+
+        flash('PDFからテキストが抽出され、保存されました。')
+        return redirect(url_for('tag_edit'))
+
     return render_template('tag_edit.html')
 
 @app.route('/user_edit')
