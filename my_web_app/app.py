@@ -3,6 +3,7 @@ import sqlite3
 import uuid
 import bcrypt
 import PyPDF2
+import re
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -153,8 +154,8 @@ def data_reference():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # Dataテーブルのすべてのファイルを取得
-    cur.execute('SELECT * FROM Data')
+    # pageが1のファイルのみを取得
+    cur.execute('SELECT * FROM Data WHERE page = 1')
     data_files = cur.fetchall()
     conn.close()
 
@@ -181,34 +182,40 @@ def tag_edit():
         # PDFファイルを読み込み
         try:
             pdf_reader = PyPDF2.PdfReader(uploaded_file)
-            extracted_text = ''
 
-            # 全ページからテキストを抽出
+            # データベース接続を確立
+            conn = get_db_connection()
+            cur = conn.cursor()
+
+            # 各ページからテキストを抽出し、データベースに保存
             for page_num in range(len(pdf_reader.pages)):
                 page = pdf_reader.pages[page_num]
-                extracted_text += page.extract_text()
+                extracted_text = page.extract_text()
+
+                # 空白2つ以上と改行2つ以上をそれぞれ1つに置き換える
+                if extracted_text:  # extracted_text が None ではないことを確認
+                    extracted_text = re.sub(r'\s{2,}', ' ', extracted_text)  # 空白2つ以上を1つに
+                    extracted_text = re.sub(r'\n{2,}', '\n', extracted_text)  # 改行2つ以上を1つに
+
+                # データベースに保存 (page番号も保存)
+                cur.execute('''
+                    INSERT INTO Data (content, group_unique_id, folder_unique_id, page, file_name)
+                    VALUES (?, NULL, NULL, ?, ?)
+                ''', (extracted_text, page_num + 1, uploaded_file.filename))
+
+            # コミットして接続を閉じる
+            conn.commit()
+            conn.close()
 
         except Exception as e:
             flash('PDFからテキストを抽出できませんでした。')
             return redirect(url_for('tag_edit'))
 
-        # データベースに保存
-        conn = get_db_connection()
-        cur = conn.cursor()
-
-        # content カラムに抽出したテキストを保存 (group_unique_id, folder_unique_id, pageはNULL)
-        cur.execute('''
-            INSERT INTO Data (content, group_unique_id, folder_unique_id, page, file_name)
-            VALUES (?, NULL, NULL, NULL, ?)
-        ''', (extracted_text, uploaded_file.filename))
-
-        conn.commit()
-        conn.close()
-
         flash('PDFからテキストが抽出され、保存されました。')
         return redirect(url_for('tag_edit'))
 
     return render_template('tag_edit.html')
+
 
 @app.route('/user_edit')
 def user_edit():
