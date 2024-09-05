@@ -9,7 +9,7 @@
 <body>
     <header>
         <div class="search-container">
-            <img src="svg/search.svg" class="search-icon">
+            <img src="{{ url_for('static', filename='images/search.svg') }}" class="search-icon">
             <input type="text" id="searchInput" placeholder="タグで検索...">
         </div>
     </header>
@@ -34,31 +34,31 @@
                     <div class="tag tag-engineer" onclick="toggleIcon(this)">
                         エンジニア
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="batu">
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-designer" onclick="toggleIcon(this)">
                         デザイナー
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="batu">
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-sales" onclick="toggleIcon(this)">
                         営業
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="batu">
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-development" onclick="toggleIcon(this)">
                         開発
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="batu">
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-hr" onclick="toggleIcon(this)">
                         人事
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="batu">
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
                         </span>
                     </div>
 
@@ -70,31 +70,31 @@
                     <div class="tag tag-engineer" onclick="toggleIcon(this)">
                         1999年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="batu">
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-designer" onclick="toggleIcon(this)">
                         2000年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="batu">
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-sales" onclick="toggleIcon(this)">
                         2001年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="batu">
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-development" onclick="toggleIcon(this)">
                         2002年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="batu">
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
                         </span>
                     </div>
                     <div class="tag tag-hr" onclick="toggleIcon(this)">
                         2003年
                         <span class="tag-icon">
-                            <img src="svg/batu.svg" alt="icon" class="batu">
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
                         </span>
                     </div>
                 </div>
@@ -152,8 +152,10 @@
                             <div class="upload-tag" onclick="toggleIcon(this)">
                                 2002年
                                 <span class="upload-tag-icon">
-                                    <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                    <img src="svg/check.svg" alt="icon" class="check hidden">
+                                    <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                        class="plus-purple">
+                                    <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                        class="check hidden">
                                 </span>
                             </div>
                         </div>
@@ -165,8 +167,10 @@
                                 <div class="upload-tag" onclick="toggleIcon(this)">
                                     エンジニア
                                     <span class="upload-tag-icon">
-                                        <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                        <img src="svg/check.svg" alt="icon" class="check hidden">
+                                        <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                            class="plus-purple">
+                                        <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                            class="check hidden">
                                     </span>
                                 </div>
                             </div>

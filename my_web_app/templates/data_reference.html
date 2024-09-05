@@ -9,7 +9,7 @@
 <body>
     <header>
         <div class="search-container">
-            <img src="svg/search.svg" class="search-icon">
+            <img src="{{ url_for('static', filename='images/search.svg') }}" class="search-icon">
             <input type="text" id="searchInput" placeholder="タグで検索...">
         </div>
     </header>
@@ -33,10 +33,10 @@
             </div>
             <div class="folders" id="foldersContainer">
                 <div class="folder-item">
-                    <img src="svg/dataname.svg" class="dataImg">
+                    <img src="{{ url_for('static', filename='images/dataname.svg') }}" class="dataImg">
                     <div class="dataName">
                         <span class="text">長いファイル名の場合どうなるかな～</span>
-                        <img src="svg/down.svg" class="ellipsis">
+                        <img src="{{ url_for('static', filename='images/down.svg') }}" class="ellipsis">
                     </div>
                     <div class="tab-menu">
                         <ul>
@@ -54,10 +54,10 @@
             </div>
             <div class="folders" id="foldersContainer">
                 <div class="folder-item">
-                    <img src="svg/dataname.svg" class="dataImg">
+                    <img src="{{ url_for('static', filename='images/dataname.svg') }}" class="dataImg">
                     <div class="dataName">
                         <span class="text">長いファイル名の場合どうなるかな～</span>
-                        <img src="svg/down.svg" class="ellipsis">
+                        <img src="{{ url_for('static', filename='images/down.svg') }}" class="ellipsis">
                     </div>
                     <div class="tab-menu">
                         <ul>
@@ -82,8 +82,10 @@
                     <div class="tag" onclick="toggleIcon(this)">
                         エンジニア
                         <span class="tag-icon">
-                            <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                            <img src="svg/check.svg" alt="icon" class="check hidden">
+                            <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                class="plus-purple">
+                            <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                class="check hidden">
                         </span>
                     </div>
                     <!-- 以下、他のタグ要素が続きます -->
@@ -94,8 +96,10 @@
                     <div class="tag" onclick="toggleIcon(this)">
                         1999年
                         <span class="tag-icon">
-                            <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                            <img src="svg/check.svg" alt="icon" class="check hidden">
+                            <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                class="plus-purple">
+                            <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                class="check hidden">
                         </span>
                     </div>
                     <!-- 以下、他のタグ要素が続きます -->
