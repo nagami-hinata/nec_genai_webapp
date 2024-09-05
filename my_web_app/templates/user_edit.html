@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
-    <link href="css/user_edit.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/user_edit.css') }}" rel="stylesheet">
 </head>
+
 <body>
     <header>
         <div class="search-container">
-            <img src="svg/search.svg" class="search-icon">
+            <img src="{{ url_for('static', filename='images/search.svg') }}" class="search-icon">
             <input type="text" id="searchInput" placeholder="タグを検索...">
         </div>
     </header>
     <aside id="leftSidebar">
-        <img src="svg/hukidashi.svg" class="hukidashi">
-        <img src="svg/folder.svg" class="folder">
-        <img src="svg/trashbox.svg" class="trashbox">
-        <img src="svg/settings.svg" class="settings">
-        <img src="svg/upload.svg" class="upload" onclick="openPopup()">
-        <img src="svg/profile.svg" class="profile">
+        <a href="{{ url_for('chatpage') }}"><img src="{{ url_for('static', filename='images/hukidashi.svg') }}"
+                class="hukidashi"></a>
+        <a href="{{ url_for('data_reference') }}"><img src="{{ url_for('static', filename='images/folder.svg') }}"
+                class="folder"></a>
+        <!-- <img src="{{ url_for('static', filename='images/trashbox.svg') }}" class="trashbox"> -->
+        <a href="{{ url_for('tag_edit') }}"><img src="{{ url_for('static', filename='images/settings.svg') }}"
+                class="settings"></a>
+        <img src="{{ url_for('static', filename='images/upload.svg') }}" class="upload" onclick="openPopup()">
+        <a href="{{ url_for('user_edit') }}"><img src="{{ url_for('static', filename='images/profile.svg') }}"
+                class="profile"></a>
     </aside>
     <div id="wholeContent">
         <main>
@@ -44,7 +50,7 @@
                             </ul>
                         </div>
                     </li>
-                        
+
                     <li class="user-item">
                         <input type="checkbox" class="user-checkbox">
                         <div class="user-name">新井 さくら</div>
@@ -66,7 +72,7 @@
                         </div>
                     </li>
                 </div>
-                   
+
 
                 <h1>い</h1>
                 <div id="userList" class="user-list">
@@ -125,36 +131,46 @@
                         <div class="tagedit" onclick="toggleIcon(this)">
                             エンジニア
                             <span class="tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                    class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                    class="check hidden">
                             </span>
                         </div>
                         <div class="tagedit" onclick="toggleIcon(this)">
                             デザイナー
                             <span class="tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                    class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                    class="check hidden">
                             </span>
                         </div>
                         <div class="tagedit" onclick="toggleIcon(this)">
                             営業
                             <span class="tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                    class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                    class="check hidden">
                             </span>
                         </div>
                         <div class="tagedit" onclick="toggleIcon(this)">
                             開発
                             <span class="tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                    class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                    class="check hidden">
                             </span>
                         </div>
                         <div class="tagedit" onclick="toggleIcon(this)">
                             人事
                             <span class="tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                    class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                    class="check hidden">
                             </span>
                         </div>
                         <!-- 他のタグが続きます -->
@@ -165,36 +181,46 @@
                         <div class="tagedit" onclick="toggleIcon(this)">
                             1999年
                             <span class="tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                    class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                    class="check hidden">
                             </span>
                         </div>
                         <div class="tagedit" onclick="toggleIcon(this)">
                             1999年
                             <span class="tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                    class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                    class="check hidden">
                             </span>
                         </div>
                         <div class="tagedit" onclick="toggleIcon(this)">
                             1999年
                             <span class="tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                    class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                    class="check hidden">
                             </span>
                         </div>
                         <div class="tagedit" onclick="toggleIcon(this)">
                             1999年
                             <span class="tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                    class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                    class="check hidden">
                             </span>
                         </div>
                         <div class="tagedit" onclick="toggleIcon(this)">
                             1999年
                             <span class="tag-icon">
-                                <img src="svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                    class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                    class="check hidden">
                             </span>
                         </div>
                         <!-- 他のタグが続きます -->
@@ -216,28 +242,41 @@
                         <button class="save-button">保存</button>
                     </div>
                     <div class="color-palette hidden">
-                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
-                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
-                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
-                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
-                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
-                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
-                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
-                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
-                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
-                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
-                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
-                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
+                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')">
+                        </div>
+                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')">
+                        </div>
+                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')">
+                        </div>
+                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')">
+                        </div>
+                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')">
+                        </div>
+                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')">
+                        </div>
+                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')">
+                        </div>
+                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')">
+                        </div>
+                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')">
+                        </div>
+                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')">
+                        </div>
+                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')">
+                        </div>
+                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')">
+                        </div>
                         <!-- 他の色も追加可能 -->
                     </div>
                 </div>
             </div>
 
 
-            
+
         </main>
     </div>
 
-    <script src="js/user_edit.js"></script>
+    <script src="{{ url_for('static', filename='scripts/user_edit.js') }}"></script>
 </body>
+
 </html>

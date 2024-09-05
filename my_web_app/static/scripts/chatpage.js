@@ -26,7 +26,55 @@ function createNewChat() {
 
     console.log('新しいスレッドが作られた');
     threadTitle.textContent = threadName;
+
+    // タグ選択のポップアップの表示の処理
+
+
+
+
 }
+
+
+async function selecttag() {
+    
+    if (message) {
+        addMessage(message, true);
+        textarea.textContent = '';
+        adjustTextareaHeight();
+
+        // ここでAIバックエンドにメッセージを送信する処理を追加
+        try {
+            const response = await fetch('../../send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    // index: index
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            console.log(data);  // デバック用　レスポンスがコンソールに表示される
+
+            const text = data.response;  // APIレスポンスのテキストデータをtextに
+
+            addMessage(text, false);
+
+        } catch (error) {
+            console.error('Error:', error);
+            addMessage("エラーが発生しました");
+        }
+    }
+}
+
+
 
 function makeThreadNameEditable(threadElement) {
     const threadNameSpan = threadElement.querySelector('.thread-name');
@@ -176,22 +224,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     textarea.addEventListener('input', adjustTextareaHeight);
 
-    // textarea.addEventListener('keydown', function (e) {
-    //     if (e.key === 'Enter' && !e.shiftKey) {
-    //         e.preventDefault();
-    //         sendMessage();
-    //     }
-    // });
-
     // メッセージ送信のイベント
     sendButton.addEventListener('click', sendMessage);
-    
+
     // プロンプト最適化のイベント
     refreshButton.addEventListener('click', function () {
         // プロンプト最適化機能の実装
         console.log('最適化されました');
     });
-    
+
     // 初期調整
     adjustTextareaHeight();
 });
@@ -232,19 +273,22 @@ async function sendMessage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: message }),
+                body: JSON.stringify({
+                    message: message,
+                    // index: index
+                }),
             });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+
             const data = await response.json();
 
             console.log(data);  // デバック用　レスポンスがコンソールに表示される
 
             const text = data.response;  // APIレスポンスのテキストデータをtextに
-            
+
             addMessage(text, false);
 
         } catch (error) {

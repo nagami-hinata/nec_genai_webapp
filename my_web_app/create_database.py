@@ -54,7 +54,7 @@ def create_database():
     )
     ''')
 
-    # Dataテーブルの作成（file_nameを含む）
+    # Dataテーブルの作成（file_name、thread_number、tagを含む）
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Data (
         content TEXT,
@@ -62,6 +62,8 @@ def create_database():
         folder_unique_id TEXT,
         page INTEGER,
         file_name TEXT,
+        thread_number INTEGER,
+        tag TEXT,
         FOREIGN KEY (group_unique_id) REFERENCES Group_table(unique_id),
         FOREIGN KEY (folder_unique_id) REFERENCES Folder(folder_unique_id)
     )

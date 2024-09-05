@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <link href="{{ url_for('static', filename='css/tag_edit.css') }}" rel="stylesheet">
 </head>
+
 <body>
     <header>
         <div class="search-container">
-            <img src="svg/search.svg" class="search-icon">
+            <img src="{{ url_for('static', filename='images/search.svg') }}" class="search-icon">
             <input type="text" id="searchInput" placeholder="タグで検索...">
         </div>
     </header>
     <aside id="leftSidebar">
-        <img src="{{ url_for('static', filename='svg/hukidashi.svg') }}" class="hukidashi">
-        <img src="{{ url_for('static', filename='svg/folder.svg') }}" class="folder">
-        <img src="{{ url_for('static', filename='svg/trashbox.svg') }}" class="trashbox">
-        <img src="{{ url_for('static', filename='svg/settings.svg') }}" class="settings">
-        <img src="{{ url_for('static', filename='svg/upload.svg') }}" class="upload" onclick="openPopup()">
-        <img src="{{ url_for('static', filename='svg/profile.svg') }}" class="profile">
+
+        <a href="{{ url_for('chatpage') }}"><img src="{{ url_for('static', filename='images/hukidashi.svg') }}"
+                class="hukidashi"></a>
+        <a href="{{ url_for('data_reference') }}"><img src="{{ url_for('static', filename='images/folder.svg') }}"
+                class="folder"></a>
+        <a href="{{ url_for('tag_edit') }}"><img src="{{ url_for('static', filename='images/settings.svg') }}"
+                class="settings"></a>
+        <img src="{{ url_for('static', filename='images/upload.svg') }}" class="upload" onclick="openPopup()">
+        <a href="{{ url_for('user_edit') }}"><img src="{{ url_for('static', filename='images/profile.svg') }}"
+                class="profile"></a>
+
     </aside>
     <div id="wholeContent">
         <main>
@@ -28,73 +35,90 @@
                     <div class="tag tag-engineer" onclick="toggleIcon(this)">
                         エンジニア
                         <span class="tag-icon">
-                            <img src="{{ url_for('static', filename='svg/batu.svg') }}" alt="icon" class="batu">
+
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+
                         </span>
                     </div>
                     <div class="tag tag-designer" onclick="toggleIcon(this)">
                         デザイナー
                         <span class="tag-icon">
-                            <img src="{{ url_for('static', filename='svg/batu.svg') }}" alt="icon" class="batu">
+
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+
                         </span>
                     </div>
                     <div class="tag tag-sales" onclick="toggleIcon(this)">
                         営業
                         <span class="tag-icon">
-                            <img src="{{ url_for('static', filename='svg/batu.svg') }}" alt="icon" class="batu">
+
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+
                         </span>
                     </div>
                     <div class="tag tag-development" onclick="toggleIcon(this)">
                         開発
                         <span class="tag-icon">
-                            <img src="{{ url_for('static', filename='svg/batu.svg') }}" alt="icon" class="batu">
+
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+
                         </span>
                     </div>
                     <div class="tag tag-hr" onclick="toggleIcon(this)">
                         人事
                         <span class="tag-icon">
-                            <img src="{{ url_for('static', filename='svg/batu.svg') }}" alt="icon" class="batu">
+                          
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+
                         </span>
                     </div>
-
-                    <!-- 他のタグが続きます -->
                 </div>
                 <h1>入社年度</h1>
                 <div class="tags-container">
-                    <!-- タグ要素 -->
                     <div class="tag tag-engineer" onclick="toggleIcon(this)">
                         1999年
                         <span class="tag-icon">
-                            <img src="{{ url_for('static', filename='svg/batu.svg') }}" alt="icon" class="batu">
+
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+
                         </span>
                     </div>
                     <div class="tag tag-designer" onclick="toggleIcon(this)">
                         2000年
                         <span class="tag-icon">
-                            <img src="{{ url_for('static', filename='svg/batu.svg') }}" alt="icon" class="batu">
+
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+
                         </span>
                     </div>
                     <div class="tag tag-sales" onclick="toggleIcon(this)">
                         2001年
                         <span class="tag-icon">
-                            <img src="{{ url_for('static', filename='svg/batu.svg') }}" alt="icon" class="batu">
+
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+
                         </span>
                     </div>
                     <div class="tag tag-development" onclick="toggleIcon(this)">
                         2002年
                         <span class="tag-icon">
-                            <img src="{{ url_for('static', filename='svg/batu.svg') }}" alt="icon" class="batu">
+
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+                          
                         </span>
                     </div>
                     <div class="tag tag-hr" onclick="toggleIcon(this)">
                         2003年
                         <span class="tag-icon">
-                            <img src="{{ url_for('static', filename='svg/batu.svg') }}" alt="icon" class="batu">
+
+                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+
                         </span>
                     </div>
                 </div>
                 <!-- 新規タグ作成セクション -->
                 <div class="new-tag-container">
-                    <div class="color-ball" onclick="toggleColorPalette()"></div> <!-- カラーボール -->
+                    <div class="color-ball" onclick="toggleColorPalette()"></div>
                     <select id="genreSelect" class="new-tag-genre" onchange="toggleNewGenreInput()">
                         <option value="">ジャンルを選択</option>
                         <option value="入社年度">入社年度</option>
@@ -109,15 +133,6 @@
                     <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
                     <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
                     <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
-                    <div class="color-option" style="background-color: #503CE1;" onclick="changeColor('#ff4545')"></div>
-                    <div class="color-option" style="background-color: #ffcc00;" onclick="changeColor('#54aa3f')"></div>
-                    <div class="color-option" style="background-color: #ff7979;" onclick="changeColor('#3434ff')"></div>
-                    <div class="color-option" style="background-color: #acee60;" onclick="changeColor('#ff4545')"></div>
-                    <div class="color-option" style="background-color: #51cece;" onclick="changeColor('#54aa3f')"></div>
-                    <div class="color-option" style="background-color: #c05abb;" onclick="changeColor('#3434ff')"></div>
-                    <div class="color-option" style="background-color: #f945ff;" onclick="changeColor('#ff4545')"></div>
-                    <div class="color-option" style="background-color: #396fb4;" onclick="changeColor('#54aa3f')"></div>
-                    <div class="color-option" style="background-color: #646464;" onclick="changeColor('#3434ff')"></div>
                     <!-- 他の色も追加可能 -->
                 </div>
             </div>
@@ -128,12 +143,15 @@
             <div id="dropZone" class="dropZone">
                 <div class="upload-instructions">
                     <p>ここにファイルをドラッグ＆ドロップ<br>または</p>
-                    <div class="file-upload-container">
-                        <label for="fileUpload" class="file-upload-label">ファイルを選択</label>
-                        <input type="file" id="fileUpload" multiple accept=".pdf">
-                    </div>
+                    <!-- 修正したフォーム -->
+                    <form action="{{ url_for('tag_edit') }}" method="POST" enctype="multipart/form-data">
+                        <div class="file-upload-container">
+                            <label for="fileUpload" class="file-upload-label">ファイルを選択</label>
+                            <input type="file" id="fileUpload" name="file" multiple accept=".pdf">
+                        </div>
+                        <button class="upload-button" type="submit">アップロード</button>
+                    </form>
                 </div>
-                <!-- ファイルリストを表示するための要素 -->
                 <div id="fileList" class="file-list"></div>
             </div>
 
@@ -144,33 +162,35 @@
                         <div class="upload-tags-container">
                             <!-- タグ要素 -->
                             <div class="upload-tag" onclick="toggleIcon(this)">
-                            2002年
-                            <span class="upload-tag-icon">
-                                <img src="{{ url_for('static', filename='svg/plus.svg') }}" alt="icon" class="plus-purple">
-                                <img src="{{ url_for('static', filename='svg/check.svg') }}" alt="icon" class="check hidden">
-                            </span>
+
+                                2002年
+                                <span class="upload-tag-icon">
+                                    <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                        class="plus-purple">
+                                    <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                        class="check hidden">
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <!-- 以下、他のタグ要素が続きます -->
-                    <div class="upload-tag-content">
-                        <h2>所属部署</h2>
-                        <div class="upload-tags-container">
-                            <!-- タグ要素 -->
-                            <div class="upload-tag" onclick="toggleIcon(this)">
-                            エンジニア
-                            <span class="upload-tag-icon">
-                                <img src="{{ url_for('static', filename='svg/plus.svg') }}" alt="icon" class="plus-purple">
-                                <img src="{{ url_for('static', filename='svg/check.svg') }}" alt="icon" class="check hidden">
-                            </span>
+                        <div class="upload-tag-content">
+                            <h2>所属部署</h2>
+                            <div class="upload-tags-container">
+                                <div class="upload-tag" onclick="toggleIcon(this)">
+                                    エンジニア
+                                    <span class="upload-tag-icon">
+                                        <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                            class="plus-purple">
+                                        <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                            class="check hidden">
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <button class="upload-button">アップロード</button>
             </div>
-        </div>
 
-    </div>
-
-    <script src="{{ url_for('static', filename='scripts/tag_edit.js') }}"></script>
+            <script src="{{ url_for('static', filename='scripts/tag_edit.js') }}"></script>
 </body>
+
 </html>

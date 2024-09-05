@@ -8,12 +8,15 @@
 </head>
 <body>
     <aside id="leftSidebar">
-        <img src="{{ url_for('static', filename='svg/hukidashi.svg') }}" class="hukidashi">
-        <img src="{{ url_for('static', filename='svg/folder.svg') }}" class="folder">
-        <img src="{{ url_for('static', filename='svg/trashbox.svg') }}" class="trashbox">
-        <img src="{{ url_for('static', filename='svg/settings.svg') }}" class="settings">
-        <img src="{{ url_for('static', filename='svg/upload.svg') }}" class="upload" onclick="openPopup()">
-        <img src="{{ url_for('static', filename='svg/profile.svg') }}" class="profile">
+
+        <a href="{{ url_for('chatpage') }}"><img src="{{ url_for('static', filename='images/hukidashi.svg') }}"
+                class="hukidashi"></a>
+        <a href="{{ url_for('data_reference') }}"><img src="{{ url_for('static', filename='images/folder.svg') }}"
+                class="folder"></a>
+        <!-- <img src="{{ url_for('static', filename='images/trashbox.svg') }}" class="trashbox"> -->
+        <a href="{{ url_for('tag_edit') }}"><img src="{{ url_for('static', filename='images/settings.svg') }}"
+                class="settings"></a>
+      
     </aside>
     <div class="threads" id="threads">
         <div class="new-chat-button" id="new-chat-button">
