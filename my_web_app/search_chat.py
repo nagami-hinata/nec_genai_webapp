@@ -23,7 +23,7 @@ def search_chat(
     ):
     
     # APIエンドポイントのURL.
-    url = "https://api-dev.cotomi-test.nec-cloud.com/cotomi-api/v1/searchchat"
+    url = "https://api.cotomi.nec-cloud.com/cotomi-api/v1/searchchat"
     # 認証パラメータ.
     key = "Bearer " + KEY
     
@@ -44,7 +44,7 @@ def search_chat(
                 "Authorization": key }
     
     # POSTリクエスト送信、レスポンス受信.
-    response = requests.post(url, json=payload, headers=headers, stream=False)
+    response = requests.post(url, json=payload, headers=headers)
     return response
 
 # 検索対話を行うジェネレータ関数. ストリーミングはオン.
@@ -62,7 +62,7 @@ def search_chat_streaming(
     ):
     
     # APIエンドポイントのURL.
-    url = "https://api-dev.cotomi-test.nec-cloud.com/cotomi-api/v1/searchchat"
+    url = "https://api.cotomi.nec-cloud.com/cotomi-api/v1/searchchat"
     # 認証パラメータ.
     key = "Bearer " + KEY
     

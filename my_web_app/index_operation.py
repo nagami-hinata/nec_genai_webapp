@@ -5,7 +5,7 @@ KEY = "XXXXXXXXXXXXXX"
 # GROUP_IDはグループID.
 GROUP_ID = "group_xxxxxxxxxx"
 # TENANT_IDはテナントID.
-TENANT_ID = "T9999999"
+TENANT_ID = "TXXXXXXX"
 
 # 新規インデックスを作成.
 # インデックス名は半角アルファベット、数字、ハイフンのみで構成される必要がある
