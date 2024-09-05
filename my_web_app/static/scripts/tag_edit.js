@@ -226,12 +226,6 @@ function createNewTag() {
     }
 }
 
-
-
-
-
-
-
 // 色を変更する関数
 function changeColor(color, ballSelector) {
     const colorBall = document.querySelector(ballSelector);
