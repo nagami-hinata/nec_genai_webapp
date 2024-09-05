@@ -131,18 +131,18 @@ def delete_document(index, file_path):
     return response
 
 
-if __name__ == "__main__":
-    import json
-    # インデックスの作成
-    create_index("<インデックス名>")
-    # インデックスリストの表示
-    print(json.dumps(get_index_list().json(), indent=2, ensure_ascii=False))
-    # インデックスの削除
-    delete_index("<インデックス名>")
-    # 登録文書リストの表示
-    print(json.dumps(get_document_list("<インデックス名>").json(), indent=2, ensure_ascii=False))
-    # 登録文書の削除
-    delete_document("<インデックス名>", "<ファイル名>")
+# if __name__ == "__main__":
+#     import json
+#     # インデックスの作成
+#     create_index("<インデックス名>")
+#     # インデックスリストの表示
+#     print(json.dumps(get_index_list().json(), indent=2, ensure_ascii=False))
+#     # インデックスの削除
+#     delete_index("<インデックス名>")
+#     # 登録文書リストの表示
+#     print(json.dumps(get_document_list("<インデックス名>").json(), indent=2, ensure_ascii=False))
+#     # 登録文書の削除
+#     delete_document("<インデックス名>", "<ファイル名>")
     
 
 
@@ -466,11 +466,24 @@ def search_chat(
             
 if __name__ == "__main__":
     # ストリーミング無しの検索対話の呼び出し
-    print(search_chat("<prompt>", "<index name>").text)
     print(search_chat("<prompt>", "<index name>"))
+    print(search_chat("<prompt>", "<index name>").text)
     # # ストリーミングありの検索対話の呼び出し
     # for talk in search_chat_streaming("<prompt>", "<index name>"):
     #     print(talk, end="")
+
+
+
+
+
+
+
+
+# 新しいスレッドを作り、タグを選択したときの処理　　ここで
+@app.route('/select_tag', methods=['POST'])
+def select_tag():
+    
+
 
 
 
@@ -480,10 +493,22 @@ if __name__ == "__main__":
 def send_message():
     data = request.json
     user_message = data['message']
-    index = data['index']
+    # index = Data.query.filter_by(folder_unique_id=folder.folder_unique_id).all()
 
+    
+    conn = sqlite3.connect('chat_app.db')
+    cursor = conn.cursor()
+    
+    
     # Cotomiとのやり取り
     try:
+
+        for tag in tags:
+            cursor.execute("SELECT ")
+            
+
+        index = 
+
         ai_response = search_chat(user_message, index).text
         
         # response = requests.post(COTOMI_API_URL, headers=headers, json=payload)
