@@ -191,7 +191,7 @@ function createNewTag() {
         const iconSpan = document.createElement('span');
         iconSpan.className = 'tag-icon';
         const batuIcon = document.createElement('img');
-        batuIcon.src = 'svg/batu.svg';
+        batuIcon.src = '../svg/batu.svg';
         batuIcon.alt = 'icon';
         batuIcon.className = 'batu';
 
