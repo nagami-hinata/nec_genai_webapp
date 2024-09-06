@@ -1,9 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, render_template, request, jsonify
 import sqlite3
 import uuid
 import bcrypt
 import PyPDF2
 import re
+import os
+import json
+from werkzeug.utils import secure_filename
+from add_or_get_or_delete_data import data_bp
+
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -161,6 +167,20 @@ def data_reference():
 
     return render_template('data_reference.html', data_files=data_files)
 
+
+
+# アップロードされたファイルを保存するフォルダー
+UPLOAD_FOLDER = 'files'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# アップロードを許可するファイル拡張子
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @app.route('/tag_edit', methods=['GET', 'POST'])
 def tag_edit():
     if request.method == 'POST':
@@ -206,6 +226,27 @@ def tag_edit():
             # コミットして接続を閉じる
             conn.commit()
             conn.close()
+            
+            # ファイルが要求に含まれているか確認
+            if 'file' not in request.files:
+                return jsonify({"error": "No file part in the request"}), 400
+            file = request.files['file']
+    
+            # ファイル名が空でないか確認
+            if file.filename == '':
+                return jsonify({"error": "No file selected for uploading"}), 400
+    
+            # ファイルが許可された拡張子を持っているか、安全なファイル名か確認
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                # アップロードフォルダーが存在しない場合は作成
+                if not os.path.exists(app.config['UPLOAD_FOLDER']):
+                    os.makedirs(app.config['UPLOAD_FOLDER'])
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                # return jsonify({"message": f"File {filename} successfully uploaded"}), 201
+            else:
+                return jsonify({"error": "Allowed file types are txt, pdf, png, jpg, jpeg, gif"}), 400
+            
 
         except Exception as e:
             flash('PDFからテキストを抽出できませんでした。')

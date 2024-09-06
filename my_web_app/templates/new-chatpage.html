@@ -4,26 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>テキスト補完機能</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatpage.css') }}">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- サイドバー -->
     <aside id="leftSidebar">
-        <!-- <img src="svg/hukidashi.svg" class="hukidashi">
+        <img src="svg/hukidashi.svg" class="hukidashi">
         <img src="svg/folder.svg" class="folder">
         <img src="svg/trashbox.svg" class="trashbox">
-        <img src="svg/settings.svg" class="settings"> -->
-
-
-        <a href="{{ url_for('chatpage') }}"><img src="{{ url_for('static', filename='images/hukidashi.svg') }}"
-                class="hukidashi"></a>
-        <a href="{{ url_for('data_reference') }}"><img src="{{ url_for('static', filename='images/folder.svg') }}"
-                class="folder"></a>
-        <!-- <img src="{{ url_for('static', filename='images/trashbox.svg') }}" class="trashbox"> -->
-        <a href="{{ url_for('tag_edit') }}"><img src="{{ url_for('static', filename='images/settings.svg') }}"
-                class="settings"></a>
-
-
+        <img src="svg/settings.svg" class="settings">
     </aside>
 
     <!-- スレッドの欄 -->
@@ -64,12 +53,17 @@
             <span id="thread-title"></span>
         </div>
 
-        
-        <!-- 入力欄　ここは触らないで -->
+        <!-- <div id="top-bar"></div>
+        <div id="watermark"></div> -->
         <div id="display">
+            <!-- <div id="ai-chat">aaaa</div> -->
+            <!-- <div id="user-chat">iiii</div> -->
         </div>
         <div class="input-container">
+            <!-- <div id="textarea-wrapper"> -->
             <div id="textarea" class="textarea" contenteditable="true" data-placeholder="Type your message here..."></div>  <!-- contenteditable="true"属性により、ユーザーがこのdiv内に直接テキストを入力できるようになる -->
+            <!-- <div id="suggestion"></div> -->
+            <!-- </div> -->
             <div class="button-coutainer">
                 <button class="action-button" id="refresh-button">🔃</button>                
                 <button class="action-button" id="send-button">▶</button>
@@ -78,23 +72,9 @@
     </div>
 
 
-    <!-- タグ選択ポップアップ -->
-    <div id="tag-popup" class="tag-popup hidden">
-        <div class="tag-popup-content">
-            <h3>タグを選択してください</h3>
-            <div class="tag-options">
-                <label><input type="checkbox" value="タグ1"> タグ1</label><br>
-                <label><input type="checkbox" value="タグ2"> タグ2</label><br>
-                <label><input type="checkbox" value="タグ3"> タグ3</label><br>
-            </div>
-            <button id="confirm-button">決定</button>
-        </div>
-    </div>
-
-
 
 
     
-    <script src="{{ url_for('static', filename='scripts/chatpage.js') }}"></script>
+    <script src="script.js"></script>
 </body>
 </html>

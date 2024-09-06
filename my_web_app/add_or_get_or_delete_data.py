@@ -9,14 +9,13 @@ import traceback
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import argparse
-from flask import Flask, render_template, request, redirect, url_for, jsonify, render_template
+from flask import Blueprint, Flask, render_template, request, redirect, url_for, jsonify, render_template
 import sqlite3
 import uuid
 import bcrypt
+from werkzeug.utils import secure_filename
 
-
-app = Flask(__name__)
-
+data_bp = Blueprint('data', __name__)
 
 # Cotomi APIの設定
 COTOMI_API_URL = "https://api.cotomi.com/v1/chat/completions"
@@ -210,62 +209,39 @@ def add_data():
         ''', (content, group_id, page, file_name))
               
 
-        # ファイルをfilesフォルダーに追加 
+        # # ファイルをfilesフォルダーに追加 
         
         
         
         
-        if __name__ == "__main__":
-            parser = argparse.ArgumentParser(description='Process some files.')
-            parser.add_argument('tenantId', type=str, help='Tenant ID')
-            parser.add_argument('api_url', type=str, help='API URL')
-            parser.add_argument('auth_token', type=str, help='Authentication token')
-            parser.add_argument('directory_or_file_path', type=str, help='Path to the directory or file')
-            parser.add_argument('vector_index', type=str, help='Vector index')
-            parser.add_argument('--url', type=str, default=None, help='Base URL')
-            parser.add_argument('--overwrite', type=bool, default=True, help='Overwrite flag')
-            parser.add_argument('--custom_metadata', type=json.loads, default=None, help='Custom metadata in JSON format')
-            parser.add_argument('--kwargs', type=json.loads, default=None, help='Additional keyword arguments in JSON format')
+        # if __name__ == "__main__":
+        #     parser = argparse.ArgumentParser(description='Process some files.')
+        #     parser.add_argument('tenantId', type=str, help='Tenant ID')
+        #     parser.add_argument('api_url', type=str, help='API URL')
+        #     parser.add_argument('auth_token', type=str, help='Authentication token')
+        #     parser.add_argument('directory_or_file_path', type=str, help='Path to the directory or file')
+        #     parser.add_argument('vector_index', type=str, help='Vector index')
+        #     parser.add_argument('--url', type=str, default=None, help='Base URL')
+        #     parser.add_argument('--overwrite', type=bool, default=True, help='Overwrite flag')
+        #     parser.add_argument('--custom_metadata', type=json.loads, default=None, help='Custom metadata in JSON format')
+        #     parser.add_argument('--kwargs', type=json.loads, default=None, help='Additional keyword arguments in JSON format')
 
-            args = parser.parse_args()
+        #     args = parser.parse_args()
 
-            exit_code = main(
-                args.directory_or_file_path,
-                args.api_url,
-                args.vector_index,
-                args.auth_token,
-                args.tenantId,
-                url=args.url,
-                overwrite=args.overwrite,
-                custom_metadata=args.custom_metadata,
-                kwargs=args.kwargs
-            )
+        #     exit_code = main(
+        #         args.directory_or_file_path,
+        #         args.api_url,
+        #         args.vector_index,
+        #         args.auth_token,
+        #         args.tenantId,
+        #         url=args.url,
+        #         overwrite=args.overwrite,
+        #         custom_metadata=args.custom_metadata,
+        #         kwargs=args.kwargs
+        #     )
 
-            sys.exit(exit_code)
-
-
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        #     sys.exit(exit_code)
+     
 
         conn.commit()
         print(f"データが正常に追加されました。ファイル名: {file_name}")
