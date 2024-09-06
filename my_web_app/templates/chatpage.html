@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>洗練されたモダンチャットUI</title>
+    <title>テキスト補完機能</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chatpage.css') }}">
 </head>
 <body>
+    <!-- サイドバー -->
     <aside id="leftSidebar">
+        <!-- <img src="svg/hukidashi.svg" class="hukidashi">
+        <img src="svg/folder.svg" class="folder">
+        <img src="svg/trashbox.svg" class="trashbox">
+        <img src="svg/settings.svg" class="settings"> -->
+
 
         <a href="{{ url_for('chatpage') }}"><img src="{{ url_for('static', filename='images/hukidashi.svg') }}"
                 class="hukidashi"></a>
@@ -17,7 +23,10 @@
         <a href="{{ url_for('tag_edit') }}"><img src="{{ url_for('static', filename='images/settings.svg') }}"
                 class="settings"></a>
 
+
     </aside>
+
+    <!-- スレッドの欄 -->
     <div class="threads" id="threads">
         <div class="new-chat-button" id="new-chat-button">
             <span class="new-chat-icon">+</span>
@@ -27,47 +36,65 @@
             <!-- 初期スレッドなし -->
         </div>
     </div>
-    <div class="main-chat">
+    
+    
+    
+    
+    
+    
+    <div class="chat-container">
+        
+        <!-- 上部のソースを表示の部分 -->
+        <button class="toggle-file-list" id="toggle-file-list">ソースを表示</button>
+        
+        <!-- ソースを表示のメニュー -->
+        <div class="file-list-container" id="file-list-container">
+            <div class="file-list-header">
+                <span class="file-list-title">参照ファイル一覧</span>
+                <button class="close-file-list" id="close-file-list">&times;</button>
+            </div>
+            <div class="file-list" id="file-list">
+                <!-- ファイルアイテムがここに動的に追加されます -->
+            </div>
+        </div>
+        
+        <!-- ページ上部の部分 -->
         <div class="chat-header">
             <button class="toggle-threads" id="toggle-threads">&#x00BB;</button>
             <span id="thread-title"></span>
         </div>
-        <div class="chat-messages" id="chat-messages">
-            <div class="message assistant-message">新しいチャットを開始するには、左側の「新しいチャット」ボタンをクリックしてください。</div>
+
+        
+        <!-- 入力欄　ここは触らないで -->
+        <div id="display">
         </div>
-        <div class="input-area">
-            <textarea id="user-input" placeholder="メッセージを入力..." ></textarea>
-            <button id="send-button" disabled>▶</button>
+        <div class="input-container">
+            <div id="textarea" class="textarea" contenteditable="true" data-placeholder="Type your message here..."></div>  <!-- contenteditable="true"属性により、ユーザーがこのdiv内に直接テキストを入力できるようになる -->
+            <div class="button-coutainer">
+                <button class="action-button" id="refresh-button">🔃</button>                
+                <button class="action-button" id="send-button">▶</button>
+            </div>
         </div>
     </div>
 
-    <button class="toggle-file-list" id="toggle-file-list">ソースを表示</button>
-
-
-    <div class="file-list-container" id="file-list-container">
-        <div class="file-list-header">
-            <span class="file-list-title">参照ファイル一覧</span>
-            <button class="close-file-list" id="close-file-list">&times;</button>
-        </div>
-        <div class="file-list" id="file-list">
-            <!-- ファイルアイテムがここに動的に追加されます -->
-        </div>
-    </div>
 
     <!-- タグ選択ポップアップ -->
-<div id="tag-popup" class="tag-popup hidden">
-    <div class="tag-popup-content">
-        <h3>タグを選択してください</h3>
-        <div class="tag-options">
-            <label><input type="checkbox" value="タグ1"> タグ1</label><br>
-            <label><input type="checkbox" value="タグ2"> タグ2</label><br>
-            <label><input type="checkbox" value="タグ3"> タグ3</label><br>
+    <div id="tag-popup" class="tag-popup hidden">
+        <div class="tag-popup-content">
+            <h3>タグを選択してください</h3>
+            <div class="tag-options">
+                <label><input type="checkbox" value="タグ1"> タグ1</label><br>
+                <label><input type="checkbox" value="タグ2"> タグ2</label><br>
+                <label><input type="checkbox" value="タグ3"> タグ3</label><br>
+            </div>
+            <button id="confirm-button">決定</button>
         </div>
-        <button id="confirm-button">決定</button>
     </div>
-</div>
 
 
+
+
+    
     <script src="{{ url_for('static', filename='scripts/chatpage.js') }}"></script>
 </body>
 </html>
