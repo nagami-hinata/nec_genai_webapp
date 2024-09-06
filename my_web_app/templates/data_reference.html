@@ -140,8 +140,8 @@
                             <div class="upload-tag" onclick="toggleIcon(this)">
                             2002年
                             <span class="upload-tag-icon">
-                                <img src="../svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="../svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon" class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon" class="check hidden">
                             </span>
                         </div>
                     </div>
@@ -153,8 +153,8 @@
                             <div class="upload-tag" onclick="toggleIcon(this)">
                             エンジニア
                             <span class="upload-tag-icon">
-                                <img src="../svg/plus.svg" alt="icon" class="plus-purple">
-                                <img src="../svg/check.svg" alt="icon" class="check hidden">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon" class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon" class="check hidden">
                             </span>
                         </div>
                     </div>
@@ -162,7 +162,6 @@
                 <button class="upload-button">アップロード</button>
             </div>
         </div>
-
     </div>
 
     <script src="{{ url_for('static', filename='scripts/data_reference.js') }}"></script>

@@ -22,6 +22,9 @@
         <!-- <img src="{{ url_for('static', filename='images/trashbox.svg') }}" class="trashbox"> -->
         <a href="{{ url_for('tag_edit') }}"><img src="{{ url_for('static', filename='images/settings.svg') }}"
                 class="settings"></a>
+        <img src="{{ url_for('static', filename='images/upload.svg') }}" class="upload" onclick="openPopup()">
+        <a href="{{ url_for('user_edit') }}"><img src="{{ url_for('static', filename='images/profile.svg') }}"
+                class="profile"></a>
 
 
     </aside>
@@ -36,17 +39,12 @@
             <!-- 初期スレッドなし -->
         </div>
     </div>
-    
-    
-    
-    
-    
-    
+
     <div class="chat-container">
-        
+
         <!-- 上部のソースを表示の部分 -->
         <button class="toggle-file-list" id="toggle-file-list">ソースを表示</button>
-        
+
         <!-- ソースを表示のメニュー -->
         <div class="file-list-container" id="file-list-container">
             <div class="file-list-header">
@@ -57,26 +55,25 @@
                 <!-- ファイルアイテムがここに動的に追加されます -->
             </div>
         </div>
-        
+
         <!-- ページ上部の部分 -->
         <div class="chat-header">
             <button class="toggle-threads" id="toggle-threads">&#x00BB;</button>
             <span id="thread-title"></span>
         </div>
 
-        
+
         <!-- 入力欄　ここは触らないで -->
         <div id="display">
         </div>
         <div class="input-container">
             <div id="textarea" class="textarea" contenteditable="true" data-placeholder="Type your message here..."></div>  <!-- contenteditable="true"属性により、ユーザーがこのdiv内に直接テキストを入力できるようになる -->
             <div class="button-coutainer">
-                <button class="action-button" id="refresh-button">🔃</button>                
+                <button class="action-button" id="refresh-button">🔃</button>
                 <button class="action-button" id="send-button">▶</button>
             </div>
         </div>
     </div>
-
 
     <!-- タグ選択ポップアップ -->
     <div id="tag-popup" class="tag-popup hidden">
@@ -91,10 +88,52 @@
         </div>
     </div>
 
+    <div id="upload-overlay" class="upload-overlay hidden"></div>
+        <div id="uploadPopup" class="upload-popup hidden">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <div id="dropZone" class="dropZone">
+                <div class="upload-instructions">
+                    <p>ここにファイルをドラッグ＆ドロップ<br>または</p>
+                    <div class="file-upload-container">
+                        <label for="fileUpload" class="file-upload-label">ファイルを選択</label>
+                        <input type="file" id="fileUpload" multiple accept=".pdf">
+                    </div>
+                </div>
+                <!-- ファイルリストを表示するための要素 -->
+                <div id="upload-fileList" class="upload-file-list"></div>
+            </div>
 
-
-
-    
+            <div class="upload-container">
+                <div class="boss-upload-tag-content">
+                    <div class="upload-tag-content">
+                        <h2>入社年度</h2>
+                        <div class="upload-tags-container">
+                            <!-- タグ要素 -->
+                            <div class="upload-tag" onclick="toggleIcon(this)">
+                            2002年
+                            <span class="upload-tag-icon">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon" class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                    </div>
+                    <!-- 以下、他のタグ要素が続きます -->
+                    <div class="upload-tag-content">
+                        <h2>所属部署</h2>
+                        <div class="upload-tags-container">
+                            <!-- タグ要素 -->
+                            <div class="upload-tag" onclick="toggleIcon(this)">
+                            エンジニア
+                            <span class="upload-tag-icon">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon" class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <button class="upload-button">アップロード</button>
+            </div>
+        </div>
     <script src="{{ url_for('static', filename='scripts/chatpage.js') }}"></script>
 </body>
 </html>
