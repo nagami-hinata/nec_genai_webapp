@@ -16,7 +16,7 @@
         <!-- <img src="{{ url_for('static', filename='images/trashbox.svg') }}" class="trashbox"> -->
         <a href="{{ url_for('tag_edit') }}"><img src="{{ url_for('static', filename='images/settings.svg') }}"
                 class="settings"></a>
-      
+
     </aside>
     <div class="threads" id="threads">
         <div class="new-chat-button" id="new-chat-button">
@@ -36,7 +36,7 @@
             <div class="message assistant-message">新しいチャットを開始するには、左側の「新しいチャット」ボタンをクリックしてください。</div>
         </div>
         <div class="input-area">
-            <textarea id="user-input" placeholder="メッセージを入力..." disabled></textarea>
+            <textarea id="user-input" placeholder="メッセージを入力..." ></textarea>
             <button id="send-button" disabled>▶</button>
         </div>
     </div>
@@ -53,6 +53,21 @@
             <!-- ファイルアイテムがここに動的に追加されます -->
         </div>
     </div>
+
+    <!-- タグ選択ポップアップ -->
+<div id="tag-popup" class="tag-popup hidden">
+    <div class="tag-popup-content">
+        <h3>タグを選択してください</h3>
+        <div class="tag-options">
+            <label><input type="checkbox" value="タグ1"> タグ1</label><br>
+            <label><input type="checkbox" value="タグ2"> タグ2</label><br>
+            <label><input type="checkbox" value="タグ3"> タグ3</label><br>
+        </div>
+        <button id="confirm-button">決定</button>
+    </div>
+</div>
+
+
     <script src="{{ url_for('static', filename='scripts/chatpage.js') }}"></script>
 </body>
 </html>

@@ -1,48 +1,64 @@
-
 const newChatButton = document.getElementById('new-chat-button');
 const threadList = document.getElementById('thread-list');
 const threadsContainer = document.getElementById('threads');
 const toggleThreadsButton = document.getElementById('toggle-threads');
 const threadTitle = document.getElementById('thread-title');
 const chatContainer = document.querySelector('.chat-container');
+const tagPopup = document.getElementById('tag-popup');
+const confirmButton = document.getElementById('confirm-button');
 
 let currentThreadId = 0;
+let selectedTags = []; // タグ選択の結果を保持するための変数
 
-
+// 新しいスレッド作成時にポップアップを表示するだけ
 function createNewChat() {
     currentThreadId++;
+
+    // ポップアップを表示
+    tagPopup.classList.remove('hidden');
+}
+
+// 「決定」ボタンが押されたときにスレッドを作成
+confirmButton.addEventListener('click', () => {
+    // 選択されたタグを取得
+    selectedTags = [];
+    document.querySelectorAll('.tag-options input:checked').forEach((checkbox) => {
+        selectedTags.push(checkbox.value);
+    });
+
+    console.log('選択されたタグ:', selectedTags);
+
+    // 新しいスレッドを作成
     const newThread = document.createElement('div');
     newThread.classList.add('thread');
-    const threadName = `スレッド${currentThreadId}`;
+    const threadName = `スレッド${currentThreadId} - ${selectedTags.join(', ')}`;
     newThread.innerHTML = `<span class="thread-name">${threadName}</span>`;
     threadList.prepend(newThread);
 
+    // アクティブスレッドを更新
     const activeThreadName = threadList.querySelector('.thread-name.active');
     if (activeThreadName) {
         activeThreadName.classList.remove('active');
     }
-
     newThread.querySelector('.thread-name').classList.add('active');
-
-    console.log('新しいスレッドが作られた');
     threadTitle.textContent = threadName;
 
-    // タグ選択のポップアップの表示の処理
+    // ポップアップを閉じる
+    tagPopup.classList.add('hidden');
+});
+
+// 「新しいスレッド」ボタンがクリックされた時のイベント
+newChatButton.addEventListener('click', createNewChat);
 
 
-
-
-}
-
-
-async function selecttag() {
-    
+// メッセージ送信ロジック
+async function selecttag(message) {
     if (message) {
         addMessage(message, true);
-        textarea.textContent = '';
+        textarea.value = ''; // textareaの内容をクリア
         adjustTextareaHeight();
 
-        // ここでAIバックエンドにメッセージを送信する処理を追加
+        // AIバックエンドにメッセージを送信する処理
         try {
             const response = await fetch('../../send_message', {
                 method: 'POST',
@@ -51,7 +67,6 @@ async function selecttag() {
                 },
                 body: JSON.stringify({
                     message: message,
-                    // index: index
                 }),
             });
 
@@ -61,19 +76,18 @@ async function selecttag() {
 
             const data = await response.json();
 
-            console.log(data);  // デバック用　レスポンスがコンソールに表示される
+            console.log(data);  // デバッグ用レスポンス表示
 
-            const text = data.response;  // APIレスポンスのテキストデータをtextに
+            const text = data.response;  // APIレスポンスのテキストを取得
 
-            addMessage(text, false);
+            addMessage(text, false); // 返答メッセージを表示
 
         } catch (error) {
             console.error('Error:', error);
-            addMessage("エラーが発生しました");
+            addMessage("エラーが発生しました", false);
         }
     }
 }
-
 
 
 function makeThreadNameEditable(threadElement) {
@@ -201,15 +215,19 @@ document.addEventListener('click', (event) => {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const textarea = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
 
-
-
-
-
-
-
-
-
+    // テキストエリアに入力があるかチェックし、ボタンを有効化
+    textarea.addEventListener('input', function () {
+        if (textarea.value.trim() !== "") {
+            sendButton.disabled = false;  // テキストがある場合はボタンを有効化
+        } else {
+            sendButton.disabled = true;   // テキストがない場合はボタンを無効化
+        }
+    });
+});
 
 
 
@@ -472,7 +490,6 @@ function keyDownFnc(e) {
         }, 0);
     }
 }
-
 
 // Tab押したときに補完
 textarea.addEventListener('keydown', keyDownFnc);
