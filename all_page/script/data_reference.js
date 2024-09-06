@@ -193,3 +193,95 @@ function saveFileName(inputElement, originalText, ellipsis) {
         ellipsis.style.display = "inline-block";
     }
 }
+
+// upload-popupに関係する部分のコード開始
+
+// ポップアップを開く関数
+function openPopup() {
+    const overlay = document.getElementById('upload-overlay'); // IDを修正してオーバーレイ要素を取得
+    const uploadPopup = document.getElementById('uploadPopup');
+
+    overlay.classList.remove('hidden'); // オーバーレイを表示
+    uploadPopup.classList.remove('hidden'); // ポップアップを表示
+
+    overlay.style.pointerEvents = 'auto'; // オーバーレイをクリック可能にする
+}
+
+// ポップアップを閉じる関数
+function closePopup() {
+    const overlay = document.getElementById('upload-overlay'); // IDを修正してオーバーレイ要素を取得
+    const uploadPopup = document.getElementById('uploadPopup');
+
+    overlay.classList.add('hidden'); // オーバーレイを非表示
+    uploadPopup.classList.add('hidden'); // ポップアップを非表示
+
+    overlay.style.pointerEvents = 'none'; // オーバーレイをクリック不可にする
+}
+
+// パレットの表示/非表示を切り替え
+function toggleUploadColorPalette() {
+    const uploadPalette = document.querySelector('.upload-color-palette');
+    uploadPalette.classList.toggle('hidden'); // パレットの表示・非表示を切り替える
+}
+
+// アップロード用の色パレットのクリックイベント処理
+document.querySelectorAll('.upload-color-option').forEach(function(option) {
+    option.addEventListener('click', function() {
+        changeColor(this.style.backgroundColor, '.upload-color-ball');
+    });
+});
+
+// アップロードタグのアイコンを切り替える
+document.querySelectorAll('.upload-tag-icon img.plus-purple').forEach(function(icon) {
+    icon.addEventListener('click', function(event) {
+        event.stopPropagation(); // タグのクリックイベントが発生しないようにする
+
+        const checkIcon = this.nextElementSibling; // checkアイコンを取得
+        if (checkIcon) {
+            this.classList.add('hidden'); // plus-purpleアイコンを非表示
+            checkIcon.classList.remove('hidden'); // checkアイコンを表示
+        }
+    });
+});
+
+document.querySelectorAll('.upload-tag-icon img.check').forEach(function(icon) {
+    icon.addEventListener('click', function(event) {
+        event.stopPropagation(); // タグのクリックイベントが発生しないようにする
+
+        const plusIcon = this.previousElementSibling; // plus-purpleアイコンを取得
+        if (plusIcon) {
+            this.classList.add('hidden'); // checkアイコンを非表示
+            plusIcon.classList.remove('hidden'); // plus-purpleアイコンを表示
+        }
+    });
+});
+
+// ファイルリストの生成関数
+function createFileListItem(file) {
+    const fileItem = document.createElement('div');
+
+    const fileNameSpan = document.createElement('span');
+    fileNameSpan.textContent = file.name;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = '削除';
+    deleteButton.addEventListener('click', function() {
+        fileItem.remove(); // ファイルアイテムを削除
+    });
+
+    fileItem.appendChild(fileNameSpan);
+    fileItem.appendChild(deleteButton);
+
+    return fileItem;
+}
+
+document.getElementById('fileUpload').addEventListener('change', function(event) {
+    const fileList = event.target.files;
+    const fileListContainer = document.getElementById('fileList');
+
+    // 各ファイルをリストに追加
+    Array.from(fileList).forEach(file => {
+        const fileItem = createFileListItem(file);
+        fileListContainer.appendChild(fileItem);
+    });
+});
