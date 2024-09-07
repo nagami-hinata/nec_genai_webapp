@@ -79,6 +79,16 @@ def create_database():
         color TEXT
     )
     ''')
+    
+    # Threadテーブルの構造
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Thread (
+        thread TEXT,
+        tag TEXT,
+        user_unique_id TEXT
+    )
+    ''')
+    
         
 
     # 変更を保存し、接続を閉じる

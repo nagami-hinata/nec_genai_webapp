@@ -423,19 +423,35 @@ def chatpage():
     conn = get_db_connection()
     cur = conn.cursor()
     
-    
     # タグを取得
     cur.execute("SELECT tag FROM Data")
     tags = cur.fetchall()
     
+    # 会話内容を取得
+    current_login_user_unique_id = session['unique_id_session']  # 現在ログインしているユーザーのユニークID取得
+    
+    cur.execute("SELECT * FROM Chat WHERE user_unique_id = ?", (current_login_user_unique_id,))
+    chats = cur.fetchall()
+    
+    # Threadテーブルからuser_unique_idが同じものを取得
+    cur.execute("SELECT * FROM Thread WHERE user_unique_id = ?", (current_login_user_unique_id,))
+    threads = cur.fetchall()
+        
+    # 結果を辞書のリストに変換
+    columns = [column[0] for column in cur.description]
+    chats = []
+    for row in chats:
+        chats.append(dict(zip(columns, row)))  # オブジェクトの配列
+    
+    
     if tags == []:
         conn.close()
-        return render_template('chatpage.html', tags=tags)
+        return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)
     else: 
         conn.close()
     
         # 取得したタグ一覧を配列として送ってレンダリング
-        return render_template('chatpage.html', tags=tags)        
+        return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)        
 
     
 
@@ -457,24 +473,44 @@ def tag_select():
     global current_thread_number
     
     # 選択されたタグをすべて取得
-    selected_tag = request.form.getlist('tag')  # 配列として取得
+    selected_tag = request.form.get('tag')  # 配列として取得
+    
+    current_login_user_unique_id = session['unique_id_session']  # 現在ログインしているユーザーのユニークID取得
+    
     
     # データベースに接続
     conn = get_db_connection()
     cur = conn.cursor()
     
     files = []
-    for tag in selected_tag:
-        cur.execute("SELECT file_name FROM Data WHERE tag = ?", (tag,))  # タグに対応したファイルを取得
-        results = [row[0] for row in cur.fetchall()]
-        
-        files.extend(results)  # 選択されたタグを持つファイルをfilesに追加していく
-        
-    conn.close()  # データベースとの接続を切る
+    cur.execute("SELECT file_name FROM Data WHERE tag = ?", (selected_tag,))  # タグに対応したファイルを取得
+    files = [row[0] for row in cur.fetchall()]  # ファイル名を要素に持つ配列
+    
+    files = list(set([row[0] for row in cur.fetchall()]))  # 重複の削除  
 
-    files = list(set(files))  # 重複を除去
+    # Threadテーブルに入れる
+    cur.execute("INSERT INTO Thread (thread, tag, user_unique_id) VALUES (?, ?, ?)", (thread_number, selected_tag, current_login_user_unique_id))
+
+    
+    # Threadテーブルからuser_unique_idが同じものを取得
+    cur.execute("SELECT * FROM Thread WHERE user_unique_id = ?", (current_login_user_unique_id,))
+    threads = cur.fetchall()
+    
+    # 会話履歴を取得
+    cur.execute("SELECT * FROM Chat WHERE user_unique_id = ?", (current_login_user_unique_id,))
+    chats = cur.fetchall()
+    
+    # タグを取得
+    cur.execute("SELECT tag FROM Data")
+    tags = cur.fetchall()
     
     
+    
+    conn.commit()  # データベースに変更をコミット
+    conn.close()  # データベースとの接続を切る
+    
+    
+
     index = f"index_{thread_number}"  # インデックスの名前をつける
     
     current_thread_number = thread_number  # スレッドを作ったときの番号を現在のスレッド変数に代入
@@ -510,12 +546,7 @@ def tag_select():
     for file in files:
         success = register_file_to_index(file, index, add_document_url)
         
-    return redirect(url_for('chatpage'))
-
-
-
-
-# 文章登録用
+    return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)
 
 HTTP_HEADER_REQUEST_ID = 'x-nec-cotomi-request-id'
 HTTP_HEADER_TANANT_ID = "x-nec-cotomi-tenant-id"
