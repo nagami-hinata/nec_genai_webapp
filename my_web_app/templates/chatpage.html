@@ -82,12 +82,16 @@
     <div id="tag-popup" class="tag-popup hidden">
         <div class="tag-popup-content">
             <h3>タグを選択してください</h3>
-            <div class="tag-options">
-                <label><input type="checkbox" value="タグ1"> タグ1</label><br>
-                <label><input type="checkbox" value="タグ2"> タグ2</label><br>
-                <label><input type="checkbox" value="タグ3"> タグ3</label><br>
-            </div>
-            <button id="confirm-button">決定</button>
+            <form action="{{ url_for('tag_select') }}" method="post">
+                <div class="tag-options">
+                    {% for tag in tags %}
+                        <label><input type="checkbox"value="{{ tag }}" name="tag">{{ tag }}</label><br>
+                        <!-- <label><input type="checkbox" value="タグ2"> タグ2</label><br> -->
+                        <!-- <label><input type="checkbox" value="タグ3"> タグ3</label><br> -->
+                    {% endfor %}
+                </div>
+                <button type="submit" id="confirm-button" value="決定"></button>
+            </form>
         </div>
     </div>
 

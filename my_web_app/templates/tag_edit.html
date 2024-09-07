@@ -29,52 +29,22 @@
     <div id="wholeContent">
         <main>
             <div class="tag-edit">
-                <h1>所属部署</h1>
-                <div class="tags-container">
-                    <!-- タグ要素 -->
-                    <div class="tag tag-engineer" onclick="toggleIcon(this)">
-                        エンジニア
-                        <span class="tag-icon">
+                {% for tag in tags %}
+                    <h1>{{ tag['genre'] }}</h1>
+                    <div class="tags-container">
+                        <!-- タグ要素 -->
+                        <div class="tag tag-engineer" onclick="toggleIcon(this)" style="background-color: {{ tag['color'] }};">
+                            {{ tag['tag'] }}
+                            <span class="tag-icon">
 
-                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+                                <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
 
-                        </span>
+                            </span>
+                        </div>
                     </div>
-                    <div class="tag tag-designer" onclick="toggleIcon(this)">
-                        デザイナー
-                        <span class="tag-icon">
-
-                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
-
-                        </span>
-                    </div>
-                    <div class="tag tag-sales" onclick="toggleIcon(this)">
-                        営業
-                        <span class="tag-icon">
-
-                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
-
-                        </span>
-                    </div>
-                    <div class="tag tag-development" onclick="toggleIcon(this)">
-                        開発
-                        <span class="tag-icon">
-
-                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
-
-                        </span>
-                    </div>
-                    <div class="tag tag-hr" onclick="toggleIcon(this)">
-                        人事
-                        <span class="tag-icon">
-                          
-                            <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
-
-                        </span>
-                    </div>
-                </div>
-                <h1>入社年度</h1>
-                <div class="tags-container">
+                {% endfor %}
+                <!-- <h1>入社年度</h1> -->
+                <!-- <div class="tags-container">
                     <div class="tag tag-engineer" onclick="toggleIcon(this)">
                         1999年
                         <span class="tag-icon">
@@ -115,26 +85,30 @@
 
                         </span>
                     </div>
-                </div>
+                </div> -->
                 <!-- 新規タグ作成セクション -->
-                <div class="new-tag-container">
-                    <div class="color-ball" onclick="toggleColorPalette()"></div>
-                    <select id="genreSelect" class="new-tag-genre" onchange="toggleNewGenreInput()">
-                        <option value="">ジャンルを選択</option>
-                        <option value="入社年度">入社年度</option>
-                        <option value="所属部署">所属部署</option>
-                        <option value="new">ジャンルを新規作成</option>
-                    </select>
-                    <input type="text" id="newGenreName" class="new-genre-input hidden" placeholder="新しいジャンル名を入力">
-                    <input type="text" id="newTagName" class="new-tag-input" placeholder="タグ名を入力">
-                    <button class="create-new-tag-button" onclick="createNewTag()">新規作成</button>
-                </div>
-                <div class="color-palette hidden">
-                    <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
-                    <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
-                    <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
-                    <!-- 他の色も追加可能 -->
-                </div>
+                <!-- <form action="{{ url_for('create_tag') }}" method="post" id="createTafForm">              -->
+                <form id="createTagForm" onsubmit="event.preventDefault; createNewTag();">
+                    <div class="new-tag-container">
+                        <div class="color-ball" onclick="toggleColorPalette()"></div>
+                        <select id="genreSelect" class="new-tag-genre" onchange="toggleNewGenreInput()">
+                            <option value="">ジャンルを選択</option>
+                            {% for tag in tags %}
+                                <option value="new">{{ tag['genre'] }}</option>
+                            {% endfor %}
+                            <option value="new">ジャンルを新規作成</option>
+                        </select>
+                        <input type="text" id="newGenreName" class="new-genre-input hidden" placeholder="新しいジャンル名を入力">
+                        <input type="text" id="newTagName" class="new-tag-input" placeholder="タグ名を入力">
+                        <button class="create-new-tag-button" type="submit">新規作成</button>
+                    </div>
+                    <div class="color-palette hidden">
+                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
+                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
+                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
+                        <!-- 他の色も追加可能 -->
+                    </div>
+                </form>
             </div>
         </main>
         <div id="overlay" class="overlay hidden"></div>

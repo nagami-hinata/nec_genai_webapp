@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, render_template, request, jsonify
+from flask import Flask, session, render_template, request, redirect, url_for, flash, render_template, jsonify
 import sqlite3
 import uuid
 import bcrypt
@@ -6,18 +6,260 @@ import PyPDF2
 import re
 import os
 import json
+import requests
 from werkzeug.utils import secure_filename
 from add_or_get_or_delete_data import data_bp
+from datetime import timedelta
+import sys
+import base64
+import time
+import traceback
+from datetime import datetime
+from zoneinfo import ZoneInfo
+import argparse
+import uuid
+import bcrypt
+
+
 
 
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = 'session_key'  # セッションを暗号化するための秘密鍵
+app.permanent_session_lifetime = timedelta(minutes=30)  # セッションの有効期限を設定
+
+
+
+
+# Cotomi APIの設定
+COTOMI_API_URL = "https://api.cotomi.com/v1/chat/completions"
+COTOMI_API_KEY = os.environ.get('COTOMI_API_KEY')  # 環境変数に設定してるものをとってきてる
+GROUP_ID = os.environ.get('GROUP_ID')
+TENANT_ID = os.environ.get('TENANT_ID')
+
+# KEY = "Bearer " + COTOMI_API_KEY
+
+KEY = COTOMI_API_KEY
+
+
+
+
 
 def get_db_connection():
     conn = sqlite3.connect('chat_app.db')
     conn.row_factory = sqlite3.Row
     return conn
+
+
+# ラグ用の関数
+# URL作成関数
+def generate_file_url(base_url, file_path, root_dir):
+    """
+    ファイルのURLを生成します。
+
+    Args:
+        base_url (str): ベースURL。
+        file_path (str): ファイルのパス。
+        root_dir (str): ルートディレクトリのパス。
+
+    Returns:
+        str: 生成されたファイルのURL。
+    """
+    relative_path = os.path.relpath(file_path, root_dir)
+    return os.path.join(base_url, relative_path).replace("\\", "/")
+
+# ファイルを処理しAPIに送信
+def process_file(
+    api_url, auth_token, tenantId, vector_index, file_path,
+    url=None, overwrite=True, custom_metadata=None, kwargs=None
+    ):
+    """
+    ファイルを処理し、APIに送信します。
+
+    Args:
+        api_url (str): APIのURL。
+        auth_token (str): 認証トークン。
+        tenantId (str): テナントID。
+        vector_index (str): ベクターインデックス。
+        file_path (str): ファイルのパス。
+        url (str, optional): ファイルのURL。デフォルトはNone。
+        overwrite (bool, optional): 上書きフラグ。デフォルトはTrue。
+        custom_metadata (dict, optional): カスタムメタデータ。デフォルトはNone。
+        kwargs (dict, optional): 追加のキーワード引数。デフォルトはNone。
+
+    Returns:
+        int: 成功時は0、失敗時はエラーステータスコードまたは1を返します。
+    """
+    encoded_file = encode_file_to_base64(file_path)     # 1個目の関数
+    filename = os.path.basename(file_path)
+
+    if kwargs is None:
+        kwargs = {"split_chunk_size": "512", "split_overlap_size": "128"}
+
+    if custom_metadata is None:
+        custom_metadata = {}
+
+    payload = {
+        "vectorIndex": vector_index,
+        "file": encoded_file,
+        "filepath": filename,
+        "url": url,
+        "overWrite": overwrite,
+        "kwargs": kwargs,
+        "customMetadata": custom_metadata
+    }
+
+    headers = {
+        "Content-Type": "application/json",
+        "x-nec-cotomi-tenant-id": f"{tenantId}",
+        "Authorization": f"Bearer {auth_token}",
+    }
+
+    start_time = time.time()
+
+    try:
+        response = requests.post(api_url, headers=headers, json=payload, verify=True)
+        request_id = response.headers.get(HTTP_HEADER_REQUEST_ID)
+        now = datetime.now(ZoneInfo("Asia/Tokyo"))
+
+        print(f"Processed {filename} at {now}: {response.status_code} {response.text}")
+
+        if response.status_code != 200:
+            try:
+                data = response.json()
+                print("Response Data:", data)
+            except json.JSONDecodeError:
+                print("Response is not in JSON format")
+                print("Response text:", response.text)
+            return response.status_code  # エラーステータスコードを返す
+
+        return SUCCESS_CODE  # 成功時
+
+    except Exception as e:
+        traceback.print_exc(file=sys.stdout)
+        now = datetime.now(ZoneInfo("Asia/Tokyo"))
+        print(f"[add_document] Error adding document: {e}")
+        print(f"Error occurred at: {now}")
+        return FAILURE_CODE  # 失敗時のデフォルトエラーステータスコード
+
+# ファイルをAPIに送る
+def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, url=None, 
+         overwrite=True, custom_metadata=None, kwargs=None
+        ):
+    """
+    ディレクトリまたはファイルを処理します。
+
+    Args:
+        directory_or_file_path (str): ディレクトリまたはファイルのパス。
+        api_url (str): APIのURL。
+        vector_index (str): ベクターインデックス。
+        auth_token (str): 認証トークン。
+        tenantId (str): テナントID。
+        url (str, optional): ベースURL。デフォルトはNone。
+        overwrite (bool, optional): 上書きフラグ。デフォルトはTrue。
+        custom_metadata (dict, optional): カスタムメタデータ。デフォルトはNone。
+        kwargs (dict, optional): 追加のキーワード引数。デフォルトはNone。
+
+    Returns:
+        int: 成功時は0、失敗時はエラーステータスコードまたは1を返します。
+    """
+    print(f"Starting process for directory or file: {directory_or_file_path}")
+    
+    if os.path.isdir(directory_or_file_path):
+        for root, _, files in os.walk(directory_or_file_path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                file_url = generate_file_url(url, file_path, directory_or_file_path) if url else None       # 2個目の関数
+                print(f"Processing file: {file_path}")
+                status_code = process_file(                                                                 # 3個目の関数
+                    api_url, auth_token, tenantId, vector_index, file_path,
+                    url=file_url, overwrite=overwrite, custom_metadata=custom_metadata, kwargs=kwargs
+                )
+                if status_code != SUCCESS_CODE:
+                    return status_code
+    elif os.path.isfile(directory_or_file_path):
+        print(f"Processing single file: {directory_or_file_path}")
+        status_code = process_file(                                                                         # 3個目の関数
+            api_url, auth_token, tenantId, vector_index, directory_or_file_path, 
+            url, overwrite, custom_metadata, kwargs
+        )
+        if status_code != SUCCESS_CODE:
+            return status_code
+    else:
+        print(f"Error: {directory_or_file_path} is neither a file nor a directory")
+        return FAILURE_CODE
+
+    return SUCCESS_CODE  # 全て成功時
+
+
+# ファイルをインデックスに登録する関数
+def register_file_to_index(file_path, index, api_url):
+    key = f"Bearer {KEY}"
+    headers = {
+        "content-type": "application/json",
+        "x-nec-cotomi-tenant-id": TENANT_ID,
+        "Authorization": key
+    }
+    payload = {
+        "vectorIndex": index,
+        "file": file_path,
+        "groupId": GROUP_ID
+    }
+    response = requests.post(api_url, headers=headers, json=payload)
+    return response.status_code == 200
+
+
+
+
+
+# 検索対話用
+
+# 使用するモデル名.
+MODEL = "cotomi-core-pro-v1.0-awq"
+
+# 検索対話を行う関数. ストリーミングはオフ.
+def search_chat(
+    user_content, # ユーザプロンプト.       # 実質的な引数
+    vector_index, # インデックス名.         # 実質的な引数
+    system_content="あなたはAIアシスタントです", # システムプロンプト.
+    client_id="DEFAULT", # クライアントID.
+    history_id="new", # 会話履歴ID.
+    temperature=1,  # LLMのランダム性パラメータ.
+    search_option={"searchType": "hybrid", "chunkSize": 16, "topK": 4}, # 検索オプション.
+    is_oneshot=False, # 単発の会話にするかどうか.
+    max_tokens=8096 # LLMトークンの最大値.
+    ):
+    
+    # APIエンドポイントのURL.
+    url = "https://api.cotomi.nec-cloud.com/cotomi-api/v1/searchchat"
+    # 認証パラメータ.
+    key = "Bearer " + KEY
+    
+    # リクエストボディのパラメータ指定.
+    payload = { "userContent": user_content,
+                "systemContent": system_content,
+                "vectorIndex": vector_index,
+                "historyId": history_id,
+                "temperature": temperature,
+                "model": MODEL,
+                "searchOption": search_option,
+                "onshot": is_oneshot,
+                "maxTokens": max_tokens}
+    
+    # リクエストヘッダのパラメータ指定.
+    headers = { "content-type": "application/json",
+                "x-nec-cotomi-client-id": client_id,
+                "Authorization": key }
+    
+    # POSTリクエスト送信、レスポンス受信.
+    response = requests.post(url, json=payload, headers=headers)
+    return response
+
+
+
+
+
+
 
 @app.route('/')
 def index():
@@ -74,6 +316,17 @@ def login():
         # Userテーブルからメールアドレスでユーザー情報を取得
         cur.execute("SELECT * FROM User WHERE e_mail = ?", (email,))
         user = cur.fetchone()
+        
+        
+        # セッション変数に格納する処理
+        cur.execute("SELECT unique_id FROM Group_table WHERE e_mail = ?", (email,))
+        result = cur.fetchone()  # メールに対応するunique_idを取得
+        
+        if result:
+            unique_id = result[0]
+            session['unique_id_session'] = unique_id  # session変数に格納
+        
+        
         conn.close()
 
         if user is None:
@@ -134,6 +387,17 @@ def author_login():
         # Group_tableからメールアドレスでグループ情報を取得
         cur.execute("SELECT * FROM Group_table WHERE e_mail = ?", (email,))
         group = cur.fetchone()
+        
+        
+        # セッション変数に格納する処理
+        cur.execute("SELECT unique_id FROM Group_table WHERE e_mail = ?", (email,))
+        result = cur.fetchone()  # メールに対応するunique_idを取得
+        
+        if result:
+            unique_id = result[0]
+            session['unique_id_session'] = unique_id  # session変数に格納
+        
+        
         conn.close()
 
         if group is None:
@@ -151,9 +415,180 @@ def author_login():
 
     return render_template('author_login.html')
 
+
+
 @app.route('/chatpage')
 def chatpage():
-    return render_template('chatpage.html')
+    # データベースに接続
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    
+    # タグを取得
+    cur.execute("SELECT tag FROM Data")
+    tags = cur.fetchall()
+    
+    if tags == []:
+        conn.close()
+        return render_template('chatpage.html', tags=tags)
+    else: 
+        conn.close()
+    
+        # 取得したタグ一覧を配列として送ってレンダリング
+        return render_template('chatpage.html', tags=tags)        
+
+    
+
+thread_number = 1
+current_thread_number = 1
+# 文章登録用
+
+HTTP_HEADER_REQUEST_ID = 'x-nec-cotomi-request-id'
+HTTP_HEADER_TANANT_ID = "x-nec-cotomi-tenant-id"
+
+# 成功時と失敗時(デフォルト)の返すコードをグローバル変数として定義
+SUCCESS_CODE = 0
+FAILURE_CODE = 1
+    
+# chatpageでタグを選択したときの処理
+@app.route('/tag_select', methods=['POST'])
+def tag_select():
+    global thread_number  # thread_numberをグローバル変数として利用
+    global current_thread_number
+    
+    # 選択されたタグをすべて取得
+    selected_tag = request.form.getlist('tag')  # 配列として取得
+    
+    # データベースに接続
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    files = []
+    for tag in selected_tag:
+        cur.execute("SELECT file_name FROM Data WHERE tag = ?", (tag,))  # タグに対応したファイルを取得
+        results = [row[0] for row in cur.fetchall()]
+        
+        files.extend(results)  # 選択されたタグを持つファイルをfilesに追加していく
+        
+    conn.close()  # データベースとの接続を切る
+
+    files = list(set(files))  # 重複を除去
+    
+    
+    index = f"index_{thread_number}"  # インデックスの名前をつける
+    
+    current_thread_number = thread_number  # スレッドを作ったときの番号を現在のスレッド変数に代入
+    
+    thread_number += 1  # スレッドナンバーを更新
+    
+    
+    # 新規インデックスを作成
+    url = "https://api.cotomi.nec-cloud.com/cotomi-search-api/index/createIndex/"
+    
+    # APIキー. "Bearer"を忘れないこと. エラーになる.
+    key = "Bearer " + KEY
+    
+    # HTTPリクエストのヘッダ部分.
+    # テナントIDを指定.
+    headers = { "content-type": "application/json",
+                "x-nec-cotomi-tenant-id": TENANT_ID,
+                "Authorization": key
+            }
+    # HTTPリクエストのボディ部分.
+    # 新規作成するインデックス名を指定.
+    # グループIDを指定
+    payload = { "vectorIndex" : index,
+                "groupId": GROUP_ID
+                }
+    
+    # HTTPリクエストを送信.
+    # ResponseオブジェクトはHTTPレスポンスが入ってくる.
+    response = requests.post(url, headers=headers, json=payload)
+    
+    add_document_url = "https://api.cotomi.nec-cloud.com/cotomi-search-api/document/addDocument/"
+    # 作ったインデックスに選択されたタグ属性を持つファイルをアップ
+    for file in files:
+        success = register_file_to_index(file, index, add_document_url)
+        
+    return redirect(url_for('chatpage'))
+
+
+
+
+# 文章登録用
+
+HTTP_HEADER_REQUEST_ID = 'x-nec-cotomi-request-id'
+HTTP_HEADER_TANANT_ID = "x-nec-cotomi-tenant-id"
+
+# 成功時と失敗時(デフォルト)の返すコードをグローバル変数として定義
+SUCCESS_CODE = 0
+FAILURE_CODE = 1
+
+# エンコード関数
+def encode_file_to_base64(file_path):
+    """
+    ファイルをBase64エンコードします。
+
+    Args:
+        file_path (str): エンコードするファイルのパス。
+
+    Returns:
+        str: Base64エンコードされたファイルの文字列。
+    """
+    with open(file_path, "rb") as file:
+        encoded_string = base64.b64encode(file.read()).decode("ascii")
+    return encoded_string
+
+
+
+current_index = 1
+
+# チャット用のエンドポイント
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    global current_index
+    global current_thread_number
+    
+    current_index = current_thread_number
+    
+    data = request.json
+    user_message = data['message']
+    # index = Data.query.filter_by(folder_unique_id=folder.folder_unique_id).all()
+
+    
+    conn = sqlite3.connect('chat_app.db')
+    cursor = conn.cursor()
+    
+    
+    # Cotomiとのやり取り
+    try:
+        index = f"index_{current_index}"
+
+        ai_response = search_chat(user_message, index).text
+        
+        # response = requests.post(COTOMI_API_URL, headers=headers, json=payload)
+        # response.raise_for_status()  # エラーがあれば例外を発生させる
+        
+        # cotomi_response = response.json()
+        # ai_response = cotomi_response['choices'][0]['message']['content'].strip()
+        
+        return jsonify({"response": ai_response})
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": str(e)}), 500
+    except KeyError as e:
+        return jsonify({"error": "Unexpected response format from Cotomi API"}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/data_reference')
 def data_reference():
@@ -183,6 +618,8 @@ def allowed_file(filename):
 
 @app.route('/tag_edit', methods=['GET', 'POST'])
 def tag_edit():
+    tags = []
+    error_message = None
     if request.method == 'POST':
         # アップロードされたファイルを取得
         if 'file' not in request.files:
@@ -205,6 +642,7 @@ def tag_edit():
 
             # データベース接続を確立
             conn = get_db_connection()
+            conn.row_factory = sqlite3.Row
             cur = conn.cursor()
 
             # 各ページからテキストを抽出し、データベースに保存
@@ -222,7 +660,17 @@ def tag_edit():
                     INSERT INTO Data (content, group_unique_id, folder_unique_id, page, file_name)
                     VALUES (?, NULL, NULL, ?, ?)
                 ''', (extracted_text, page_num + 1, uploaded_file.filename))
+                
+            
 
+            # ジャンルとタグ、色をデータベースからとってきて変数に格納
+            cur.execute("SELECT * FROM Tag")
+            
+            rows = cur.fetchall()
+            
+            # 各行をオブジェクトに変換しリストに追加
+            tags = [dict(row) for row in rows]
+            
             # コミットして接続を閉じる
             conn.commit()
             conn.close()
@@ -255,7 +703,31 @@ def tag_edit():
         flash('PDFからテキストが抽出され、保存されました。')
         return redirect(url_for('tag_edit'))
 
-    return render_template('tag_edit.html')
+    return render_template('tag_edit.html', tags=tags)
+
+
+# ジャンルとタグを新規作成したときのエンドポイント
+@app.route('/create_tag', methods=['POST'])
+def create_tag():
+    data = request.json
+    
+    genre = data['genre']
+    tag = data['tag']
+    color = data['color']
+    
+    # データベース接続を確立
+    conn = get_db_connection()
+    # cur = conn.cursor()
+
+    try:
+        conn.execute('INSERT INTO Tag (genre, tag, color) VALUES (?, ?, ?)', (genre, tag, color))
+        conn.commit()
+        return jsonify({'success': True, 'message': 'タグが正常に作成されました'}), 200
+    except sqlite3.Error as e:
+        conn.rollback()
+        return jsonify({'error': str(e)}), 500
+    finally:
+        conn.close()    
 
 
 @app.route('/user_edit')

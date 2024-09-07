@@ -64,10 +64,22 @@ def create_database():
         file_name TEXT,
         thread_number INTEGER,
         tag TEXT,
+        genre TEXT,
+        color TEXT,
         FOREIGN KEY (group_unique_id) REFERENCES Group_table(unique_id),
         FOREIGN KEY (folder_unique_id) REFERENCES Folder(folder_unique_id)
     )
     ''')
+    
+    # Tagテーブルの構造
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Tag (
+        genre TEXT,
+        tag TEXT,
+        color TEXT
+    )
+    ''')
+        
 
     # 変更を保存し、接続を閉じる
     conn.commit()

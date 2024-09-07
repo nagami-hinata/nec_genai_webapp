@@ -91,6 +91,8 @@ function closePopup() {
 
 
 
+
+
 // パレットの表示/非表示を切り替え
 function toggleColorPalette() {
     const palette = document.querySelector('.color-palette');
@@ -127,6 +129,8 @@ function toggleNewGenreInput() {
 
 // 新しいタグ作成
 function createNewTag() {
+    // event.preventDefault();  // フォームのデフォルトの送信を防止
+
     let genre = document.getElementById('genreSelect').value;
     const newGenreName = document.getElementById('newGenreName').value;
     const tagName = document.getElementById('newTagName').value;
@@ -171,6 +175,28 @@ function createNewTag() {
 
         // tag-editの最後に新しいセクションを追加
         document.querySelector('.tag-edit').appendChild(newSection);
+
+        const data = {
+            genre: newGenreName,
+            tag: tagName,
+            color: color
+        };
+
+        fetch('/create_tag', {
+            method: 'POST',
+            headers: {
+                'Conten-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('成功:', data);
+    
+        })
+        .catch((error) => {
+            console.log('エラー:', error);
+        });
     }
 
     if (genre && tagName) {

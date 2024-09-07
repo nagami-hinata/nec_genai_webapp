@@ -305,7 +305,7 @@ async function sendMessage() {
 
             console.log(data);  // デバック用　レスポンスがコンソールに表示される
 
-            const text = data.response;  // APIレスポンスのテキストデータをtextに
+            const text = JSON.stringify(data.response, null, 2);  // APIレスポンスのテキストデータをtextに
 
             addMessage(text, false);
 
