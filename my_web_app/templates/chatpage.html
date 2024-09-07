@@ -37,28 +37,15 @@
         </div>
         <div class="thread-list" id="thread-list">
             <!-- 初期スレッドなし -->
-            {% for thread in threads %}
-                <div class="thread">
-                    <span class="thread-name">スレッド{ thread.thread } - { thread.tag }</span>
-                </div>
-            {% endfor %}
+            {% if threads %}
+                {% for thread in threads %}
+                    <div class="thread">
+                        <span class="thread-name">スレッド{{ thread.thread }} - {{ thread.tag }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div> 
     </div>
-<!-- 
-const newThread = document.createElement('div');
-newThread.classList.add('thread');
-const threadName = `スレッド${currentThreadId} - ${selectedTags.join(', ')}`;
-newThread.innerHTML = `<span class="thread-name">${threadName}</span>`;
-threadList.prepend(newThread);
-
-// アクティブスレッドを更新
-const activeThreadName = threadList.querySelector('.thread-name.active');
-if (activeThreadName) {
-    activeThreadName.classList.remove('active');
-}
-newThread.querySelector('.thread-name').classList.add('active');
-threadTitle.textContent = threadName; -->
-
 
 
     <div class="chat-container">
@@ -82,16 +69,6 @@ threadTitle.textContent = threadName; -->
             <button class="toggle-threads" id="toggle-threads">&#x00BB;</button>
             <span id="thread-title"></span>
         </div>
-
-    <!-- const messageDiv = document.createElement('div'); //新しいdiv要素を作成
-    messageDiv.className = isUser ? 'message user-message' : 'message ai-message'; //trueのときuser falseのときai
-    
-    const bubble = document.createElement('div');
-    bubble.className = 'message-bubble';
-    bubble.textContent = text; //作成したdivのテキストに第一引数を代入
-    
-    messageDiv.appendChild(bubble);
-    display.appendChild(messageDiv); -->
 
         <!-- 入力欄　ここは触らないで -->
         <div id="display">
@@ -118,8 +95,6 @@ threadTitle.textContent = threadName; -->
                 <div class="tag-options">
                     {% for tag in tags %}
                         <label><input type="checkbox" value="{{ tag }}" name="tag">{{ tag }}</label><br>
-                        <!-- <label><input type="checkbox" value="タグ2"> タグ2</label><br> -->
-                        <!-- <label><input type="checkbox" value="タグ3"> タグ3</label><br> -->
                     {% endfor %}
                 </div>
                 <button type="submit" id="confirm-button" value="決定">決定</button>

@@ -29,21 +29,24 @@
     <div id="wholeContent">
         <main>
             <div class="tag-edit">
-                {% for tag in tags %}
-                    <h1>{{ tag['genre'] }}</h1>
-                    <div class="tags-container">
-                        <!-- タグ要素 -->
-                        <div class="tag tag-engineer" onclick="toggleIcon(this)" 
-                            {% if tag['color'] %}style="background-color: {{ tag['color'] }};"{% endif %}>
-                            {{ tag['tag'] }}
-                            <span class="tag-icon">
+                {% if tags %}
+                    {% for tag in tags %}
+                        <h1>{{ tag.genre }}</h1>
+                        <div class="tags-container">
+                            <!-- タグ要素 -->
+                            <div class="tag tag-engineer" onclick="toggleIcon(this)" 
+                                {% if tag.color %}style="background-color: {{ tag.color }};"{% endif %}>
+                                {{ tag.tag }}
+                                <span class="tag-icon">
 
-                                <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
+                                    <img src="{{ url_for('static', filename='images/batu.svg') }}" alt="icon" class="batu">
 
-                            </span>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </div>
                 <!-- <h1>入社年度</h1> -->
                 <!-- <div class="tags-container">
                     <div class="tag tag-engineer" onclick="toggleIcon(this)">
@@ -88,15 +91,17 @@
                     </div>
                 </div> -->
                 <!-- 新規タグ作成セクション -->
-                <!-- <form action="{{ url_for('create_tag') }}" method="post" id="createTafForm">              -->
-                <form id="createTagForm" onsubmit="event.preventDefault; createNewTag();">
+            <div>    <!-- <form action="{{ url_for('create_tag') }}" method="post" id="createTafForm">              -->
+                <form method="POST" id="createTagForm" onsubmit="event.preventDefault; createNewTag();">
                     <div class="new-tag-container">
                         <div class="color-ball" onclick="toggleColorPalette()"></div>
                         <select id="genreSelect" class="new-tag-genre" onchange="toggleNewGenreInput()">
                             <option value="">ジャンルを選択</option>
-                            {% for tag in tags %}
-                                <option value="new">{{ tag['genre'] }}</option>
-                            {% endfor %}
+                            {% if tags %}
+                                {% for tag in tags %}
+                                    <option value="new">{{ tag.genre }}</option>
+                                {% endfor %}
+                            {% endif %}
                             <option value="new">ジャンルを新規作成</option>
                         </select>
                         <input type="text" id="newGenreName" class="new-genre-input hidden" placeholder="新しいジャンル名を入力">
@@ -110,6 +115,7 @@
                         <!-- 他の色も追加可能 -->
                     </div>
                 </form>
+            
             </div>
         </main>
         <div id="overlay" class="overlay hidden"></div>
@@ -119,7 +125,7 @@
                 <div class="upload-instructions">
                     <p>ここにファイルをドラッグ＆ドロップ<br>または</p>
                     <!-- 修正したフォーム -->
-                    <form action="{{ url_for('tag_edit') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url_for('file_up') }}" method="POST" enctype="multipart/form-data">
                         <div class="file-upload-container">
                             <label for="fileUpload" class="file-upload-label">ファイルを選択</label>
                             <input type="file" id="fileUpload" name="file" multiple accept=".pdf">
@@ -133,21 +139,25 @@
             <div class="upload-container">
                 <div class="boss-upload-tag-content">
                     <div class="upload-tag-content">
-                        <h2>入社年度</h2>
-                        <div class="upload-tags-container">
-                            <!-- タグ要素 -->
-                            <div class="upload-tag" onclick="toggleIcon(this)">
+                        {% if tags %}
+                            {% for tag in tags %}
+                                <h2>{{ tag.genre }}</h2>
+                                <div class="upload-tags-container">
+                                    <!-- タグ要素 -->
+                                    <div class="upload-tag" onclick="toggleIcon(this)" {% if tag.color %}style="background-color: {{ tag.color }};" {%endif %}>
 
-                                2002年
-                                <span class="upload-tag-icon">
-                                    <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                        class="plus-purple">
-                                    <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                        class="check hidden">
-                                </span>
-                            </div>
-                        </div>
-                        <div class="upload-tag-content">
+                                        {{ tag.tag }}
+                                        <span class="upload-tag-icon">
+                                            <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                                class="plus-purple">
+                                            <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                                class="check hidden">
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <!-- <div class="upload-tag-content">
                             <h2>所属部署</h2>
                             <div class="upload-tags-container">
                                 <div class="upload-tag" onclick="toggleIcon(this)">
@@ -160,7 +170,7 @@
                                     </span>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

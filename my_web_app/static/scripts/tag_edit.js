@@ -127,6 +127,28 @@ function toggleNewGenreInput() {
     }
 }
 
+
+// フォームをリセットする関数
+function resetForm() {
+    document.getElementById('genreSelect').value = '';
+    document.getElementById('newGenreName').value = '';
+    document.getElementById('newTagName').value = '';
+
+    // カラーボールをリセット（デフォルトの色または空に）
+    const colorBall = document.querySelector('.color-ball');
+    if (colorBall) {
+        colorBall.style.backgroundColor = ''; // または初期色を設定
+    }
+
+    // 新しいジャンル入力欄を非表示にする（必要に応じて）
+    const newGenreInput = document.getElementById('newGenreName');
+    if (newGenreInput) {
+        newGenreInput.classList.add('hidden');
+    }
+}
+
+
+
 // 新しいタグ作成
 function createNewTag() {
     // event.preventDefault();  // フォームのデフォルトの送信を防止
@@ -135,6 +157,16 @@ function createNewTag() {
     const newGenreName = document.getElementById('newGenreName').value;
     const tagName = document.getElementById('newTagName').value;
     const color = document.querySelector('.color-ball').style.backgroundColor; // カラーボールの色を取得
+
+
+    if (!tagName) {
+        alert('タグ名を入力してください');
+        return;
+    }
+
+    if (genre === 'new' && !newGenreName) {
+        alert('新しいジャンル名を入力してください');
+    }
 
     // 新しいジャンルが入力されている場合、そのジャンルを使用
     if (genre === 'new' && newGenreName) {
@@ -159,98 +191,179 @@ function createNewTag() {
         const newOptionElement = genreSelect.querySelector('option[value="new"]');
         genreSelect.appendChild(newOptionElement);
 
-        // 新しいジャンルのセクションを作成
-        const newSection = document.createElement('div');
-        newSection.className = 'tag-section';
 
-        // h1要素を作成して追加
-        const newH1 = document.createElement('h1');
-        newH1.textContent = genre;
-        newSection.appendChild(newH1);
 
-        // 新しいtags-containerを作成して追加
-        const newTagsContainer = document.createElement('div');
-        newTagsContainer.className = 'tags-container';
-        newSection.appendChild(newTagsContainer);
 
-        // tag-editの最後に新しいセクションを追加
-        document.querySelector('.tag-edit').appendChild(newSection);
+        // // 新しいジャンルのセクションを作成
+        // const newSection = document.createElement('div');
+        // newSection.className = 'tag-section';
 
-        const data = {
-            genre: newGenreName,
-            tag: tagName,
-            color: color
-        };
+        // // h1要素を作成して追加
+        // const newH1 = document.createElement('h1');
+        // newH1.textContent = genre;
+        // newSection.appendChild(newH1);
 
-        fetch('/create_tag', {
-            method: 'POST',
-            headers: {
-                'Conten-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
+        // // 新しいtags-containerを作成して追加
+        // const newTagsContainer = document.createElement('div');
+        // newTagsContainer.className = 'tags-container';
+        // newSection.appendChild(newTagsContainer);
+
+        // // tag-editの最後に新しいセクションを追加
+        // document.querySelector('.tag-edit').appendChild(newSection);
+    }
+
+    const data = {
+        genre: genre,
+        tag: tagName,
+        color: color
+    };
+
+    fetch('/create_tag', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
             console.log('成功:', data);
-    
-        })
-        .catch((error) => {
-            console.log('エラー:', error);
-        });
-    }
-
-    if (genre && tagName) {
-        // タグの重複チェック
-        const existingTags = Array.from(document.querySelectorAll('.tags-container .tag')).map(tag => tag.textContent.trim());
-        if (existingTags.includes(tagName)) {
-            alert(`タグ「${tagName}」は既に存在しています。`);
-            return; // 処理を中断
-        }
-
-        // 新しいタグ要素を作成
-        const newTag = document.createElement('div');
-        newTag.className = 'tag'; // タグの基本スタイルを設定
-        newTag.style.backgroundColor = color; // カラーボールの色をタグに反映
-        newTag.textContent = tagName; // タグ名を設定
-
-        // batuアイコンを追加
-        const iconSpan = document.createElement('span');
-        iconSpan.className = 'tag-icon';
-        const batuIcon = document.createElement('img');
-        batuIcon.src = 'svg/batu.svg';
-        batuIcon.alt = 'icon';
-        batuIcon.className = 'batu';
-
-        // アイコンのクリックイベントを追加
-        batuIcon.addEventListener('click', function(event) {
-            event.stopPropagation();
-            newTag.remove();
-        });
-
-        // アイコンをタグに追加
-        iconSpan.appendChild(batuIcon);
-        newTag.appendChild(iconSpan);
-
-        // 新しいジャンルが作成されている場合、それに対応するtags-containerに追加
-        const matchingH1 = Array.from(document.querySelectorAll('h1')).find(h1 => h1.textContent.trim() === genre);
-        if (matchingH1) {
-            const tagsContainer = matchingH1.nextElementSibling;
-            if (tagsContainer && tagsContainer.classList.contains('tags-container')) {
-                tagsContainer.appendChild(newTag); // タグを対応するtags-containerに追加
-            }
+            updateUI(data.tag.genre, data.tag.tag, data.tag.color);
+            resetForm();
         } else {
-            alert(`ジャンル「${genre}」に対応するセクションが見つかりません。`);
+            throw new Error(data.error || 'Unknown error occured');
         }
-
-        // 入力欄をクリアする
-        document.getElementById('genreSelect').value = '';
-        document.getElementById('newGenreName').value = '';
-        document.getElementById('newTagName').value = '';
-        toggleNewGenreInput();  // 新しいジャンル名入力フィールドを非表示
-    } else {
-        alert('ジャンルとタグ名を入力してください。');
-    }
+    })
+    .catch((error) => {
+        console.error('エラー:', error);
+        alert('タグの作成中にエラーが発生:' + error.message);
+    });
 }
+
+//     if (genre && tagName) {
+//         // タグの重複チェック
+//         const existingTags = Array.from(document.querySelectorAll('.tags-container .tag')).map(tag => tag.textContent.trim());
+//         if (existingTags.includes(tagName)) {
+//             alert(`タグ「${tagName}」は既に存在しています。`);
+//             return; // 処理を中断
+//         }
+
+//         // 新しいタグ要素を作成
+//         const newTag = document.createElement('div');
+//         newTag.className = 'tag'; // タグの基本スタイルを設定
+//         newTag.style.backgroundColor = color; // カラーボールの色をタグに反映
+//         newTag.textContent = tagName; // タグ名を設定
+
+//         // batuアイコンを追加
+//         const iconSpan = document.createElement('span');
+//         iconSpan.className = 'tag-icon';
+//         const batuIcon = document.createElement('img');
+//         batuIcon.src = 'svg/batu.svg';
+//         batuIcon.alt = 'icon';
+//         batuIcon.className = 'batu';
+
+//         // アイコンのクリックイベントを追加
+//         batuIcon.addEventListener('click', function(event) {
+//             event.stopPropagation();
+//             newTag.remove();
+//         });
+
+//         // アイコンをタグに追加
+//         iconSpan.appendChild(batuIcon);
+//         newTag.appendChild(iconSpan);
+
+//         // 新しいジャンルが作成されている場合、それに対応するtags-containerに追加
+//         const matchingH1 = Array.from(document.querySelectorAll('h1')).find(h1 => h1.textContent.trim() === genre);
+//         if (matchingH1) {
+//             const tagsContainer = matchingH1.nextElementSibling;
+//             if (tagsContainer && tagsContainer.classList.contains('tags-container')) {
+//                 tagsContainer.appendChild(newTag); // タグを対応するtags-containerに追加
+//             }
+//         } else {
+//             alert(`ジャンル「${genre}」に対応するセクションが見つかりません。`);
+//         }
+
+//         // 入力欄をクリアする
+//         document.getElementById('genreSelect').value = '';
+//         document.getElementById('newGenreName').value = '';
+//         document.getElementById('newTagName').value = '';
+//         toggleNewGenreInput();  // 新しいジャンル名入力フィールドを非表示
+//     } else {
+//         alert('ジャンルとタグ名を入力してください。');
+//     }
+// }
+
+
+// UI更新関数
+function updateUI(genre, tagName, color) {
+    // let section = document.querySelector(`.tag-section h1:contains('${genre}')`);
+    let section = Array.from(document.querySelectorAll('.tag-section h1'))
+        .find(h1 => h1.textContent.trim() === genre);
+
+    if (!section) {
+        // 新しいジャンルの場合、新しいセクションを作成
+        section = createNewSection(genre);
+    } else {
+        section = section.closest('.tag-section');
+    }
+
+    const tagsContainer = section.querySelector('.tags-container');
+    const newTag = createTagElement(tagName, color);
+    tagsContainer.appendChild(newTag);
+}
+
+
+// 新しいセクション作成関数
+function createNewSection(genre) {
+    const newSection = document.createElement('div');
+    newSection.className = 'tag-section';
+
+    const newH1 = document.createElement('h1');
+    newH1.textContent = genre;
+    newSection.appendChild(newH1);
+
+    const newTagsContainer = document.createElement('div');
+    newTagsContainer.className = 'tags-container';
+    newSection.appendChild(newTagsContainer);
+
+    document.querySelector('.tag-edit').appendChild(newSection);
+    return newSection;
+}
+
+
+
+// タグ要素作成関数
+function createTagElement(tagName, color) {
+    const tagDiv = document.createElement('div');
+    tagDiv.className = 'tag';
+    tagDiv.style.backgroundColor = color;
+    tagDiv.onclick = function () { toggleIcon(this); };
+
+    tagDiv.textContent = tagName;
+
+    const span = document.createElement('span');
+    span.className = 'tag-icon';
+
+    const img = document.createElement('img');
+    img.src = '/static/images/batu.svg';
+    img.alt = 'icon';
+    img.className = 'batu';
+
+    span.appendChild(img);
+    tagDiv.appendChild(span);
+
+    return tagDiv;
+}
+
+
+
+
 
 // 色を変更する関数
 function changeColor(color, ballSelector) {
