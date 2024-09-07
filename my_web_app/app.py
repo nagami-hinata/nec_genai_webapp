@@ -649,6 +649,13 @@ def allowed_file(filename):
 
 @app.route('/tag_edit', methods=['GET', 'POST'])
 def tag_edit():
+    # セッションからgroup_unique_idを取得（新しく追加）
+    group_unique_id = session.get('unique_id_session')
+    
+    if group_unique_id is None:
+        flash('ログインが必要です。')
+        return redirect(url_for('login'))
+
     tags = []
     error_message = None
     if request.method == 'POST':
@@ -686,13 +693,11 @@ def tag_edit():
                     extracted_text = re.sub(r'\s{2,}', ' ', extracted_text)  # 空白2つ以上を1つに
                     extracted_text = re.sub(r'\n{2,}', '\n', extracted_text)  # 改行2つ以上を1つに
 
-                # データベースに保存 (page番号も保存)
+                # データベースに保存 (group_unique_idを含める)
                 cur.execute('''
-                    INSERT INTO Data (content, group_unique_id, folder_unique_id, page, file_name)
-                    VALUES (?, NULL, NULL, ?, ?)
-                ''', (extracted_text, page_num + 1, uploaded_file.filename))
-                
-            
+                    INSERT INTO Data (content, group_unique_id, folder_unique_id, page, file_name, thread_number, tag, genre, color)
+                    VALUES (?, ?, NULL, ?, ?, NULL, NULL, NULL, NULL)
+                ''', (extracted_text, group_unique_id, page_num + 1, uploaded_file.filename))
 
             # ジャンルとタグ、色をデータベースからとってきて変数に格納
             cur.execute("SELECT * FROM Tag")
@@ -722,17 +727,15 @@ def tag_edit():
                 if not os.path.exists(app.config['UPLOAD_FOLDER']):
                     os.makedirs(app.config['UPLOAD_FOLDER'])
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                # return jsonify({"message": f"File {filename} successfully uploaded"}), 201
             else:
                 return jsonify({"error": "Allowed file types are txt, pdf, png, jpg, jpeg, gif"}), 400
-            
+
+            flash('PDFからテキストが抽出され、保存されました。')
+            return redirect(url_for('tag_edit'))
 
         except Exception as e:
             flash('PDFからテキストを抽出できませんでした。')
             return redirect(url_for('tag_edit'))
-
-        flash('PDFからテキストが抽出され、保存されました。')
-        return redirect(url_for('tag_edit'))
 
     return render_template('tag_edit.html', tags=tags)
 
