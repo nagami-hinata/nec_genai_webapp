@@ -101,13 +101,9 @@ document.getElementById('fileUpload').addEventListener('change', function(event)
 });
 
 
-let currentThreadId = 0;
-let selectedTags = []; // タグ選択の結果を保持するための変数
 
 // 新しいスレッド作成時にポップアップを表示するだけ
 function createNewChat() {
-    currentThreadId++;
-
     // ポップアップを表示
     tagPopup.classList.remove('hidden');
 }
@@ -115,19 +111,18 @@ function createNewChat() {
 // 「決定」ボタンが押されたときにスレッドを作成
 confirmButton.addEventListener('click', () => {
     // 選択されたタグを取得
-    selectedTags = [];
     document.querySelectorAll('.tag-options input:checked').forEach((checkbox) => {
         selectedTags.push(checkbox.value);
     });
 
     console.log('選択されたタグ:', selectedTags);
 
-    // 新しいスレッドを作成
-    const newThread = document.createElement('div');
-    newThread.classList.add('thread');
-    const threadName = `スレッド${currentThreadId} - ${selectedTags.join(', ')}`;
-    newThread.innerHTML = `<span class="thread-name">${threadName}</span>`;
-    threadList.prepend(newThread);
+    // // 新しいスレッドを作成
+    // const newThread = document.createElement('div');
+    // newThread.classList.add('thread');
+    // const threadName = `スレッド${currentThreadId} - ${selectedTags.join(', ')}`;
+    // newThread.innerHTML = `<span class="thread-name">${threadName}</span>`;
+    // threadList.prepend(newThread);
 
     // アクティブスレッドを更新
     const activeThreadName = threadList.querySelector('.thread-name.active');
@@ -140,6 +135,7 @@ confirmButton.addEventListener('click', () => {
     // ポップアップを閉じる
     tagPopup.classList.add('hidden');
 });
+
 
 // 「新しいスレッド」ボタンがクリックされた時のイベント
 newChatButton.addEventListener('click', createNewChat);
@@ -227,7 +223,7 @@ function toggleThreads() {
 newChatButton.addEventListener('click', createNewChat);
 toggleThreadsButton.addEventListener('click', toggleThreads);
 
-threadList.addEventListener('click', (e) => {
+async function select_thread() {
     const threadElement = e.target.closest('.thread');
     if (threadElement) {
         const activeThreadName = threadList.querySelector('.thread-name.active');
@@ -236,9 +232,47 @@ threadList.addEventListener('click', (e) => {
         }
         const threadName = threadElement.querySelector('.thread-name');
         threadName.classList.add('active');
-        threadTitle.textContent = threadName.textContent;
+        current_thread = threadName.textContent;
     }
-});
+
+    // バックエンドにcurrent_threadを送る処理を追加
+    try {
+        const response = await fetch('../../select_thread', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                current_thread: current_thread,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+    } catch (error) {
+        console.error('Error:', error);
+        addMessage("エラーが発生しました");
+    }
+}
+
+
+
+// threadList.addEventListener('click', (e) => {
+//     const threadElement = e.target.closest('.thread');
+//     if (threadElement) {
+//         const activeThreadName = threadList.querySelector('.thread-name.active');
+//         if (activeThreadName) {
+//             activeThreadName.classList.remove('active');
+//         }
+//         const threadName = threadElement.querySelector('.thread-name');
+//         threadName.classList.add('active');
+//         threadTitle.textContent = threadName.textContent;
+//     }
+// });
 
 threadList.addEventListener('dblclick', (e) => {
     const threadElement = e.target.closest('.thread');
