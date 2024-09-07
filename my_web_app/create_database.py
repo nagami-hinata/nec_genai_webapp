@@ -85,7 +85,16 @@ def create_database():
     CREATE TABLE IF NOT EXISTS Thread (
         thread TEXT,
         tag TEXT,
-        user_unique_id TEXT
+        user_unique_id TEXT,
+        current_thread TEXT
+    )
+    ''')
+    
+    # Currentテーブルの構造
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Currnt (
+        current_thread TEXT,
+        unique_id TEXT
     )
     ''')
     
