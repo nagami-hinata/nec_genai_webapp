@@ -2,7 +2,7 @@
 * {
     box-sizing: border-box;
     }
-    
+
   *:focus {
     outline: none;
   }
@@ -22,14 +22,13 @@
     margin-bottom: 160px; /*ログインフィールドとの距離*/
     margin-top: 40px;
     }
-      
+
   .icon {
     width: 56px; /* アイコンのサイズを設定 */
     height: 56px;
     margin-right: 60px; /*アプリ名との距離*/
   }
-  
-  
+
   body {
   font-family: Arial;
   background-color: #fffcf0;
@@ -54,14 +53,24 @@
   /* bottom: 30px; */
   }
 
-  .user-login{
-  /* padding: 20px; */
-  /* align-items: center; */
+  .user-login {
+    display: flex;
+    flex-direction: column; /* 要素を縦に並べる */
+    align-items: center;    /* 垂直方向に中央揃え */
+    justify-content: center; /* 水平方向に中央揃え */
+}
 
-  }
+.user-login label.user {
+  margin-left: 30px; /* ラベルを右に寄せる */
+  /* または */
+  /* padding-left: 20px; */
+}
 
   .author-login{
-  /* padding: 20px; */
+    display: flex;
+    flex-direction: column; /* 要素を縦に並べる */
+    align-items: center;    /* 垂直方向に中央揃え */
+    justify-content: center; /* 水平方向に中央揃え */
   text-align: center;
   } 
 
@@ -135,10 +144,10 @@
       margin-top: 12px;
       margin-bottom: 20px;
     } */
-  
+
     /* .signin-link {
       font-size: 12px;
       color: #4393ad;
       display: block;
       margin-top: 24px;
-    } */
+    } */

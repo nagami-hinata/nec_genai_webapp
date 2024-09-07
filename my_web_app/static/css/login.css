@@ -1,115 +1,107 @@
-
-/* ２ページ目 */
-
 * {
   box-sizing: border-box;
-  }
-  
-  *:focus {
-    outline: none;
-  }
-  
-  body {
+}
+
+*:focus {
+  outline: none;
+}
+
+body {
   font-family: Arial;
   background-color: #ffffff;
-  padding: 50px;
-  }
+  padding: 80px; /* パディングを増やして大きく */
+}
 
-  .login {
-  margin: 20px auto;
-  width: 300px;
-  }
+.login {
+  margin: 30px auto; /* マージンを調整して中央配置を保つ */
+  width: 400px; /* 横幅を大きく */
+}
 
-  .login-field{
+.login-field {
   width: 100%;
-  height: 30px;
-  }
+  height: 40px; /* 高さを大きく */
+}
 
-  .login-screen {
+.login-screen {
   background-color: #FFF;
-  padding: 20px;
-  border-radius: 5px
-  }
-  
-  .app-title {
+  padding: 30px; /* パディングを増やして大きく */
+  border-radius: 10px; /* 角丸を少し大きく */
+}
+
+.app-title {
   text-align: center;
   color: #777;
-  }
-  
-  .login-form {
+  font-size: 36px; /* フォントサイズを大きく */
+}
+
+.login-form {
   text-align: center;
-  }
-  .control-group {
-  margin-bottom: 10px;
-  }
-  
-  input {
+}
+
+.control-group {
+  margin-bottom: 15px; /* マージンを増やして要素間のスペースを拡大 */
+}
+
+input {
   text-align: center;
   background-color: #ECF0F1;
   border: 2px solid transparent;
-  border-radius: 3px;
-  font-size: 16px;
+  border-radius: 5px;
+  font-size: 20px; /* フォントサイズを大きく */
   font-weight: 200;
-  padding: 10px 0;
-  width: 250px;
+  padding: 15px 0; /* パディングを増やして入力欄を大きく */
+  width: 100%; /* 横幅を100%に */
   transition: border .5s;
-  }
-  
-  input:focus {
+}
+
+input:focus {
   border: 2px solid #3D98BF;
   box-shadow: none;
-  }
-  
-  .btn {
-    border: 2px solid transparent;
-    background: #3D98BF;
-    color: #ffffff;
-    font-size: 16px;
-    line-height: 25px;
-    padding: 10px 0;
-    text-decoration: none;
-    text-shadow: none;
-    border-radius: 3px;
-    box-shadow: none;
-    transition: 0.25s;
-    display: block;
-    width: 250px;
-    margin: 0 auto;
-  }
+}
 
-  .btn2 {
-    border: 2px solid transparent;
-    background: #ffffff;
-    color: #3D98BF;
-    font-size: 16px;
-    line-height: 25px;
-    padding: 10px 0;
-    text-decoration: none;
-    text-shadow: none;
-    border-radius: 3px;
-    box-shadow: none;
-    transition: 0.25s;
-    display: block;
-    width: 250px;
-    margin: 0 auto;
-    margin-top: 12px;
-  }
-  
-  .btn:hover {
-    background-color: #247699;
-  }
-  
-  .login-link {
-    font-size: 12px;
-    color: #444;
-    display: block;
-    margin-top: 12px;
-    margin-bottom: 20px;
-  }
+.btn {
+  border: 2px solid transparent;
+  background: #3D98BF;
+  color: #ffffff;
+  font-size: 20px; /* フォントサイズを大きく */
+  line-height: 30px;
+  text-decoration: none;
+  text-shadow: none;
+  border-radius: 5px;
+  box-shadow: none;
+  transition: 0.25s;
+  height: 50px;
+  display: block;
+  width: 100%; /* 幅を100%に拡大 */
+  margin: 0 auto;
+}
 
-  /* .signin-link {
-    font-size: 12px;
-    color: #4393ad;
-    display: block;
-    margin-top: 24px;
-  } */
+.btn2 {
+  border: 2px solid transparent;
+  background: #ffffff;
+  color: #3D98BF;
+  font-size: 20px; /* フォントサイズを大きく */
+  line-height: 30px;
+  padding: 15px 0; /* パディングを増やしてボタンを大きく */
+  text-decoration: none;
+  text-shadow: none;
+  border-radius: 5px;
+  box-shadow: none;
+  transition: 0.25s;
+  display: block;
+  width: 100%; /* 幅を100%に拡大 */
+  margin: 0 auto;
+  margin-top: 15px;
+}
+
+.btn:hover {
+  background-color: #247699;
+}
+
+.login-link {
+  font-size: 14px; /* リンクのフォントサイズを大きく */
+  color: #444;
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
