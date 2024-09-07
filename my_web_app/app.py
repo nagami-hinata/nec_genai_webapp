@@ -415,7 +415,7 @@ def author_login():
 
     return render_template('author_login.html')
 
-
+current_thread = 1
 
 @app.route('/chatpage')
 def chatpage():
@@ -473,10 +473,12 @@ def tag_select():
     global thread_number  # thread_numberをグローバル変数として利用
     global current_thread_number
     
-    # 選択されたタグをすべて取得
-    selected_tag = request.form.get('tag')  # 配列として取得
+    # selected_tag
     
-    current_login_user_unique_id = session['unique_id_session']  # 現在ログインしているユーザーのユニークID取得
+    # 選択されたタグをすべて取得
+    selected_tag = request.form.get('selected_tag')
+    
+    current_login_user_unique_id = session.get('unique_id_session')  # 現在ログインしているユーザーのユニークID取得
     
     
     # データベースに接続
@@ -485,10 +487,10 @@ def tag_select():
     
     try:
         files = []
-        cur.execute("SELECT file_name FROM Data WHERE tag = ?", (selected_tag,))  # タグに対応したファイルを取得
+        cur.execute("SELECT DISTINCT file_name FROM Data WHERE tag = ?", (selected_tag,))  # タグに対応したファイルを取得
         files = [row[0] for row in cur.fetchall()]  # ファイル名を要素に持つ配列
         
-        files = list(set([row[0] for row in cur.fetchall()]))  # 重複の削除  
+        # files = list(set([row[0] for row in cur.fetchall()]))  # 重複の削除  
 
         # Threadテーブルに入れる
         cur.execute("INSERT INTO Thread (thread, tag, user_unique_id) VALUES (?, ?, ?)", (thread_number, selected_tag, current_login_user_unique_id))
@@ -624,6 +626,56 @@ def send_message():
         return jsonify({"error": "Unexpected response format from Cotomi API"}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+    
+@app.route('/select_thread', methods=['POST'])    
+def select_thread():
+    try:
+        data = request.json
+        
+        current_thread = data.get('current_thread')
+        
+        # current_threadがリストの場合は最初の要素を取得、そうでなければそのまま使用
+        if isinstance(current_thread, list):
+            current_thread = current_thread[0] if current_thread else None
+        
+        current_login_user_unique_id = session.get('unique_id_session')
+        
+        conn = sqlite3.connect('chat_app.db')
+        cur = conn.cursor()
+        
+        # Currentテーブルを更新
+        cur.execute("UPDATE Current SET current_thread = ? WHERE unique_id = ?", (current_thread, current_login_user_unique_id))
+        conn.commit()
+
+        # タグを取得
+        cur.execute("SELECT DISTINCT tag FROM Tag")
+        tags = [row[0] for row in cur.fetchall()]
+    
+        # 会話内容を取得
+        cur.execute("SELECT * FROM Chat WHERE user_unique_id = ?", (current_login_user_unique_id,))
+        chats = cur.fetchall()
+        
+        # Threadテーブルからuser_unique_idが同じものを取得
+        cur.execute("SELECT * FROM Thread WHERE user_unique_id = ?", (current_login_user_unique_id,))
+        threads = cur.fetchall()  # そのユーザーが持つすべてのスレッド
+            
+        # 結果を辞書のリストに変換
+        columns = [column[0] for column in cur.description]
+        chats = [dict(zip(columns, row)) for row in chats]   # オブジェクトの配列
+
+        return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)        
+        
+    except Exception as e:
+        # エラーハンドリング
+        return jsonify({"error": str(e)}), 500
+    
+    finally:
+        conn.close()
+    
+    
+    
+    
 
 
 @app.route('/data_reference', methods=['GET', 'POST'])
