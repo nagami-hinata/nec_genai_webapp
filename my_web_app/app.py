@@ -602,16 +602,29 @@ def send_message():
     user_message = data['message']
     # index = Data.query.filter_by(folder_unique_id=folder.folder_unique_id).all()
 
-    
-    conn = sqlite3.connect('chat_app.db')
-    cursor = conn.cursor()
+    unique_id = session.get('unique_id_session')
+
     
     
     # Cotomiとのやり取り
     try:
-        index = f"index_{current_index}"
+        conn = sqlite3.connect('chat_app.db')
+        cur = conn.cursor()
+        # index = f"index_{current_index}"
 
         ai_response = search_chat(user_message, index).text
+        
+        
+
+
+
+        # スレッドごとにデータベースに保存
+        # thread_number = 
+
+        conn.execute("INSERT INTO Chat (content, user_unique_id, is_user, thread_number) VALUES (?, ?, ?, ?,)", (ai_response, unique_id, "ai", thread_number))
+        conn.commit()
+        
+        
         
         # response = requests.post(COTOMI_API_URL, headers=headers, json=payload)
         # response.raise_for_status()  # エラーがあれば例外を発生させる
