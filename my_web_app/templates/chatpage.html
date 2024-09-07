@@ -37,6 +37,7 @@
         </div>
         <div class="thread-list" id="thread-list">
             <!-- 初期スレッドなし -->
+
             {% if threads %}
                 {% for thread in threads %}
                     <div class="thread">
@@ -70,6 +71,7 @@
             <span id="thread-title"></span>
         </div>
 
+
         <!-- 入力欄　ここは触らないで -->
         <div id="display">
             {% for chat in chats %}
@@ -89,6 +91,7 @@
 
     <!-- タグ選択ポップアップ -->
     <div id="tag-popup" class="tag-popup hidden">
+        <span class="close" onclick="closePopup()">&times;</span>
         <div class="tag-popup-content">
             <h3>タグを選択してください</h3>
             <form action="{{ url_for('tag_select') }}" method="post" id="tag-form">
@@ -102,7 +105,7 @@
         </div>
     </div>
 
-    <div id="upload-overlay" class="upload-overlay hidden"></div>
+        <div id="upload-overlay" class="upload-overlay hidden"></div>
         <div id="uploadPopup" class="upload-popup hidden">
             <span class="close" onclick="closePopup()">&times;</span>
             <div id="dropZone" class="dropZone">
