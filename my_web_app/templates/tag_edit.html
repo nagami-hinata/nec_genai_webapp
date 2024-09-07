@@ -33,7 +33,8 @@
                     <h1>{{ tag['genre'] }}</h1>
                     <div class="tags-container">
                         <!-- タグ要素 -->
-                        <div class="tag tag-engineer" onclick="toggleIcon(this)" style="background-color: {{ tag['color'] }};">
+                        <div class="tag tag-engineer" onclick="toggleIcon(this)" 
+                            {% if tag['color'] %}style="background-color: {{ tag['color'] }};"{% endif %}>
                             {{ tag['tag'] }}
                             <span class="tag-icon">
 
@@ -103,9 +104,9 @@
                         <button class="create-new-tag-button" type="submit">新規作成</button>
                     </div>
                     <div class="color-palette hidden">
-                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')"></div>
-                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')"></div>
-                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')"></div>
+                        <div class="color-option" style="background-color: red;" onclick="changeColor('#ff4545')"></div>
+                        <div class="color-option" style="background-color: green;" onclick="changeColor('#54aa3f')"></div>
+                        <div class="color-option" style="background-color: blue;" onclick="changeColor('#3434ff')"></div>
                         <!-- 他の色も追加可能 -->
                     </div>
                 </form>
