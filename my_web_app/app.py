@@ -483,71 +483,84 @@ def tag_select():
     conn = get_db_connection()
     cur = conn.cursor()
     
-    files = []
-    cur.execute("SELECT file_name FROM Data WHERE tag = ?", (selected_tag,))  # タグに対応したファイルを取得
-    files = [row[0] for row in cur.fetchall()]  # ファイル名を要素に持つ配列
-    
-    files = list(set([row[0] for row in cur.fetchall()]))  # 重複の削除  
-
-    # Threadテーブルに入れる
-    cur.execute("INSERT INTO Thread (thread, tag, user_unique_id) VALUES (?, ?, ?)", (thread_number, selected_tag, current_login_user_unique_id))
-
-    
-    # Threadテーブルからuser_unique_idが同じものを取得
-    cur.execute("SELECT * FROM Thread WHERE user_unique_id = ?", (current_login_user_unique_id,))
-    threads = cur.fetchall()
-    
-    # 会話履歴を取得
-    cur.execute("SELECT * FROM Chat WHERE user_unique_id = ?", (current_login_user_unique_id,))
-    chats = cur.fetchall()
-    
-    # タグを取得
-    cur.execute("SELECT tag FROM Data")
-    tags = cur.fetchall()
-    
-    
-    
-    conn.commit()  # データベースに変更をコミット
-    conn.close()  # データベースとの接続を切る
-    
-    
-
-    index = f"index_{thread_number}"  # インデックスの名前をつける
-    
-    current_thread_number = thread_number  # スレッドを作ったときの番号を現在のスレッド変数に代入
-    
-    thread_number += 1  # スレッドナンバーを更新
-    
-    
-    # 新規インデックスを作成
-    url = "https://api.cotomi.nec-cloud.com/cotomi-search-api/index/createIndex/"
-    
-    # APIキー. "Bearer"を忘れないこと. エラーになる.
-    key = "Bearer " + KEY
-    
-    # HTTPリクエストのヘッダ部分.
-    # テナントIDを指定.
-    headers = { "content-type": "application/json",
-                "x-nec-cotomi-tenant-id": TENANT_ID,
-                "Authorization": key
-            }
-    # HTTPリクエストのボディ部分.
-    # 新規作成するインデックス名を指定.
-    # グループIDを指定
-    payload = { "vectorIndex" : index,
-                "groupId": GROUP_ID
-                }
-    
-    # HTTPリクエストを送信.
-    # ResponseオブジェクトはHTTPレスポンスが入ってくる.
-    response = requests.post(url, headers=headers, json=payload)
-    
-    add_document_url = "https://api.cotomi.nec-cloud.com/cotomi-search-api/document/addDocument/"
-    # 作ったインデックスに選択されたタグ属性を持つファイルをアップ
-    for file in files:
-        success = register_file_to_index(file, index, add_document_url)
+    try:
+        files = []
+        cur.execute("SELECT file_name FROM Data WHERE tag = ?", (selected_tag,))  # タグに対応したファイルを取得
+        files = [row[0] for row in cur.fetchall()]  # ファイル名を要素に持つ配列
         
-    return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)
+        files = list(set([row[0] for row in cur.fetchall()]))  # 重複の削除  
+
+        # Threadテーブルに入れる
+        cur.execute("INSERT INTO Thread (thread, tag, user_unique_id) VALUES (?, ?, ?)", (thread_number, selected_tag, current_login_user_unique_id))
+
+        
+        # Threadテーブルからuser_unique_idが同じものを取得
+        cur.execute("SELECT * FROM Thread WHERE user_unique_id = ?", (current_login_user_unique_id,))
+        threads = cur.fetchall()
+        
+        # 会話履歴を取得
+        cur.execute("SELECT * FROM Chat WHERE user_unique_id = ?", (current_login_user_unique_id,))
+        chats = cur.fetchall()
+        
+        # タグを取得
+        cur.execute("SELECT DISTINCT tag FROM Data")
+        # results = cur.fetchall()
+        tags = [row[0] for row in cur.fetchall()]  # 配列として取り出す
+        
+        
+        tags_temp = tags
+        chats_temp = chats
+        threads_temp = threads
+        
+        conn.commit()  # データベースに変更をコミット
+        conn.close()  # データベースとの接続を切る
+        
+        
+
+        index = f"index_{thread_number}"  # インデックスの名前をつける
+        
+        current_thread_number = thread_number  # スレッドを作ったときの番号を現在のスレッド変数に代入
+        
+        thread_number += 1  # スレッドナンバーを更新
+        
+        
+        # 新規インデックスを作成
+        url = "https://api.cotomi.nec-cloud.com/cotomi-search-api/index/createIndex/"
+        
+        # APIキー. "Bearer"を忘れないこと. エラーになる.
+        key = "Bearer " + KEY
+        
+        # HTTPリクエストのヘッダ部分.
+        # テナントIDを指定.
+        headers = { "content-type": "application/json",
+                    "x-nec-cotomi-tenant-id": TENANT_ID,
+                    "Authorization": key
+                }
+        # HTTPリクエストのボディ部分.
+        # 新規作成するインデックス名を指定.
+        # グループIDを指定
+        payload = { "vectorIndex" : index,
+                    "groupId": GROUP_ID
+                    }
+        
+        # HTTPリクエストを送信.
+        # ResponseオブジェクトはHTTPレスポンスが入ってくる.
+        response = requests.post(url, headers=headers, json=payload)
+        
+        add_document_url = "https://api.cotomi.nec-cloud.com/cotomi-search-api/document/addDocument/"
+        # 作ったインデックスに選択されたタグ属性を持つファイルをアップ
+        for file in files:
+            success = register_file_to_index(file, index, add_document_url)
+            
+        # return render_template('chatpage.html', tags=tags_temp, chats=chats_tamp, threads=threads_temp)
+        return render_template('chatpage.html', tags=tags_temp, chats=chats_temp, threads=threads_temp)
+
+    except Exception as e:
+        print(f"エラーが発生: {e}")
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        conn.close()
 
 HTTP_HEADER_REQUEST_ID = 'x-nec-cotomi-request-id'
 HTTP_HEADER_TANANT_ID = "x-nec-cotomi-tenant-id"
@@ -776,6 +789,7 @@ def tag_edit():
 # fileをアップロードしたときのエンドポイント
 @app.route('/file_up', methods=['POST'])
 def file_up():
+    
     tags = []
     error_message = None
     # セッションからgroup_unique_idを取得（新しく追加）
