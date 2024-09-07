@@ -40,7 +40,7 @@
 
             {% if threads %}
                 {% for thread in threads %}
-                    <div class="thread">
+                    <div class="thread" onclick="select_thread()">
                         <span class="thread-name">スレッド{{ thread.thread }} - {{ thread.tag }}</span>
                     </div>
                 {% endfor %}
@@ -97,10 +97,10 @@
             <form action="{{ url_for('tag_select') }}" method="post" id="tag-form">
                 <div class="tag-options">
                     {% for tag in tags %}
-                        <label><input type="checkbox" value="{{ tag.tag }}" name="tag.tag">{{ tag.tag }}</label><br>
+                        <label><input type="checkbox" value="{{ tag.tag }}" name="selected_tags">{{ tag.tag }}</label><br>
                     {% endfor %}
                 </div>
-                <button type="submit" id="confirm-button" value="決定">決定</button>
+                <button type="submit" id="confirm-button">決定</button>
             </form>
         </div>
     </div>
