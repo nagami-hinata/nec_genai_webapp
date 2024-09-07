@@ -29,13 +29,12 @@
         <main>
             <div class="h1-container">
                 <div class="circle"></div>
-                <h1>今月</h1>
+                <h1>ファイル一覧</h1>
             </div>
 
             <div class="folders" id="foldersContainer">
-                <!-- サーバーから渡された data_files をループして表示 -->
                 {% for file in data_files %}
-                <div class="folder-item">
+                <div class="folder-item" data-file-name="{{ file['file_name'] }}">
                     <img src="{{ url_for('static', filename='images/dataname.svg') }}" class="dataImg">
                     <div class="dataName">
                         <span class="text">{{ file['file_name'] }}</span>

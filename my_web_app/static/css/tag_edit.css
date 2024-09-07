@@ -120,8 +120,9 @@ main {
 .tag-edit {
     position: relative;
     width: 80%;
+    height: 50%;
     padding: 20px;
-    height: calc(100vh - 80px);
+    /* height: calc(100vh - 80px); */
     box-sizing: border-box;
     overflow-y: auto; /* コンテンツがあふれる場合にスクロールさせる */
     padding-bottom: 60px; /* ボタンの高さ分だけ下に余白を確保 */
@@ -248,7 +249,7 @@ h1 {
 .color-ball {
     width: 27px;
     height: 27px;
-    background-color: #6654E1; /* デフォルトの色 */
+    background-color: blue; /* デフォルトの色 */
     border-radius: 50%;
     cursor: pointer;
     margin-right: 5px;
@@ -510,7 +511,11 @@ h1 {
 }
 
 .boss-upload-tag-content {
-    height: calc(40vh - 160px);
+    position: absolute;
+    /* height: calc(40vh - 160px); */
+    height: 85%;
+    width: 80%;
+    left: 2.5%;
     overflow-y: auto;
     gap: 0;
 }

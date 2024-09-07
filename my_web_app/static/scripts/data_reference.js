@@ -5,8 +5,16 @@ document.addEventListener("DOMContentLoaded", function () {
             if (menuItem.textContent.trim() === "ファイル名の変更") {
                 const folderItem = menuItem.closest('.folder-item');
                 const fileNameSpan = folderItem.querySelector('.text');
+                const fileName = folderItem.dataset.fileName;
 
-                enableEditing(fileNameSpan);
+                enableEditing(fileNameSpan, fileName);
+            } else if (menuItem.textContent.trim() === "削除") {
+                const folderItem = menuItem.closest('.folder-item');
+                const fileName = folderItem.dataset.fileName;
+
+                if (confirm("本当にこのファイルを削除しますか？")) {
+                    deleteFile(fileName);
+                }
             }
         });
     });
@@ -134,65 +142,124 @@ function changeColor(color) {
 
 
 // ファイル名編集の有効化処理
-function enableEditing(spanElement) {
-    // 既存のテキストを取得
+function enableEditing(spanElement, fileName) {
     const currentText = spanElement.textContent.trim();
-
-    // 新しいinput要素を作成し、既存のテキストを設定
     const inputElement = document.createElement("input");
     inputElement.type = "text";
     inputElement.value = currentText;
     inputElement.classList.add("edit-input");
 
-    // 元のspanをinputに置き換え
     const parentElement = spanElement.parentElement;
     parentElement.replaceChild(inputElement, spanElement);
 
-    // ellipsisを非表示にする
     const ellipsis = parentElement.querySelector('.ellipsis');
     if (ellipsis) {
         ellipsis.style.display = "none";
     }
 
-    // 入力フィールドにフォーカスを当てる
     inputElement.focus();
 
-    // フォーカスが外れたときに元のspanに戻す処理
     inputElement.addEventListener("blur", function() {
-        saveFileName(inputElement, currentText, ellipsis);
+        saveFileName(inputElement, currentText, ellipsis, fileName);
     });
 
-    // Enterキーが押されたときに元のspanに戻す処理
     inputElement.addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
-            saveFileName(inputElement, currentText, ellipsis);
+            saveFileName(inputElement, currentText, ellipsis, fileName);
         }
     });
 }
 
+
 // ファイル名保存処理
-function saveFileName(inputElement, originalText, ellipsis) {
+function saveFileName(inputElement, originalText, ellipsis, fileName) {
     const newFileName = inputElement.value.trim();
     const spanElement = document.createElement("span");
+    spanElement.classList.add("text");
 
     if (newFileName === "") {
         alert("ファイル名は空にできません。");
-        spanElement.textContent = originalText; // 元のファイル名を設定
-    } else {
-        spanElement.textContent = newFileName;
+        spanElement.textContent = originalText;
+        replaceInputWithSpan();
+        return;
     }
 
-    spanElement.classList.add("text");
+    console.log(`Sending request: file_name=${fileName}, new_name=${newFileName}`);
 
-    // input要素をspanに置き換え
-    const parentElement = inputElement.parentElement;
-    parentElement.replaceChild(spanElement, inputElement);
+    spanElement.textContent = newFileName;
 
-    // ellipsisを再表示
-    if (ellipsis) {
-        ellipsis.style.display = "inline-block";
+    // ファイル名を更新するためのAJAXリクエストを送信
+    fetch('/data_reference', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `action=rename&file_name=${encodeURIComponent(fileName)}&new_name=${encodeURIComponent(newFileName)}`
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        // 成功時の処理
+        const folderItem = inputElement.closest('.folder-item');
+        if (folderItem) {
+            folderItem.dataset.fileName = newFileName;
+        }
+        alert('ファイル名が正常に変更されました。');
+    })
+    .catch(error => {
+        console.error('エラー:', error);
+        alert('ファイル名の変更に失敗しました。');
+        spanElement.textContent = originalText;
+    })
+    .finally(() => {
+        replaceInputWithSpan();
+    });
+
+    function replaceInputWithSpan() {
+        const parentElement = inputElement.parentElement;
+        if (parentElement && parentElement.contains(inputElement)) {
+            parentElement.replaceChild(spanElement, inputElement);
+        }
+        if (ellipsis) {
+            ellipsis.style.display = "inline-block";
+        }
     }
 }
+
+// ファイル削除処理
+function deleteFile(fileName) {
+    fetch('/data_reference', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `action=delete&file_name=${encodeURIComponent(fileName)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            // DOMからファイルアイテムを削除
+            const fileItem = document.querySelector(`.folder-item[data-file-name="${fileName}"]`);
+            if (fileItem) {
+                fileItem.remove();
+            }
+            alert('ファイルが正常に削除されました。');
+        }
+    })
+    .catch(error => {
+        console.error('エラー:', error);
+        alert('ファイルの削除に失敗しました。');
+    });
+}
+
 
 // upload-popupに関係する部分のコード開始
 
@@ -285,4 +352,3 @@ document.getElementById('fileUpload').addEventListener('change', function(event)
         fileListContainer.appendChild(fileItem);
     });
 });
-

@@ -424,18 +424,19 @@ def chatpage():
     cur = conn.cursor()
     
     # タグを取得
-    cur.execute("SELECT tag FROM Data")
-    tags = cur.fetchall()
+    cur.execute("SELECT tag FROM Tag")
+    results = cur.fetchall()   # 全てのタグを取得
+    tags = list(dict.fromkeys([results[0] for result in results]))  
+    
     
     # 会話内容を取得
     current_login_user_unique_id = session['unique_id_session']  # 現在ログインしているユーザーのユニークID取得
-    
     cur.execute("SELECT * FROM Chat WHERE user_unique_id = ?", (current_login_user_unique_id,))
     chats = cur.fetchall()
     
     # Threadテーブルからuser_unique_idが同じものを取得
     cur.execute("SELECT * FROM Thread WHERE user_unique_id = ?", (current_login_user_unique_id,))
-    threads = cur.fetchall()
+    threads = cur.fetchall()  # そのユーザーが持つすべてのスレッド
         
     # 結果を辞書のリストに変換
     columns = [column[0] for column in cur.description]
@@ -612,28 +613,112 @@ def send_message():
         return jsonify({"error": str(e)}), 500
 
 
-
-
-
-
-
-
-
-
-
-@app.route('/data_reference')
+@app.route('/data_reference', methods=['GET', 'POST'])
 def data_reference():
+    group_unique_id = session.get('unique_id_session')
+    
+    app.logger.info(f"Accessed data_reference. group_unique_id: {group_unique_id}")
+
+    if group_unique_id is None:
+        app.logger.warning("User not logged in, redirecting to login page")
+        flash('ログインが必要です。', 'error')
+        return redirect(url_for('login'))
+
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # pageが1のファイルのみを取得
-    cur.execute('SELECT * FROM Data WHERE page = 1')
-    data_files = cur.fetchall()
-    conn.close()
+    if request.method == 'POST':
+        try:
+            action = request.form.get('action')
+            file_name = request.form.get('file_name')
 
-    return render_template('data_reference.html', data_files=data_files)
+            app.logger.info(f"Received POST request: action={action}, file_name={file_name}")
 
+            if not file_name:
+                raise ValueError('ファイル名が指定されていません。')
 
+            if action == 'rename':
+                new_name = request.form.get('new_name')
+                if not new_name:
+                    raise ValueError('新しいファイル名が指定されていません。')
+
+                app.logger.info(f"Renaming file: {file_name} to {new_name}")
+
+                # ファイルの存在確認
+                cur.execute('SELECT * FROM Data WHERE file_name = ? AND group_unique_id = ?', (file_name, group_unique_id))
+                result = cur.fetchone()
+                if result is None:
+                    app.logger.warning(f"File not found: file_name={file_name}, group_unique_id={group_unique_id}")
+                    raise ValueError('指定されたファイルが見つかりません。')
+
+                app.logger.info(f"File found: {result}")
+
+                cur.execute('''
+                    UPDATE Data 
+                    SET file_name = ? 
+                    WHERE file_name = ? AND group_unique_id = ?
+                ''', (new_name, file_name, group_unique_id))
+                
+                conn.commit()
+                app.logger.info(f"File renamed successfully: {file_name} to {new_name}")
+                return jsonify({"success": True, "message": "ファイル名が変更されました"})
+
+            elif action == 'delete':
+                app.logger.info(f"Deleting file: {file_name}")
+
+                # ファイルの存在確認
+                cur.execute('SELECT * FROM Data WHERE file_name = ? AND group_unique_id = ?', (file_name, group_unique_id))
+                result = cur.fetchone()
+                if result is None:
+                    app.logger.warning(f"File not found for deletion: file_name={file_name}, group_unique_id={group_unique_id}")
+                    raise ValueError('削除するファイルが見つかりません。')
+
+                app.logger.info(f"File found for deletion: {result}")
+
+                cur.execute('''
+                    DELETE FROM Data 
+                    WHERE file_name = ? AND group_unique_id = ?
+                ''', (file_name, group_unique_id))
+                
+                conn.commit()
+                app.logger.info(f"File deleted successfully: {file_name}")
+                return jsonify({"success": True, "message": "ファイルが削除されました"})
+
+            else:
+                app.logger.warning(f"Invalid action received: {action}")
+                raise ValueError('無効なアクションです。')
+
+        except ValueError as e:
+            app.logger.error(f"ValueError: {str(e)}")
+            return jsonify({"error": str(e)}), 400
+        except Exception as e:
+            conn.rollback()
+            app.logger.error(f"Unexpected error: {str(e)}", exc_info=True)
+            return jsonify({"error": "サーバーエラーが発生しました"}), 500
+        finally:
+            cur.close()
+            conn.close()
+
+    # GETリクエストの処理
+    try:
+        app.logger.info(f"Fetching files for group_unique_id: {group_unique_id}")
+        cur.execute('''
+            SELECT file_name, content, page
+            FROM Data
+            WHERE group_unique_id = ? AND page = 1
+            ORDER BY file_name
+        ''', (group_unique_id,))
+        
+        data_files = cur.fetchall()
+        app.logger.info(f"Retrieved {len(data_files)} files for group_unique_id={group_unique_id}")
+        return render_template('data_reference.html', data_files=data_files)
+    except Exception as e:
+        app.logger.error(f"Error fetching data: {str(e)}", exc_info=True)
+        flash('データの取得中にエラーが発生しました。', 'error')
+        return redirect(url_for('error_page'))
+    finally:
+        cur.close()
+        conn.close()
 
 # アップロードされたファイルを保存するフォルダー
 UPLOAD_FOLDER = 'files'
@@ -647,118 +732,279 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+# @app.route('/tag_edit', methods=['GET', 'POST'])
+# def tag_edit():
+#     # セッションからgroup_unique_idを取得（新しく追加）
+#     group_unique_id = session.get('unique_id_session')
+    
+#     if group_unique_id is None:
+#         flash('ログインが必要です。')
+#         return redirect(url_for('login'))
+
+#     tags = []
+#     error_message = None
+#     if request.method == 'POST':
+#         # アップロードされたファイルを取得
+#         if 'file' not in request.files:
+#             flash('ファイルが選択されていません。')
+#             return redirect(url_for('tag_edit'))
+
+#         uploaded_file = request.files['file']
+        
+#         if uploaded_file.filename == '':
+#             flash('ファイルが選択されていません。')
+#             return redirect(url_for('tag_edit'))
+
+#         if not uploaded_file.filename.endswith('.pdf'):
+#             flash('PDFファイルのみが許可されています。')
+#             return redirect(url_for('tag_edit'))
+
+#         # PDFファイルを読み込み
+#         try:
+#             pdf_reader = PyPDF2.PdfReader(uploaded_file)
+
+#             # データベース接続を確立
+#             conn = get_db_connection()
+#             conn.row_factory = sqlite3.Row
+#             cur = conn.cursor()
+
+#             # 各ページからテキストを抽出し、データベースに保存
+#             for page_num in range(len(pdf_reader.pages)):
+#                 page = pdf_reader.pages[page_num]
+#                 extracted_text = page.extract_text()
+
+#                 # 空白2つ以上と改行2つ以上をそれぞれ1つに置き換える
+#                 if extracted_text:  # extracted_text が None ではないことを確認
+#                     extracted_text = re.sub(r'\s{2,}', ' ', extracted_text)  # 空白2つ以上を1つに
+#                     extracted_text = re.sub(r'\n{2,}', '\n', extracted_text)  # 改行2つ以上を1つに
+
+#                 # データベースに保存 (group_unique_idを含める)
+#                 cur.execute('''
+#                     INSERT INTO Data (content, group_unique_id, folder_unique_id, page, file_name, thread_number, tag, genre, color)
+#                     VALUES (?, ?, NULL, ?, ?, NULL, NULL, NULL, NULL)
+#                 ''', (extracted_text, group_unique_id, page_num + 1, uploaded_file.filename))
+
+#             # ジャンルとタグ、色をデータベースからとってきて変数に格納
+#             cur.execute("SELECT * FROM Tag")
+            
+#             rows = cur.fetchall()
+            
+#             # 各行をオブジェクトに変換しリストに追加
+#             tags = [dict(row) for row in rows]
+            
+#             # コミットして接続を閉じる
+#             conn.commit()
+#             conn.close()
+            
+#             # ファイルが要求に含まれているか確認
+#             if 'file' not in request.files:
+#                 return jsonify({"error": "No file part in the request"}), 400
+#             file = request.files['file']
+    
+#             # ファイル名が空でないか確認
+#             if file.filename == '':
+#                 return jsonify({"error": "No file selected for uploading"}), 400
+    
+#             # ファイルが許可された拡張子を持っているか、安全なファイル名か確認
+#             if file and allowed_file(file.filename):
+#                 filename = secure_filename(file.filename)
+#                 # アップロードフォルダーが存在しない場合は作成
+#                 if not os.path.exists(app.config['UPLOAD_FOLDER']):
+#                     os.makedirs(app.config['UPLOAD_FOLDER'])
+#                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#             else:
+#                 return jsonify({"error": "Allowed file types are txt, pdf, png, jpg, jpeg, gif"}), 400
+
+#             flash('PDFからテキストが抽出され、保存されました。')
+#             return redirect(url_for('tag_edit'))
+
+#         except Exception as e:
+#             flash('PDFからテキストを抽出できませんでした。')
+#             return redirect(url_for('tag_edit'))
+
+#     return render_template('tag_edit.html', tags=tags)
+
+
 @app.route('/tag_edit', methods=['GET', 'POST'])
 def tag_edit():
-    tags = []
-    error_message = None
-    if request.method == 'POST':
-        # アップロードされたファイルを取得
-        if 'file' not in request.files:
-            flash('ファイルが選択されていません。')
-            return redirect(url_for('tag_edit'))
-
-        uploaded_file = request.files['file']
-        
-        if uploaded_file.filename == '':
-            flash('ファイルが選択されていません。')
-            return redirect(url_for('tag_edit'))
-
-        if not uploaded_file.filename.endswith('.pdf'):
-            flash('PDFファイルのみが許可されています。')
-            return redirect(url_for('tag_edit'))
-
-        # PDFファイルを読み込み
-        try:
-            pdf_reader = PyPDF2.PdfReader(uploaded_file)
-
-            # データベース接続を確立
-            conn = get_db_connection()
-            conn.row_factory = sqlite3.Row
-            cur = conn.cursor()
-
-            # 各ページからテキストを抽出し、データベースに保存
-            for page_num in range(len(pdf_reader.pages)):
-                page = pdf_reader.pages[page_num]
-                extracted_text = page.extract_text()
-
-                # 空白2つ以上と改行2つ以上をそれぞれ1つに置き換える
-                if extracted_text:  # extracted_text が None ではないことを確認
-                    extracted_text = re.sub(r'\s{2,}', ' ', extracted_text)  # 空白2つ以上を1つに
-                    extracted_text = re.sub(r'\n{2,}', '\n', extracted_text)  # 改行2つ以上を1つに
-
-                # データベースに保存 (page番号も保存)
-                cur.execute('''
-                    INSERT INTO Data (content, group_unique_id, folder_unique_id, page, file_name)
-                    VALUES (?, NULL, NULL, ?, ?)
-                ''', (extracted_text, page_num + 1, uploaded_file.filename))
-                
-            
-
-            # ジャンルとタグ、色をデータベースからとってきて変数に格納
-            cur.execute("SELECT * FROM Tag")
-            
-            rows = cur.fetchall()
-            
-            # 各行をオブジェクトに変換しリストに追加
-            tags = [dict(row) for row in rows]
-            
-            # コミットして接続を閉じる
-            conn.commit()
-            conn.close()
-            
-            # ファイルが要求に含まれているか確認
-            if 'file' not in request.files:
-                return jsonify({"error": "No file part in the request"}), 400
-            file = request.files['file']
+    # セッションからgroup_unique_idを取得（新しく追加）
+    group_unique_id = session.get('unique_id_session')
     
-            # ファイル名が空でないか確認
-            if file.filename == '':
-                return jsonify({"error": "No file selected for uploading"}), 400
-    
-            # ファイルが許可された拡張子を持っているか、安全なファイル名か確認
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                # アップロードフォルダーが存在しない場合は作成
-                if not os.path.exists(app.config['UPLOAD_FOLDER']):
-                    os.makedirs(app.config['UPLOAD_FOLDER'])
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                # return jsonify({"message": f"File {filename} successfully uploaded"}), 201
-            else:
-                return jsonify({"error": "Allowed file types are txt, pdf, png, jpg, jpeg, gif"}), 400
-            
-
-        except Exception as e:
-            flash('PDFからテキストを抽出できませんでした。')
-            return redirect(url_for('tag_edit'))
-
-        flash('PDFからテキストが抽出され、保存されました。')
-        return redirect(url_for('tag_edit'))
-
-    return render_template('tag_edit.html', tags=tags)
-
-
-# ジャンルとタグを新規作成したときのエンドポイント
-@app.route('/create_tag', methods=['POST'])
-def create_tag():
-    data = request.json
-    
-    genre = data['genre']
-    tag = data['tag']
-    color = data['color']
+    if group_unique_id is None:
+        flash('ログインが必要です。')
+        return redirect(url_for('login'))
     
     # データベース接続を確立
     conn = get_db_connection()
-    # cur = conn.cursor()
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
 
+    # ジャンルとタグ、色をデータベースからとってきて変数に格納
+    # 後でunique_idが同じものだけ取ってくるようにする
+    cur.execute("SELECT * FROM Tag")
+            
+    rows = cur.fetchall()
+            
+    # 各行をオブジェクトに変換しリストに追加
+    tags = [dict(row) for row in rows]
+            
+    # コミットして接続を閉じる
+    conn.commit()
+    conn.close()
+    
+    return render_template('tag_edit.html', tags=tags)
+
+ 
+
+
+# fileをアップロードしたときのエンドポイント
+@app.route('/file_up', methods=['POST'])
+def file_up():
+    tags = []
+    error_message = None
+    # セッションからgroup_unique_idを取得（新しく追加）
+    group_unique_id = session.get('unique_id_session')
+    
+    # アップロードされたファイルを取得
+    if 'file' not in request.files:
+        flash('ファイルが選択されていません。')
+        return redirect(url_for('tag_edit'))
+
+    uploaded_file = request.files['file']
+            
+    if uploaded_file.filename == '':
+        flash('ファイルが選択されていません。')
+        return redirect(url_for('tag_edit'))
+
+    if not uploaded_file.filename.endswith('.pdf'):
+        flash('PDFファイルのみが許可されています。')
+        return redirect(url_for('tag_edit'))
+
+
+    # PDFファイルを読み込み
     try:
-        conn.execute('INSERT INTO Tag (genre, tag, color) VALUES (?, ?, ?)', (genre, tag, color))
+        pdf_reader = PyPDF2.PdfReader(uploaded_file)
+
+        # データベース接続を確立
+        conn = get_db_connection()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+
+        # 各ページからテキストを抽出し、データベースに保存
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            extracted_text = page.extract_text()
+
+            # 空白2つ以上と改行2つ以上をそれぞれ1つに置き換える
+            if extracted_text:  # extracted_text が None ではないことを確認
+                extracted_text = re.sub(r'\s{2,}', ' ', extracted_text)  # 空白2つ以上を1つに
+                extracted_text = re.sub(r'\n{2,}', '\n', extracted_text)  # 改行2つ以上を1つに
+
+            # データベースに保存 (group_unique_idを含める)
+            cur.execute('''
+                INSERT INTO Data (content, group_unique_id, folder_unique_id, page, file_name, thread_number, tag, genre, color)
+                VALUES (?, ?, NULL, ?, ?, NULL, NULL, NULL, NULL)
+            ''', (extracted_text, group_unique_id, page_num + 1, uploaded_file.filename))
+
+        file = request.files['file']
+           
+        # # ファイルが要求に含まれているか確認
+        # if 'file' not in request.files:
+        #     return jsonify({"error": "No file part in the request"}), 400
+        
+        # # ファイル名が空でないか確認
+        # if file.filename == '':
+        #     return jsonify({"error": "No file selected for uploading"}), 400
+        
+        # ファイルが許可された拡張子を持っているか、安全なファイル名か確認
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            # アップロードフォルダーが存在しない場合は作成
+            if not os.path.exists(app.config['UPLOAD_FOLDER']):
+                os.makedirs(app.config['UPLOAD_FOLDER'])
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # else:
+            # return jsonify({"error": "Allowed file types are txt, pdf, png, jpg, jpeg, gif"}), 400
+
+        flash('PDFからテキストが抽出され、保存されました。')
+        # return render_template('tag_edit.html', tags=tags)
+        return redirect(url_for('tag_edit'))
+
+    except Exception as e:
+        flash('PDFからテキストを抽出できませんでした。')
+        # return render_template('tag_edit.html', tags=tags)
+        return redirect(url_for('tag_edit'))
+
+
+
+# ジャンルとタグを新規作成したときのエンドポイント
+# @app.route('/create_tag', methods=['POST'])
+# def create_tag():
+#     try:
+#         tags = []
+#         data = request.json
+    
+#         genre = data['genre']
+#         tag = data['tag']
+#         color = data['color']
+
+    
+#         # データベース接続を確立
+#         conn = get_db_connection()
+#         cur = conn.cursor()
+    
+#         conn.execute("INSERT INTO Tag (genre, tag, color) VALUES (?, ?, ?)", (genre, tag, color))
+#         conn.commit()
+    
+#         # ジャンルとタグ、色をデータベースからとってきて変数に格納
+#         cur.execute("SELECT * FROM Tag")
+            
+#         rows = cur.fetchall()
+            
+#         # 各行をオブジェクトに変換しリストに追加
+#         tags = [dict(row) for row in rows]
+            
+#         return render_template('tag_edit.html', tags=tags)
+#     except sqlite3.Error as e:
+#         conn.rollback()
+#         return jsonify({'error': str(e)}), 500
+#     finally:
+#         conn.close()
+#         return render_template('tag_edit.html', tags=tags)
+
+
+@app.route('/create_tag', methods=['POST'])
+def create_tag():
+    try:
+        data = request.json
+        
+        genre = data['genre']
+        tag = data['tag']
+        color = data['color']
+        
+        # データベース接続を確立
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        cur.execute("INSERT INTO Tag (genre, tag, color) VALUES (?, ?, ?)", (genre, tag, color))
         conn.commit()
-        return jsonify({'success': True, 'message': 'タグが正常に作成されました'}), 200
+        
+        # 新しく追加したタグの情報を返す
+        return jsonify({
+            'success': True,
+            'tag': {
+                'genre': genre,
+                'tag': tag,
+                'color': color
+            }
+        }), 200
     except sqlite3.Error as e:
         conn.rollback()
         return jsonify({'error': str(e)}), 500
     finally:
-        conn.close()    
+        conn.close()
+
+    
 
 
 @app.route('/user_edit')
