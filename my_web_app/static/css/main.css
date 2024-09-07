@@ -24,8 +24,7 @@
     }
 
   .icon {
-    width: 56px; /* アイコンのサイズを設定 */
-    height: 56px;
+    width: 400px; /* アイコンのサイズを設定 */
     margin-right: 60px; /*アプリ名との距離*/
   }
 
@@ -58,12 +57,6 @@
     flex-direction: column; /* 要素を縦に並べる */
     align-items: center;    /* 垂直方向に中央揃え */
     justify-content: center; /* 水平方向に中央揃え */
-}
-
-.user-login label.user {
-  margin-left: 30px; /* ラベルを右に寄せる */
-  /* または */
-  /* padding-left: 20px; */
 }
 
   .author-login{
@@ -133,6 +126,7 @@
   label {
        /* margin-bottom: 20px; */
        font-size: 24px;
+       color: rgb(95, 95, 95);
   } 
 
 

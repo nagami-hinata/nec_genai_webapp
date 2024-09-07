@@ -8,7 +8,7 @@
 
 body {
   font-family: Arial;
-  background-color: #ffffff;
+  background-color: #fffcf0;
   padding: 80px; /* パディングを増やして全体を大きく */
 }
 
@@ -23,7 +23,7 @@ body {
 }
 
 .login-screen {
-  background-color: #FFF;
+  background-color: #fffcf0;
   padding: 30px; /* パディングを増やして大きく */
   border-radius: 10px; /* 角丸を少し大きく */
 }
@@ -34,6 +34,9 @@ body {
   font-size: 36px; /* フォントサイズを大きく */
 }
 
+.app-info{
+  margin-bottom: 60px;
+}
 .login-form {
   text-align: center;
 }
@@ -78,7 +81,7 @@ input:focus {
 
 .btn2 {
   border: 2px solid transparent;
-  background: #ffffff;
+  background: #fffcf0;
   color: #3D98BF;
   font-size: 20px; /* フォントサイズを大きく */
   line-height: 30px;
