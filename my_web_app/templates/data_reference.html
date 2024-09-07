@@ -116,7 +116,52 @@
                 </div>
             </div>
         </div>
+        <div id="upload-overlay" class="upload-overlay hidden"></div>
+        <div id="uploadPopup" class="upload-popup hidden">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <div id="dropZone" class="dropZone">
+                <div class="upload-instructions">
+                    <p>ここにファイルをドラッグ＆ドロップ<br>または</p>
+                    <div class="file-upload-container">
+                        <label for="fileUpload" class="file-upload-label">ファイルを選択</label>
+                        <input type="file" id="fileUpload" multiple accept=".pdf">
+                    </div>
+                </div>
+                <!-- ファイルリストを表示するための要素 -->
+                <div id="fileList" class="file-list"></div>
+            </div>
 
+            <div class="upload-container">
+                <div class="boss-upload-tag-content">
+                    <div class="upload-tag-content">
+                        <h2>入社年度</h2>
+                        <div class="upload-tags-container">
+                            <!-- タグ要素 -->
+                            <div class="upload-tag" onclick="toggleIcon(this)">
+                            2002年
+                            <span class="upload-tag-icon">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon" class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                    </div>
+                    <!-- 以下、他のタグ要素が続きます -->
+                    <div class="upload-tag-content">
+                        <h2>所属部署</h2>
+                        <div class="upload-tags-container">
+                            <!-- タグ要素 -->
+                            <div class="upload-tag" onclick="toggleIcon(this)">
+                            エンジニア
+                            <span class="upload-tag-icon">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon" class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <button class="upload-button">アップロード</button>
+            </div>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='scripts/data_reference.js') }}"></script>

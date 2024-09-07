@@ -14,9 +14,6 @@ import uuid
 import bcrypt
 
 
-app = Flask(__name__)
-
-
 # Cotomi APIの設定
 COTOMI_API_URL = "https://api.cotomi.com/v1/chat/completions"
 COTOMI_API_KEY = os.environ.get('COTOMI_API_KEY')  # 環境変数に設定してるものをとってきてる
@@ -480,8 +477,8 @@ if __name__ == "__main__":
 
 
 # 新しいスレッドを作り、タグを選択したときの処理　　ここで
-@app.route('/select_tag', methods=['POST'])
-def select_tag():
+# @app.route('/select_tag', methods=['POST'])
+# def select_tag():
     
 
 

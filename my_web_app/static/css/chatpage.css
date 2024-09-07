@@ -6,7 +6,6 @@
 
 
 
-/* サイドバーの設定 */
 #leftSidebar {
     width: 70px;
     height: 100vh;
@@ -20,23 +19,39 @@
     position: fixed;
     left: 0;
     top: 0;
-    justify-content: flex-start;
-    /* 画像を上に寄せる */
-    padding-top: 45px;
-    /* 上部に少し余白を追加 */
-    z-index: 100;
-}
-.hukidashi,
-.folder,
-.trashbox,
-.settings {
-    /*ここが15pxだと上手くいかないので0に修正*/
-    width: 35px;
-    /* 画像の幅を統一 */
-    margin-bottom: 35px;
-    /* 下のアイテムとの間隔,上の修正を受けての調整*/
+    justify-content: flex-start; /* 画像を上に寄せる */
+    padding-top: 20px; /* 上部に少し余白を追加 */
 }
 
+.addfile {
+    background-color: #8080e2;
+    border-radius: 20px;
+}
+
+.hukidashi, .folder, .trashbox, .settings {
+    padding: 15px;
+    width: 35px; /* 画像の幅を統一 */
+    bottom: 5px; /* 下のアイテムとの間隔 */
+}
+
+.upload {
+    padding: 15px;
+    width: 35px; /* 他のアイコンと同じサイズに揃える */
+    margin-top: auto; /* サイドバーの下部に配置する */
+    margin-bottom: 0px; /* サイドバーの底から少しスペースを追加 */
+}
+
+.profile {
+    padding: 15px;
+    width: 50px; /* 他のアイコンと同じサイズに揃える */
+    margin-bottom: 20px; /* サイドバーの底から少しスペースを追加 */
+}
+
+.deletefile:hover, .usechat:hover {
+    background-color: #6654E1; /* ホバー時の背景色を設定 */
+    border-radius: 20px; /* 背景を丸くする */
+    padding: 15px; /* アイコン周りに余白を追加 */
+}
 
 
 
@@ -232,7 +247,7 @@
     display: flex;
     border-left: #565869;
     background-color: rgb(255, 255, 255);
-    overflow: hidden;   
+    overflow: hidden;
 }
 
 
@@ -273,7 +288,7 @@
 
 
 
-/* 
+/*
 #top-bar {
     position: absolute;
     top: 0px;
@@ -453,4 +468,393 @@ background-color: #4673fa;
 
 #confirm-button:hover {
     background-color: #3580a0;
+}
+
+/* オーバーレイのスタイル */
+.upload-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
+    z-index: 1000; /* ポップアップの背面に表示 */
+    pointer-events: auto; /* オーバーレイのクリックを有効化 */
+}
+
+/* オーバーレイを非表示にするクラス */
+.upload-overlay.hidden {
+    display: none;
+}
+
+/* ポップアップのスタイル */
+.upload-popup {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10000; /* オーバーレイの前面に表示 */
+    width: 80vw; /* 必要に応じて幅を調整 */
+    height: 80vh;
+}
+
+.upload-popup.hidden {
+    display: none; /* 非表示にするクラス */
+}
+
+/* ポップアップとオーバーレイが非表示の場合 */
+.hidden {
+    display: none;
+    pointer-events: none; /* クリックできないようにする */
+}
+
+.popup .close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.upload-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #54aa3f;
+}
+
+.dropZone {
+    position: absolute;
+    top: 60px;
+    width: calc(80vw - 100px);
+    height: calc(40vh - 100px);
+    display: flex; /* フレックスボックスレイアウトを使用 */
+    justify-content: space-between; /* 左右に要素を配置 */
+    padding: 20px;
+    border-radius: 30px;
+    background-color: #f1f1f1;
+    transition: background-color 0.3s;
+}
+
+.upload-instructions {
+    width: 50%; /* 左半分 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.file-upload-container {
+    position: relative;
+    display: inline-block;
+}
+
+.file-upload-label {
+    display: inline-block;
+    background-color: #ffffff;
+    color: #202020;
+    padding: 10px 20px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    border: 1.5px solid #a8a8a8; /* 枠線を追加 */
+    margin-top: -50px;
+}
+
+.file-upload-label:hover {
+    background-color: #f1f1f1; /* ホバー時の背景色 */
+}
+
+#fileUpload {
+    display: none; /* ファイル入力要素を隠す */
+}
+
+#upload-fileList {
+    width: 30%;
+    height: calc(40vh - 150px);
+    overflow-y: auto;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    background-color: #ffffff;
+    font-weight: bold;
+    color: #464646;
+}
+
+#upload-fileList div {
+    height: 40px;
+    border: 1px solid #dadada;
+    border-radius: 15px;
+    padding: 10px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+
+#upload-fileList div span {
+    flex-grow: 1; /* スペースをファイル名部分が占有 */
+    margin-right: 10px; /* ボタンとの間に余白を作る */
+    white-space: nowrap; /* 改行をしない */
+    overflow: hidden; /* 溢れた部分を隠す */
+    text-overflow: ellipsis; /* 溢れた部分を省略する */
+}
+
+#upload-fileList div button {
+    background-color: #ff4d4d;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 50px;  /* ボタンの幅を固定 */
+    height: 30px; /* ボタンの高さを固定 */
+    flex-shrink: 0; /* ボタンが小さくならないようにする */
+    text-align: center;
+}
+
+#fileList div button:hover {
+    background-color: #ff1a1a;
+}
+
+.upload-container {
+    position: absolute;
+    top: calc(40vh - 10px);
+    width: calc(80vw - 140px);
+    height: calc(40vh - 90px);
+    padding: 20px;
+    padding-bottom: 0px;
+    border: 2px solid #f1f1f1; /* 線の太さと色を設定 */
+    border-radius: 30px; /* 角を丸くする */
+    background-color: #ffffff;
+    margin-top: 20px; /* 他の要素とスペースを作るために追加 */
+}
+
+.upload-tags-container {
+    display: flex;
+    flex-wrap: wrap; /* タグを複数行に並べる */
+    gap: 20px; /* タグ間の間隔 */
+    padding: 10px;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.upload-tag-content {
+    background-color: #ffffff;
+    padding-bottom: 10px;
+}
+
+.boss-upload-tag-content {
+    height: calc(40vh - 160px);
+    overflow-y: auto;
+    gap: 0;
+}
+
+/* Webkit系 (Chrome, Safari) */
+.boss-upload-tag-content::-webkit-scrollbar {
+    width: 0px; /* スクロールバーの幅をゼロに */
+    background: transparent; /* スクロールバーの背景を透明に */
+}
+
+/* Firefox */
+.boss-upload-tag-content {
+    scrollbar-width: none; /* スクロールバーの幅を無くす */
+    -ms-overflow-style: none; /* Internet Explorer用のスタイル */
+}
+
+/* Edge, IE 10-11 */
+.boss-upload-tag-content {
+    -ms-overflow-style: none; /* IE, Edge用 */
+}
+
+h2 {
+    width: calc(75vw - 130px);
+    font-size: 20px;
+    color: #000000;
+    font-weight: 5000;
+    text-align: left; /* 左寄せ */
+    padding-left: 10px; /* liと同じ余白に設定 */
+    margin-left: 20px; /* 左マージンをリセット */
+    margin-bottom: 0px;
+    margin-top: 0;
+}
+
+.upload-new-tag-container {
+    position: absolute;
+    bottom: 1px; /* ポップアップの下端からの距離 */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px; /* 各要素間の間隔 */
+    align-items: center; /* 垂直方向に中央揃え */
+    padding: 10px 30px;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+.upload-tag {
+    background-color: #503CE1; /* 未選択時の背景色 */
+    color: #ffffff; /* 未選択時のテキスト色 */
+    min-width: 90px; /* タグの最小幅を設定 */
+    padding: 5px 15px;
+    padding-bottom: 4px;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* ボーダーカラーの変更にもトランジションを追加 */
+    text-align: center;
+    display: flex; /* テキストとアイコンを横並びに */
+    justify-content: space-between; /* テキストとアイコンを左右に配置 */
+    align-items: center; /* コンテンツを垂直方向に中央揃え */
+    font-size: 16px;
+}
+.upload-tag-icon img.plus-purple {
+    width: 25px; /* plus-purpleアイコンの幅 */
+    height: 25px; /* plus-purpleアイコンの高さ */
+    margin-right: -3px;
+    margin-left: 3px;
+    margin-top: 3px;
+}
+
+.upload-tag-icon img.check {
+    width: 20px; /* checkアイコンの幅を調整 */
+    height: 20px; /* checkアイコンの高さを調整 */
+    padding: 2.5px;
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: -3px;
+
+}
+
+.upload-tag.selected {
+    background-color: #503CE1 !important; /* 選択時の背景色を紫に変更 */
+    color: #fff !important; /* テキスト色を白に変更 */
+    padding: 5px 15px; /* 選択時のパディングも同じに設定 */
+    border: 2px solid #503CE1; /* 選択時のボーダー幅も同じに設定 */
+    padding-right:15px;
+}
+
+
+.upload-color-ball {
+    width: 27px;
+    height: 27px;
+    background-color: #6654E1; /* デフォルトの色 */
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.upload-color-palette {
+    display: grid;
+    grid-template-columns: repeat(6, 25px); /* 6列のグリッド */
+    grid-template-rows: repeat(2, 25px); /* 2行のグリッド */
+    gap: 3px;
+    position: fixed;
+    padding: 5px;
+    padding-bottom: 0px;
+    padding-right: 2px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    left: 33%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999; /* z-indexを高く設定して最前面に表示 */
+    bottom: 150px;
+}
+
+.upload-color-option {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.upload-new-tag-genre, .upload-new-genre-input, .upload-new-tag-input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+.upload-new-tag-genre {
+    min-width: 150px;
+}
+
+.upload-new-genre-input {
+    min-width: 150px; /* 新しいジャンル入力欄の最小幅を設定 */
+    border-radius: 25px;
+}
+
+.upload-new-tag-input {
+    flex-grow: 1; /* 入力欄が残りのスペースを埋める */
+    border-radius: 25px;
+}
+
+.upload-create-new-tag-button {
+    color: #3D98BF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    width: 120px; /* 幅を固定して変形を防ぐ */
+    text-align: center;
+    box-sizing: border-box; /* パディングを含めた幅を計算 */
+    font-weight: 500;
+    bottom: 20px;
+}
+
+.upload-create-new-tag-button:hover {
+    background-color: #d6d6d6;
+}
+
+.upload-button {
+    position: fixed;
+    bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    bottom: 20px;
+    left: calc(50% - 65px);
+    background-color: #3D98BF;
+    color: white;
+}
+
+.upload-button:hover {
+    background-color: #1d7ca5;
+}
+
+.close{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px; /* バツ印のサイズ */
+    font-weight: bold;
+    color: #aaa; /* バツ印の色 */
+    cursor: pointer;
+    z-index: 1600; /* 必要に応じて値を調整 */
+}
+
+.close:hover,
+.close:focus {
+    color: #000; /* ホバーやフォーカス時の色 */
+    text-decoration: none;
+    cursor: pointer;
 }
