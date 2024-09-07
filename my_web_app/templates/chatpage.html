@@ -42,9 +42,9 @@
                     <span class="thread-name">スレッド{ thread.thread } - { thread.tag }</span>
                 </div>
             {% endfor %}
-        </div> 
+        </div>
     </div>
-<!-- 
+<!--
 const newThread = document.createElement('div');
 newThread.classList.add('thread');
 const threadName = `スレッド${currentThreadId} - ${selectedTags.join(', ')}`;
@@ -85,11 +85,11 @@ threadTitle.textContent = threadName; -->
 
     <!-- const messageDiv = document.createElement('div'); //新しいdiv要素を作成
     messageDiv.className = isUser ? 'message user-message' : 'message ai-message'; //trueのときuser falseのときai
-    
+
     const bubble = document.createElement('div');
     bubble.className = 'message-bubble';
     bubble.textContent = text; //作成したdivのテキストに第一引数を代入
-    
+
     messageDiv.appendChild(bubble);
     display.appendChild(messageDiv); -->
 
@@ -112,6 +112,7 @@ threadTitle.textContent = threadName; -->
 
     <!-- タグ選択ポップアップ -->
     <div id="tag-popup" class="tag-popup hidden">
+        <span class="close" onclick="closePopup()">&times;</span>
         <div class="tag-popup-content">
             <h3>タグを選択してください</h3>
             <form action="{{ url_for('tag_select') }}" method="post" id="tag-form">
@@ -127,7 +128,7 @@ threadTitle.textContent = threadName; -->
         </div>
     </div>
 
-    <div id="upload-overlay" class="upload-overlay hidden"></div>
+        <div id="upload-overlay" class="upload-overlay hidden"></div>
         <div id="uploadPopup" class="upload-popup hidden">
             <span class="close" onclick="closePopup()">&times;</span>
             <div id="dropZone" class="dropZone">

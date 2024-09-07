@@ -122,158 +122,90 @@
             </div>
 
             <!-- ポップアップとオーバーレイ -->
-            <div id="overlay" class="overlay"></div>
-            <div id="popup" class="popup">
-                <div class="popup-content">
-                    <h3>所属部署</h3>
-                    <div class="tags-edit-container">
-                        <!-- タグ要素 -->
-                        <div class="tagedit" onclick="toggleIcon(this)">
-                            エンジニア
-                            <span class="tag-icon">
-                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                    class="plus-purple">
-                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                    class="check hidden">
-                            </span>
-                        </div>
-                        <div class="tagedit" onclick="toggleIcon(this)">
-                            デザイナー
-                            <span class="tag-icon">
-                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                    class="plus-purple">
-                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                    class="check hidden">
-                            </span>
-                        </div>
-                        <div class="tagedit" onclick="toggleIcon(this)">
-                            営業
-                            <span class="tag-icon">
-                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                    class="plus-purple">
-                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                    class="check hidden">
-                            </span>
-                        </div>
-                        <div class="tagedit" onclick="toggleIcon(this)">
-                            開発
-                            <span class="tag-icon">
-                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                    class="plus-purple">
-                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                    class="check hidden">
-                            </span>
-                        </div>
-                        <div class="tagedit" onclick="toggleIcon(this)">
-                            人事
-                            <span class="tag-icon">
-                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                    class="plus-purple">
-                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                    class="check hidden">
-                            </span>
-                        </div>
-                        <!-- 他のタグが続きます -->
-                    </div>
-                    <h3>入社年度</h3>
-                    <div class="tags-edit-container">
-                        <!-- タグ要素 -->
-                        <div class="tagedit" onclick="toggleIcon(this)">
-                            1999年
-                            <span class="tag-icon">
-                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                    class="plus-purple">
-                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                    class="check hidden">
-                            </span>
-                        </div>
-                        <div class="tagedit" onclick="toggleIcon(this)">
-                            1999年
-                            <span class="tag-icon">
-                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                    class="plus-purple">
-                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                    class="check hidden">
-                            </span>
-                        </div>
-                        <div class="tagedit" onclick="toggleIcon(this)">
-                            1999年
-                            <span class="tag-icon">
-                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                    class="plus-purple">
-                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                    class="check hidden">
-                            </span>
-                        </div>
-                        <div class="tagedit" onclick="toggleIcon(this)">
-                            1999年
-                            <span class="tag-icon">
-                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                    class="plus-purple">
-                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                    class="check hidden">
-                            </span>
-                        </div>
-                        <div class="tagedit" onclick="toggleIcon(this)">
-                            1999年
-                            <span class="tag-icon">
-                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
-                                    class="plus-purple">
-                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
-                                    class="check hidden">
-                            </span>
-                        </div>
-                        <!-- 他のタグが続きます -->
-                    </div>
-                    <!-- 新規タグ作成セクション -->
-                    <div class="new-tag-container">
-                        <div class="color-ball" onclick="toggleColorPalette()"></div> <!-- カラーボール -->
-                        <select id="genreSelect" class="new-tag-genre" onchange="toggleNewGenreInput()">
-                            <option value="">ジャンルを選択</option>
-                            <option value="入社年度">入社年度</option>
-                            <option value="所属部署">所属部署</option>
-                            <option value="new">ジャンルを新規作成</option>
-                        </select>
-                        <input type="text" id="newGenreName" class="new-genre-input hidden" placeholder="新しいジャンル名を入力">
-                        <input type="text" id="newTagName" class="new-tag-input" placeholder="タグ名を入力">
-                        <button class="create-new-tag-button" onclick="createNewTag()">新規作成</button>
-                    </div>
-                    <div class="popup-buttons">
-                        <button class="save-button">保存</button>
-                    </div>
-                    <div class="color-palette hidden">
-                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')">
-                        </div>
-                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')">
-                        </div>
-                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')">
-                        </div>
-                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')">
-                        </div>
-                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')">
-                        </div>
-                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')">
-                        </div>
-                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')">
-                        </div>
-                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')">
-                        </div>
-                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')">
-                        </div>
-                        <div class="color-option" style="background-color: #ff4545;" onclick="changeColor('#ff4545')">
-                        </div>
-                        <div class="color-option" style="background-color: #54aa3f;" onclick="changeColor('#54aa3f')">
-                        </div>
-                        <div class="color-option" style="background-color: #3434ff;" onclick="changeColor('#3434ff')">
-                        </div>
-                        <!-- 他の色も追加可能 -->
+        <div id="overlay" class="overlay"></div>
+        <div id="popup" class="popup">
+            <span class="close-button">&times;</span>
+            <div class="popup-content">
+                <h3>所属部署</h3>
+                <div class="tags-container">
+                    <div class="edit-tag" onclick="toggleIcon(this)">
+                        エンジニア
+                        <span class="edit-tag-icon">
+                            <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                class="plus-purple">
+                            <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                class="check hidden">
+                        </span>
                     </div>
                 </div>
+                <h3>入社年度</h3>
+                <div class="tags-container">
+                    <div class="edit-tag" onclick="toggleIcon(this)">
+                        1999年
+                        <span class="edit-tag-icon">
+                            <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon"
+                                class="plus-purple">
+                            <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon"
+                                class="check hidden">
+                        </span>
+                    </div>
+                </div>
+                <div class="popup-buttons">
+                    <button class="save-button">保存</button>
+                </div>
+                <div class="color-palette hidden">
+                    <div class="color-option" style="background-color: #ff4545;"
+                        onclick="changeColor('#ff4545')"></div>
+                    <!-- 他の色オプションが続きます -->
+                </div>
+            </div>
+        </div>
+        <div id="upload-overlay" class="upload-overlay hidden"></div>
+        <div id="uploadPopup" class="upload-popup hidden">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <div id="dropZone" class="dropZone">
+                <div class="upload-instructions">
+                    <p>ここにファイルをドラッグ＆ドロップ<br>または</p>
+                    <div class="file-upload-container">
+                        <label for="fileUpload" class="file-upload-label">ファイルを選択</label>
+                        <input type="file" id="fileUpload" multiple accept=".pdf">
+                    </div>
+                </div>
+                <!-- ファイルリストを表示するための要素 -->
+                <div id="upload-fileList" class="upload-file-list"></div>
             </div>
 
-
-
-        </main>
+            <div class="upload-container">
+                <div class="boss-upload-tag-content">
+                    <div class="upload-tag-content">
+                        <h2>入社年度</h2>
+                        <div class="upload-tags-container">
+                            <!-- タグ要素 -->
+                            <div class="upload-tag" onclick="toggleIcon(this)">
+                            2002年
+                            <span class="upload-tag-icon">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon" class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                    </div>
+                    <!-- 以下、他のタグ要素が続きます -->
+                    <div class="upload-tag-content">
+                        <h2>所属部署</h2>
+                        <div class="upload-tags-container">
+                            <!-- タグ要素 -->
+                            <div class="upload-tag" onclick="toggleIcon(this)">
+                            エンジニア
+                            <span class="upload-tag-icon">
+                                <img src="{{ url_for('static', filename='images/plus.svg') }}" alt="icon" class="plus-purple">
+                                <img src="{{ url_for('static', filename='images/check.svg') }}" alt="icon" class="check hidden">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <button class="upload-button">アップロード</button>
+            </div>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='scripts/user_edit.js') }}"></script>
