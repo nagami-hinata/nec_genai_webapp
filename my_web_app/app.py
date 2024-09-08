@@ -458,7 +458,7 @@ def tag_select():
         cur.execute("SELECT DISTINCT file_name FROM Data WHERE tag = ?", (selected_tag,))  # タグに対応したファイルを取得
         files = [row[0] for row in cur.fetchall()]  # ファイル名を要素に持つ配列
 
-        # files = list(set([row[0] for row in cur.fetchall()]))  # 重複の削除 
+        # files = list(set([row[0] for row in cur.fetchall()]))  # 重複の削除
 
         # Threadテーブルに入れる
         cur.execute("INSERT INTO Thread (thread, tag, user_unique_id) VALUES (?, ?, ?)", (thread_number, selected_tag, current_login_user_unique_id))
