@@ -20,16 +20,9 @@ import argparse
 import uuid
 import bcrypt
 
-
-
-
-
 app = Flask(__name__)
 app.secret_key = 'session_key'  # セッションを暗号化するための秘密鍵
 app.permanent_session_lifetime = timedelta(minutes=30)  # セッションの有効期限を設定
-
-
-
 
 # Cotomi APIの設定
 COTOMI_API_URL = "https://api.cotomi.com/v1/chat/completions"
@@ -41,15 +34,10 @@ TENANT_ID = os.environ.get('TENANT_ID')
 
 KEY = COTOMI_API_KEY
 
-
-
-
-
 def get_db_connection():
     conn = sqlite3.connect('chat_app.db')
     conn.row_factory = sqlite3.Row
     return conn
-
 
 # ラグ用の関数
 # URL作成関数
@@ -143,7 +131,7 @@ def process_file(
         return FAILURE_CODE  # 失敗時のデフォルトエラーステータスコード
 
 # ファイルをAPIに送る
-def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, url=None, 
+def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, url=None,
          overwrite=True, custom_metadata=None, kwargs=None
         ):
     """
@@ -191,7 +179,6 @@ def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, ur
 
     return SUCCESS_CODE  # 全て成功時
 
-
 # ファイルをインデックスに登録する関数
 def register_file_to_index(file_path, index, api_url):
     key = f"Bearer {KEY}"
@@ -207,10 +194,6 @@ def register_file_to_index(file_path, index, api_url):
     }
     response = requests.post(api_url, headers=headers, json=payload)
     return response.status_code == 200
-
-
-
-
 
 # 検索対話用
 
@@ -254,12 +237,6 @@ def search_chat(
     # POSTリクエスト送信、レスポンス受信.
     response = requests.post(url, json=payload, headers=headers)
     return response
-
-
-
-
-
-
 
 @app.route('/')
 def index():
@@ -422,7 +399,7 @@ def chatpage():
     # タグを取得
     cur.execute("SELECT tag FROM Tag")
     results = cur.fetchall()   # 全てのタグを取得
-    tags = list(dict.fromkeys([results[0] for result in results])) 
+    tags = list(dict.fromkeys([results[0] for result in results]))
 
     # 会話内容を取得
     current_login_user_unique_id = session['unique_id_session']  # 現在ログインしているユーザーのユニークID取得
@@ -447,8 +424,6 @@ def chatpage():
 
         # 取得したタグ一覧を配列として送ってレンダリング
         return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)
-
-
 
 thread_number = 1
 current_thread_number = 1
@@ -574,8 +549,6 @@ def encode_file_to_base64(file_path):
         encoded_string = base64.b64encode(file.read()).decode("ascii")
     return encoded_string
 
-
-
 current_index = 1
 
 # チャット用のエンドポイント
@@ -664,7 +637,6 @@ def select_thread():
 
     finally:
         conn.close()
-
 
 @app.route('/data_reference', methods=['GET', 'POST'])
 def data_reference():
@@ -784,7 +756,6 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
 # @app.route('/tag_edit', methods=['GET', 'POST'])
 # def tag_edit():
 #     # セッションからgroup_unique_idを取得（新しく追加）
@@ -877,7 +848,6 @@ def allowed_file(filename):
 
 #     return render_template('tag_edit.html', tags=tags)
 
-
 @app.route('/tag_edit', methods=['GET', 'POST'])
 def tag_edit():
     # セッションからgroup_unique_idを取得（新しく追加）
@@ -907,8 +877,6 @@ def tag_edit():
 
     return render_template('tag_edit.html', tags=tags)
 
-
-
 # fileをアップロードしたときのエンドポイント
 @app.route('/file_up', methods=['POST'])
 def file_up():
@@ -932,7 +900,6 @@ def file_up():
     if not uploaded_file.filename.endswith('.pdf'):
         flash('PDFファイルのみが許可されています。')
         return redirect(url_for('tag_edit'))
-
 
     # PDFファイルを読み込み
     try:
@@ -988,8 +955,6 @@ def file_up():
         # return render_template('tag_edit.html', tags=tags)
         return redirect(url_for('tag_edit'))
 
-
-
 # ジャンルとタグを新規作成したときのエンドポイント
 # @app.route('/create_tag', methods=['POST'])
 # def create_tag():
@@ -1024,7 +989,6 @@ def file_up():
 #     finally:
 #         conn.close()
 #         return render_template('tag_edit.html', tags=tags)
-
 
 @app.route('/create_tag', methods=['POST'])
 def create_tag():
