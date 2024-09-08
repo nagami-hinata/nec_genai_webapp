@@ -210,7 +210,7 @@ def search_chat(
     temperature=1,  # LLMのランダム性パラメータ.
     search_option={"searchType": "hybrid", "chunkSize": 16, "topK": 4}, # 検索オプション.
     is_oneshot=False, # 単発の会話にするかどうか.
-    max_tokens=8096 # LLMトークンの最大値.
+    max_tokens=1024 # LLMトークンの最大値.
     ):
 
     # APIエンドポイントのURL.
@@ -454,9 +454,10 @@ def tag_select():
     cur = conn.cursor()
 
     try:
-        files = []
+        # files = []
         cur.execute("SELECT DISTINCT file_name FROM Data WHERE tag = ?", (selected_tag,))  # タグに対応したファイルを取得
-        files = [row[0] for row in cur.fetchall()]  # ファイル名を要素に持つ配列
+        # files = [row[0] for row in cur.fetchall()]  # ファイル名を要素に持つ配列
+        files = ['/Users/nagamihinata/Documents/nec_genai_webapp/my_web_app/files/NEC.pdf']
 
         # files = list(set([row[0] for row in cur.fetchall()]))  # 重複の削除
 
@@ -554,43 +555,54 @@ current_index = 1
 # チャット用のエンドポイント
 @app.route('/send_message', methods=['POST'])
 def send_message():
+    print('try1')
     global current_index
     global current_thread_number
 
     current_index = current_thread_number
 
+    print('try2')
     data = request.json
     user_message = data['message']
     # index = Data.query.filter_by(folder_unique_id=folder.folder_unique_id).all()
 
+    print('try3')
     unique_id = session.get('unique_id_session')
 
+    print('try4')
     # Cotomiとのやり取り
     try:
         conn = sqlite3.connect('chat_app.db')
         cur = conn.cursor()
-        # index = f"index_{current_index}"
+        index = f"index_{current_index}"
+        print('try5')
 
         ai_response = search_chat(user_message, index).text
+        print('try5')
 
         # スレッドごとにデータベースに保存
         # thread_number =
 
-        conn.execute("INSERT INTO Chat (content, user_unique_id, is_user, thread_number) VALUES (?, ?, ?, ?,)", (ai_response, unique_id, "ai", thread_number))
+        conn.execute("INSERT INTO Chat (content, user_unique_id, is_user, thread_number) VALUES (?, ?, ?, ?)", (ai_response, unique_id, "ai", thread_number))
         conn.commit()
+
+        print('try5')
 
         # response = requests.post(COTOMI_API_URL, headers=headers, json=payload)
         # response.raise_for_status()  # エラーがあれば例外を発生させる
 
         # cotomi_response = response.json()
         # ai_response = cotomi_response['choices'][0]['message']['content'].strip()
-
+        print('try5')
         return jsonify({"response": ai_response})
     except requests.exceptions.RequestException as e:
+        print('first error:', e)
         return jsonify({"error": str(e)}), 500
     except KeyError as e:
+        print('second error:', e)
         return jsonify({"error": "Unexpected response format from Cotomi API"}), 500
     except Exception as e:
+        print('third error:', e)
         return jsonify({"error": str(e)}), 500
 
 @app.route('/select_thread', methods=['POST'])
