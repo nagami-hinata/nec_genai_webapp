@@ -227,6 +227,7 @@ def search_chat(
                 "model": MODEL,
                 "searchOption": search_option,
                 "onshot": is_oneshot,
+                # "stream": True,
                 "maxTokens": max_tokens}
 
     # リクエストヘッダのパラメータ指定.
@@ -236,7 +237,16 @@ def search_chat(
 
     # POSTリクエスト送信、レスポンス受信.
     response = requests.post(url, json=payload, headers=headers)
-    return response
+    # レスポンスが正常かどうか確認
+    if response.status_code == 200:
+        # レスポンスのJSONデータを取得
+        data = response.json().get("answer", "回答が見つかりませんでした")
+        print(data)
+    else:
+        print(f"Error: {response.status_code}")
+
+    # return response
+    return data
 
 @app.route('/')
 def index():
@@ -577,7 +587,8 @@ def send_message():
         index = f"index_{current_index}"
         print('try5')
 
-        ai_response = search_chat(user_message, index).text
+        # ai_response = search_chat(user_message, index).text
+        ai_response = search_chat(user_message, index)
         print('try5')
 
         # スレッドごとにデータベースに保存
