@@ -456,7 +456,7 @@ async function sendMessage() {
 
 /* プロンプトの補完に関する処理 */
 // 実際はtermsの部分も変数にしてPDFを読み込ませた際に出力された配列をtermsとする
-const terms = ['りんごは赤い', 'ばななは黄色い', 'ぶどうは紫', 'マスカットは黄緑', 'みかんはオレンジ色'];
+const terms = ['りんごは赤い', 'ばななは黄色い', 'ぶどうは紫', 'マスカットは黄緑', 'みかんはオレンジ色', 'チームでのSlack利用時のルールについて教えてください。', '理学院数学系のB2からB3への進級方法を教えてください。', ''];
 const textarea = document.getElementById('textarea');
 
 let currentSuggestion = '';  //検索候補の変数を宣言
