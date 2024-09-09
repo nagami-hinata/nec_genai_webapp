@@ -20,16 +20,9 @@ import argparse
 import uuid
 import bcrypt
 
-
-
-
-
 app = Flask(__name__)
 app.secret_key = 'session_key'  # セッションを暗号化するための秘密鍵
 app.permanent_session_lifetime = timedelta(minutes=30)  # セッションの有効期限を設定
-
-
-
 
 # Cotomi APIの設定
 COTOMI_API_URL = "https://api.cotomi.com/v1/chat/completions"
@@ -41,15 +34,10 @@ TENANT_ID = os.environ.get('TENANT_ID')
 
 KEY = COTOMI_API_KEY
 
-
-
-
-
 def get_db_connection():
     conn = sqlite3.connect('chat_app.db')
     conn.row_factory = sqlite3.Row
     return conn
-
 
 # ラグ用の関数
 # URL作成関数
@@ -143,7 +131,7 @@ def process_file(
         return FAILURE_CODE  # 失敗時のデフォルトエラーステータスコード
 
 # ファイルをAPIに送る
-def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, url=None, 
+def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, url=None,
          overwrite=True, custom_metadata=None, kwargs=None
         ):
     """
@@ -164,7 +152,7 @@ def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, ur
         int: 成功時は0、失敗時はエラーステータスコードまたは1を返します。
     """
     print(f"Starting process for directory or file: {directory_or_file_path}")
-    
+
     if os.path.isdir(directory_or_file_path):
         for root, _, files in os.walk(directory_or_file_path):
             for file in files:
@@ -180,7 +168,7 @@ def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, ur
     elif os.path.isfile(directory_or_file_path):
         print(f"Processing single file: {directory_or_file_path}")
         status_code = process_file(                                                                         # 3個目の関数
-            api_url, auth_token, tenantId, vector_index, directory_or_file_path, 
+            api_url, auth_token, tenantId, vector_index, directory_or_file_path,
             url, overwrite, custom_metadata, kwargs
         )
         if status_code != SUCCESS_CODE:
@@ -190,7 +178,6 @@ def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, ur
         return FAILURE_CODE
 
     return SUCCESS_CODE  # 全て成功時
-
 
 # ファイルをインデックスに登録する関数
 def register_file_to_index(file_path, index, api_url):
@@ -208,10 +195,6 @@ def register_file_to_index(file_path, index, api_url):
     response = requests.post(api_url, headers=headers, json=payload)
     return response.status_code == 200
 
-
-
-
-
 # 検索対話用
 
 # 使用するモデル名.
@@ -227,14 +210,14 @@ def search_chat(
     temperature=1,  # LLMのランダム性パラメータ.
     search_option={"searchType": "hybrid", "chunkSize": 16, "topK": 4}, # 検索オプション.
     is_oneshot=False, # 単発の会話にするかどうか.
-    max_tokens=8096 # LLMトークンの最大値.
+    max_tokens=1024 # LLMトークンの最大値.
     ):
-    
+
     # APIエンドポイントのURL.
     url = "https://api.cotomi.nec-cloud.com/cotomi-api/v1/searchchat"
     # 認証パラメータ.
     key = "Bearer " + KEY
-    
+
     # リクエストボディのパラメータ指定.
     payload = { "userContent": user_content,
                 "systemContent": system_content,
@@ -244,22 +227,26 @@ def search_chat(
                 "model": MODEL,
                 "searchOption": search_option,
                 "onshot": is_oneshot,
+                # "stream": True,
                 "maxTokens": max_tokens}
-    
+
     # リクエストヘッダのパラメータ指定.
     headers = { "content-type": "application/json",
                 "x-nec-cotomi-client-id": client_id,
                 "Authorization": key }
-    
+
     # POSTリクエスト送信、レスポンス受信.
     response = requests.post(url, json=payload, headers=headers)
-    return response
+    # レスポンスが正常かどうか確認
+    if response.status_code == 200:
+        # レスポンスのJSONデータを取得
+        data = response.json().get("answer", "回答が見つかりませんでした")
+        print(data)
+    else:
+        print(f"Error: {response.status_code}")
 
-
-
-
-
-
+    # return response
+    return data
 
 @app.route('/')
 def index():
@@ -316,17 +303,15 @@ def login():
         # Userテーブルからメールアドレスでユーザー情報を取得
         cur.execute("SELECT * FROM User WHERE e_mail = ?", (email,))
         user = cur.fetchone()
-        
-        
+
         # セッション変数に格納する処理
         cur.execute("SELECT unique_id FROM Group_table WHERE e_mail = ?", (email,))
         result = cur.fetchone()  # メールに対応するunique_idを取得
-        
+
         if result:
             unique_id = result[0]
             session['unique_id_session'] = unique_id  # session変数に格納
-        
-        
+
         conn.close()
 
         if user is None:
@@ -387,17 +372,15 @@ def author_login():
         # Group_tableからメールアドレスでグループ情報を取得
         cur.execute("SELECT * FROM Group_table WHERE e_mail = ?", (email,))
         group = cur.fetchone()
-        
-        
+
         # セッション変数に格納する処理
         cur.execute("SELECT unique_id FROM Group_table WHERE e_mail = ?", (email,))
         result = cur.fetchone()  # メールに対応するunique_idを取得
-        
+
         if result:
             unique_id = result[0]
             session['unique_id_session'] = unique_id  # session変数に格納
-        
-        
+
         conn.close()
 
         if group is None:
@@ -422,39 +405,35 @@ def chatpage():
     # データベースに接続
     conn = get_db_connection()
     cur = conn.cursor()
-    
+
     # タグを取得
     cur.execute("SELECT tag FROM Tag")
     results = cur.fetchall()   # 全てのタグを取得
-    tags = list(dict.fromkeys([results[0] for result in results]))  
-    
-    
+    tags = list(dict.fromkeys([results[0] for result in results]))
+
     # 会話内容を取得
     current_login_user_unique_id = session['unique_id_session']  # 現在ログインしているユーザーのユニークID取得
     cur.execute("SELECT * FROM Chat WHERE user_unique_id = ?", (current_login_user_unique_id,))
     chats = cur.fetchall()
-    
+
     # Threadテーブルからuser_unique_idが同じものを取得
     cur.execute("SELECT * FROM Thread WHERE user_unique_id = ?", (current_login_user_unique_id,))
     threads = cur.fetchall()  # そのユーザーが持つすべてのスレッド
-        
+
     # 結果を辞書のリストに変換
     columns = [column[0] for column in cur.description]
     chats = []
     for row in chats:
         chats.append(dict(zip(columns, row)))  # オブジェクトの配列
-    
-    
+
     if tags == []:
         conn.close()
         return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)
-    else: 
+    else:
         conn.close()
-    
-        # 取得したタグ一覧を配列として送ってレンダリング
-        return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)        
 
-    
+        # 取得したタグ一覧を配列として送ってレンダリング
+        return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)
 
 thread_number = 1
 current_thread_number = 1
@@ -466,72 +445,67 @@ HTTP_HEADER_TANANT_ID = "x-nec-cotomi-tenant-id"
 # 成功時と失敗時(デフォルト)の返すコードをグローバル変数として定義
 SUCCESS_CODE = 0
 FAILURE_CODE = 1
-    
+
 # chatpageでタグを選択したときの処理
 @app.route('/tag_select', methods=['POST'])
 def tag_select():
     global thread_number  # thread_numberをグローバル変数として利用
     global current_thread_number
-    
+
     # selected_tag
-    
+
     # 選択されたタグをすべて取得
     selected_tag = request.form.get('selected_tag')
-    
+
     current_login_user_unique_id = session.get('unique_id_session')  # 現在ログインしているユーザーのユニークID取得
-    
-    
+
     # データベースに接続
     conn = get_db_connection()
     cur = conn.cursor()
-    
+
     try:
-        files = []
+        # files = []
         cur.execute("SELECT DISTINCT file_name FROM Data WHERE tag = ?", (selected_tag,))  # タグに対応したファイルを取得
-        files = [row[0] for row in cur.fetchall()]  # ファイル名を要素に持つ配列
-        
-        # files = list(set([row[0] for row in cur.fetchall()]))  # 重複の削除  
+        # files = [row[0] for row in cur.fetchall()]  # ファイル名を要素に持つ配列
+        files = ['/Users/nagamihinata/Documents/nec_genai_webapp/my_web_app/files/NEC.pdf']
+
+        # files = list(set([row[0] for row in cur.fetchall()]))  # 重複の削除
 
         # Threadテーブルに入れる
         cur.execute("INSERT INTO Thread (thread, tag, user_unique_id) VALUES (?, ?, ?)", (thread_number, selected_tag, current_login_user_unique_id))
 
-        
         # Threadテーブルからuser_unique_idが同じものを取得
         cur.execute("SELECT * FROM Thread WHERE user_unique_id = ?", (current_login_user_unique_id,))
         threads = cur.fetchall()
-        
+
         # 会話履歴を取得
         cur.execute("SELECT * FROM Chat WHERE user_unique_id = ?", (current_login_user_unique_id,))
         chats = cur.fetchall()
-        
+
         # タグを取得
         cur.execute("SELECT DISTINCT tag FROM Data")
         # results = cur.fetchall()
         tags = [row[0] for row in cur.fetchall()]  # 配列として取り出す
-        
-        
+
         tags_temp = tags
         chats_temp = chats
         threads_temp = threads
-        
+
         conn.commit()  # データベースに変更をコミット
         conn.close()  # データベースとの接続を切る
-        
-        
 
         index = f"index_{thread_number}"  # インデックスの名前をつける
-        
+
         current_thread_number = thread_number  # スレッドを作ったときの番号を現在のスレッド変数に代入
-        
+
         thread_number += 1  # スレッドナンバーを更新
-        
-        
+
         # 新規インデックスを作成
         url = "https://api.cotomi.nec-cloud.com/cotomi-search-api/index/createIndex/"
-        
+
         # APIキー. "Bearer"を忘れないこと. エラーになる.
         key = "Bearer " + KEY
-        
+
         # HTTPリクエストのヘッダ部分.
         # テナントIDを指定.
         headers = { "content-type": "application/json",
@@ -544,16 +518,16 @@ def tag_select():
         payload = { "vectorIndex" : index,
                     "groupId": GROUP_ID
                     }
-        
+
         # HTTPリクエストを送信.
         # ResponseオブジェクトはHTTPレスポンスが入ってくる.
         response = requests.post(url, headers=headers, json=payload)
-        
+
         add_document_url = "https://api.cotomi.nec-cloud.com/cotomi-search-api/document/addDocument/"
         # 作ったインデックスに選択されたタグ属性を持つファイルをアップ
         for file in files:
             success = register_file_to_index(file, index, add_document_url)
-            
+
         # return render_template('chatpage.html', tags=tags_temp, chats=chats_tamp, threads=threads_temp)
         return render_template('chatpage.html', tags=tags_temp, chats=chats_temp, threads=threads_temp)
 
@@ -586,77 +560,78 @@ def encode_file_to_base64(file_path):
         encoded_string = base64.b64encode(file.read()).decode("ascii")
     return encoded_string
 
-
-
 current_index = 1
 
 # チャット用のエンドポイント
 @app.route('/send_message', methods=['POST'])
 def send_message():
+    print('try1')
     global current_index
     global current_thread_number
-    
+
     current_index = current_thread_number
-    
+
+    print('try2')
     data = request.json
     user_message = data['message']
     # index = Data.query.filter_by(folder_unique_id=folder.folder_unique_id).all()
 
+    print('try3')
     unique_id = session.get('unique_id_session')
 
-    
-    
+    print('try4')
     # Cotomiとのやり取り
     try:
         conn = sqlite3.connect('chat_app.db')
         cur = conn.cursor()
-        # index = f"index_{current_index}"
+        index = f"index_{current_index}"
+        print('try5')
 
-        ai_response = search_chat(user_message, index).text
-        
-        
-
-
+        # ai_response = search_chat(user_message, index).text
+        ai_response = search_chat(user_message, index)
+        print('try5')
 
         # スレッドごとにデータベースに保存
-        # thread_number = 
+        # thread_number =
 
-        conn.execute("INSERT INTO Chat (content, user_unique_id, is_user, thread_number) VALUES (?, ?, ?, ?,)", (ai_response, unique_id, "ai", thread_number))
+        conn.execute("INSERT INTO Chat (content, user_unique_id, is_user, thread_number) VALUES (?, ?, ?, ?)", (ai_response, unique_id, "ai", thread_number))
         conn.commit()
-        
-        
-        
+
+        print('try5')
+
         # response = requests.post(COTOMI_API_URL, headers=headers, json=payload)
         # response.raise_for_status()  # エラーがあれば例外を発生させる
-        
+
         # cotomi_response = response.json()
         # ai_response = cotomi_response['choices'][0]['message']['content'].strip()
-        
+        print('try5')
         return jsonify({"response": ai_response})
     except requests.exceptions.RequestException as e:
+        print('first error:', e)
         return jsonify({"error": str(e)}), 500
     except KeyError as e:
+        print('second error:', e)
         return jsonify({"error": "Unexpected response format from Cotomi API"}), 500
     except Exception as e:
+        print('third error:', e)
         return jsonify({"error": str(e)}), 500
-    
-    
-@app.route('/select_thread', methods=['POST'])    
+
+@app.route('/select_thread', methods=['POST'])
 def select_thread():
     try:
         data = request.json
-        
+
         current_thread = data.get('current_thread')
-        
+
         # current_threadがリストの場合は最初の要素を取得、そうでなければそのまま使用
         if isinstance(current_thread, list):
             current_thread = current_thread[0] if current_thread else None
-        
+
         current_login_user_unique_id = session.get('unique_id_session')
-        
+
         conn = sqlite3.connect('chat_app.db')
         cur = conn.cursor()
-        
+
         # Currentテーブルを更新
         cur.execute("UPDATE Current SET current_thread = ? WHERE unique_id = ?", (current_thread, current_login_user_unique_id))
         conn.commit()
@@ -664,37 +639,32 @@ def select_thread():
         # タグを取得
         cur.execute("SELECT DISTINCT tag FROM Tag")
         tags = [row[0] for row in cur.fetchall()]
-    
+
         # 会話内容を取得
         cur.execute("SELECT * FROM Chat WHERE user_unique_id = ?", (current_login_user_unique_id,))
         chats = cur.fetchall()
-        
+
         # Threadテーブルからuser_unique_idが同じものを取得
         cur.execute("SELECT * FROM Thread WHERE user_unique_id = ?", (current_login_user_unique_id,))
         threads = cur.fetchall()  # そのユーザーが持つすべてのスレッド
-            
+
         # 結果を辞書のリストに変換
         columns = [column[0] for column in cur.description]
         chats = [dict(zip(columns, row)) for row in chats]   # オブジェクトの配列
 
-        return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)        
-        
+        return render_template('chatpage.html', tags=tags, chats=chats, threads=threads)
+
     except Exception as e:
         # エラーハンドリング
         return jsonify({"error": str(e)}), 500
-    
+
     finally:
         conn.close()
-    
-    
-    
-    
-
 
 @app.route('/data_reference', methods=['GET', 'POST'])
 def data_reference():
     group_unique_id = session.get('unique_id_session')
-    
+
     app.logger.info(f"Accessed data_reference. group_unique_id: {group_unique_id}")
 
     if group_unique_id is None:
@@ -732,11 +702,11 @@ def data_reference():
                 app.logger.info(f"File found: {result}")
 
                 cur.execute('''
-                    UPDATE Data 
-                    SET file_name = ? 
+                    UPDATE Data
+                    SET file_name = ?
                     WHERE file_name = ? AND group_unique_id = ?
                 ''', (new_name, file_name, group_unique_id))
-                
+
                 conn.commit()
                 app.logger.info(f"File renamed successfully: {file_name} to {new_name}")
                 return jsonify({"success": True, "message": "ファイル名が変更されました"})
@@ -754,10 +724,10 @@ def data_reference():
                 app.logger.info(f"File found for deletion: {result}")
 
                 cur.execute('''
-                    DELETE FROM Data 
+                    DELETE FROM Data
                     WHERE file_name = ? AND group_unique_id = ?
                 ''', (file_name, group_unique_id))
-                
+
                 conn.commit()
                 app.logger.info(f"File deleted successfully: {file_name}")
                 return jsonify({"success": True, "message": "ファイルが削除されました"})
@@ -786,7 +756,7 @@ def data_reference():
             WHERE group_unique_id = ? AND page = 1
             ORDER BY file_name
         ''', (group_unique_id,))
-        
+
         data_files = cur.fetchall()
         app.logger.info(f"Retrieved {len(data_files)} files for group_unique_id={group_unique_id}")
         return render_template('data_reference.html', data_files=data_files)
@@ -809,12 +779,11 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
 # @app.route('/tag_edit', methods=['GET', 'POST'])
 # def tag_edit():
 #     # セッションからgroup_unique_idを取得（新しく追加）
 #     group_unique_id = session.get('unique_id_session')
-    
+
 #     if group_unique_id is None:
 #         flash('ログインが必要です。')
 #         return redirect(url_for('login'))
@@ -828,7 +797,7 @@ def allowed_file(filename):
 #             return redirect(url_for('tag_edit'))
 
 #         uploaded_file = request.files['file']
-        
+
 #         if uploaded_file.filename == '':
 #             flash('ファイルが選択されていません。')
 #             return redirect(url_for('tag_edit'))
@@ -864,25 +833,25 @@ def allowed_file(filename):
 
 #             # ジャンルとタグ、色をデータベースからとってきて変数に格納
 #             cur.execute("SELECT * FROM Tag")
-            
+
 #             rows = cur.fetchall()
-            
+
 #             # 各行をオブジェクトに変換しリストに追加
 #             tags = [dict(row) for row in rows]
-            
+
 #             # コミットして接続を閉じる
 #             conn.commit()
 #             conn.close()
-            
+
 #             # ファイルが要求に含まれているか確認
 #             if 'file' not in request.files:
 #                 return jsonify({"error": "No file part in the request"}), 400
 #             file = request.files['file']
-    
+
 #             # ファイル名が空でないか確認
 #             if file.filename == '':
 #                 return jsonify({"error": "No file selected for uploading"}), 400
-    
+
 #             # ファイルが許可された拡張子を持っているか、安全なファイル名か確認
 #             if file and allowed_file(file.filename):
 #                 filename = secure_filename(file.filename)
@@ -902,16 +871,15 @@ def allowed_file(filename):
 
 #     return render_template('tag_edit.html', tags=tags)
 
-
 @app.route('/tag_edit', methods=['GET', 'POST'])
 def tag_edit():
     # セッションからgroup_unique_idを取得（新しく追加）
     group_unique_id = session.get('unique_id_session')
-    
+
     if group_unique_id is None:
         flash('ログインが必要です。')
         return redirect(url_for('login'))
-    
+
     # データベース接続を確立
     conn = get_db_connection()
     conn.row_factory = sqlite3.Row
@@ -920,37 +888,34 @@ def tag_edit():
     # ジャンルとタグ、色をデータベースからとってきて変数に格納
     # 後でunique_idが同じものだけ取ってくるようにする
     cur.execute("SELECT * FROM Tag")
-            
+
     rows = cur.fetchall()
-            
+
     # 各行をオブジェクトに変換しリストに追加
     tags = [dict(row) for row in rows]
-            
+
     # コミットして接続を閉じる
     conn.commit()
     conn.close()
-    
+
     return render_template('tag_edit.html', tags=tags)
-
- 
-
 
 # fileをアップロードしたときのエンドポイント
 @app.route('/file_up', methods=['POST'])
 def file_up():
-    
+
     tags = []
     error_message = None
     # セッションからgroup_unique_idを取得（新しく追加）
     group_unique_id = session.get('unique_id_session')
-    
+
     # アップロードされたファイルを取得
     if 'file' not in request.files:
         flash('ファイルが選択されていません。')
         return redirect(url_for('tag_edit'))
 
     uploaded_file = request.files['file']
-            
+
     if uploaded_file.filename == '':
         flash('ファイルが選択されていません。')
         return redirect(url_for('tag_edit'))
@@ -958,7 +923,6 @@ def file_up():
     if not uploaded_file.filename.endswith('.pdf'):
         flash('PDFファイルのみが許可されています。')
         return redirect(url_for('tag_edit'))
-
 
     # PDFファイルを読み込み
     try:
@@ -986,15 +950,15 @@ def file_up():
             ''', (extracted_text, group_unique_id, page_num + 1, uploaded_file.filename))
 
         file = request.files['file']
-           
+
         # # ファイルが要求に含まれているか確認
         # if 'file' not in request.files:
         #     return jsonify({"error": "No file part in the request"}), 400
-        
+
         # # ファイル名が空でないか確認
         # if file.filename == '':
         #     return jsonify({"error": "No file selected for uploading"}), 400
-        
+
         # ファイルが許可された拡張子を持っているか、安全なファイル名か確認
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -1014,35 +978,33 @@ def file_up():
         # return render_template('tag_edit.html', tags=tags)
         return redirect(url_for('tag_edit'))
 
-
-
 # ジャンルとタグを新規作成したときのエンドポイント
 # @app.route('/create_tag', methods=['POST'])
 # def create_tag():
 #     try:
 #         tags = []
 #         data = request.json
-    
+
 #         genre = data['genre']
 #         tag = data['tag']
 #         color = data['color']
 
-    
+
 #         # データベース接続を確立
 #         conn = get_db_connection()
 #         cur = conn.cursor()
-    
+
 #         conn.execute("INSERT INTO Tag (genre, tag, color) VALUES (?, ?, ?)", (genre, tag, color))
 #         conn.commit()
-    
+
 #         # ジャンルとタグ、色をデータベースからとってきて変数に格納
 #         cur.execute("SELECT * FROM Tag")
-            
+
 #         rows = cur.fetchall()
-            
+
 #         # 各行をオブジェクトに変換しリストに追加
 #         tags = [dict(row) for row in rows]
-            
+
 #         return render_template('tag_edit.html', tags=tags)
 #     except sqlite3.Error as e:
 #         conn.rollback()
@@ -1051,23 +1013,22 @@ def file_up():
 #         conn.close()
 #         return render_template('tag_edit.html', tags=tags)
 
-
 @app.route('/create_tag', methods=['POST'])
 def create_tag():
     try:
         data = request.json
-        
+
         genre = data['genre']
         tag = data['tag']
         color = data['color']
-        
+
         # データベース接続を確立
         conn = get_db_connection()
         cur = conn.cursor()
-        
+
         cur.execute("INSERT INTO Tag (genre, tag, color) VALUES (?, ?, ?)", (genre, tag, color))
         conn.commit()
-        
+
         # 新しく追加したタグの情報を返す
         return jsonify({
             'success': True,
@@ -1083,7 +1044,6 @@ def create_tag():
     finally:
         conn.close()
 
-    
 
 
 @app.route('/user_edit')

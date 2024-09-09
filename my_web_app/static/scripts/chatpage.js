@@ -38,15 +38,15 @@ function toggleUploadColorPalette() {
 }
 
 // アップロード用の色パレットのクリックイベント処理
-document.querySelectorAll('.upload-color-option').forEach(function(option) {
-    option.addEventListener('click', function() {
+document.querySelectorAll('.upload-color-option').forEach(function (option) {
+    option.addEventListener('click', function () {
         changeColor(this.style.backgroundColor, '.upload-color-ball');
     });
 });
 
 // アップロードタグのアイコンを切り替える
-document.querySelectorAll('.upload-tag-icon img.plus-purple').forEach(function(icon) {
-    icon.addEventListener('click', function(event) {
+document.querySelectorAll('.upload-tag-icon img.plus-purple').forEach(function (icon) {
+    icon.addEventListener('click', function (event) {
         event.stopPropagation(); // タグのクリックイベントが発生しないようにする
 
         const checkIcon = this.nextElementSibling; // checkアイコンを取得
@@ -57,8 +57,8 @@ document.querySelectorAll('.upload-tag-icon img.plus-purple').forEach(function(i
     });
 });
 
-document.querySelectorAll('.upload-tag-icon img.check').forEach(function(icon) {
-    icon.addEventListener('click', function(event) {
+document.querySelectorAll('.upload-tag-icon img.check').forEach(function (icon) {
+    icon.addEventListener('click', function (event) {
         event.stopPropagation(); // タグのクリックイベントが発生しないようにする
 
         const plusIcon = this.previousElementSibling; // plus-purpleアイコンを取得
@@ -78,7 +78,7 @@ function createFileListItem(file) {
 
     const deleteButton = document.createElement('button');
     deleteButton.textContent = '削除';
-    deleteButton.addEventListener('click', function() {
+    deleteButton.addEventListener('click', function () {
         fileItem.remove(); // ファイルアイテムを削除
     });
 
@@ -89,7 +89,7 @@ function createFileListItem(file) {
 }
 
 // ファイルアップロード時にリストに追加
-document.getElementById('fileUpload').addEventListener('change', function(event) {
+document.getElementById('fileUpload').addEventListener('change', function (event) {
     const fileList = event.target.files;
     const fileListContainer = document.getElementById('upload-fileList');
 
@@ -395,7 +395,15 @@ function addMessage(text, isUser) {  //新しいメッセージを表示エリ�
 
     const bubble = document.createElement('div');
     bubble.className = 'message-bubble';
-    bubble.textContent = text;  //作成したdivのテキストに第一引数を代入
+    // bubble.textContent = text;  //作成したdivのテキストに第一引数を代入
+
+    // コンソールでテキストの内容を確認する
+    console.log("テキスト:", text);
+
+    // 改行を <br> に置き換える（複数の改行形式に対応）
+    bubble.innerHTML = text.replace(/\\n/g, '<br>');  // エスケープされた改行を置換
+
+    console.log("新テキスト", bubble.innerHTML);  // innerHTMLの内容を確認
 
     messageDiv.appendChild(bubble);
     display.appendChild(messageDiv);
@@ -448,7 +456,7 @@ async function sendMessage() {
 
 /* プロンプトの補完に関する処理 */
 // 実際はtermsの部分も変数にしてPDFを読み込ませた際に出力された配列をtermsとする
-const terms = ['りんごは赤い', 'ばななは黄色い', 'ぶどうは紫', 'マスカットは黄緑', 'みかんはオレンジ色'];
+const terms = ['りんごは赤い', 'ばななは黄色い', 'ぶどうは紫', 'マスカットは黄緑', 'みかんはオレンジ色', 'チームでのSlack利用時のルールについて教えてください。', '理学院数学系のB2からB3への進級方法を教えてください。', ''];
 const textarea = document.getElementById('textarea');
 
 let currentSuggestion = '';  //検索候補の変数を宣言
@@ -626,4 +634,63 @@ textarea.addEventListener('keydown', keyDownFnc);
 // textarea.addEventListener('input', handleInputAndUpdate);
 textarea.addEventListener('input', inputFnc);
 
+document.addEventListener('DOMContentLoaded', function () {
+    const refreshButton = document.getElementById('refresh-button');
+    const textarea = document.getElementById('textarea');
+    let suggestionAdded = false;
+    let suggestionSpan;
 
+    function updateSuggestion() {
+        // 現在のテキストを取得
+        const currentText = textarea.textContent;
+
+        // すでに「日本語で」が含まれていないかつ補完が追加されていない場合
+        if (!currentText.includes("日本語で") && !suggestionAdded) {
+            // 補完用のspanを作成
+            suggestionSpan = document.createElement('span');
+            suggestionSpan.textContent = '\n日本語で回答してください。また、聞かれていることのみに回答してください。';
+            suggestionSpan.classList.add('suggestion-text'); // クラスでスタイルを適用
+            suggestionSpan.style.opacity = '0.5'; // 薄く表示
+
+            // spanをテキストエリアに追加
+            textarea.appendChild(suggestionSpan);
+
+            suggestionAdded = true;
+        }
+    }
+
+    function confirmSuggestion() {
+        if (suggestionAdded) {
+            // 補完用のspanを削除して、通常のテキストとして確定
+            if (suggestionSpan) {
+                textarea.removeChild(suggestionSpan);
+            }
+            textarea.textContent += '\n日本語で回答してください。また、聞かれていることのみに回答してください。'; // 確定されたテキストを追加
+            suggestionAdded = false; // 補完が確定されたためリセット
+        }
+
+        // カーソルを文末に移動
+        const range = document.createRange();
+        const sel = window.getSelection();
+        range.selectNodeContents(textarea);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+
+    // テキストエリアに入力があると補完内容を表示
+    textarea.addEventListener('input', updateSuggestion);
+
+    // ボタンが押されたら補完内容を確定する
+    refreshButton.addEventListener('click', function () {
+        confirmSuggestion();
+
+        // カーソルを文末に移動
+        const range = document.createRange();
+        const sel = window.getSelection();
+        range.selectNodeContents(textarea);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    });
+});

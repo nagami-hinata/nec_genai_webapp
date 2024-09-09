@@ -18,8 +18,10 @@
     position: fixed;
     left: 0;
     top: 0;
-    justify-content: flex-start; /* 画像を上に寄せる */
-    padding-top: 20px; /* 上部に少し余白を追加 */
+    justify-content: flex-start;
+    /* 画像を上に寄せる */
+    padding-top: 20px;
+    /* 上部に少し余白を追加 */
 }
 
 .addfile {
@@ -27,29 +29,43 @@
     border-radius: 20px;
 }
 
-.hukidashi, .folder, .trashbox, .settings {
+.hukidashi,
+.folder,
+.trashbox,
+.settings {
     padding: 15px;
-    width: 35px; /* 画像の幅を統一 */
-    bottom: 5px; /* 下のアイテムとの間隔 */
+    width: 35px;
+    /* 画像の幅を統一 */
+    bottom: 5px;
+    /* 下のアイテムとの間隔 */
 }
 
 .upload {
     padding: 15px;
-    width: 35px; /* 他のアイコンと同じサイズに揃える */
-    margin-top: auto; /* サイドバーの下部に配置する */
-    margin-bottom: 0px; /* サイドバーの底から少しスペースを追加 */
+    width: 35px;
+    /* 他のアイコンと同じサイズに揃える */
+    margin-top: auto;
+    /* サイドバーの下部に配置する */
+    margin-bottom: 0px;
+    /* サイドバーの底から少しスペースを追加 */
 }
 
 .profile {
     padding: 15px;
-    width: 50px; /* 他のアイコンと同じサイズに揃える */
-    margin-bottom: 20px; /* サイドバーの底から少しスペースを追加 */
+    width: 50px;
+    /* 他のアイコンと同じサイズに揃える */
+    margin-bottom: 20px;
+    /* サイドバーの底から少しスペースを追加 */
 }
 
-.deletefile:hover, .usechat:hover {
-    background-color: #6654E1; /* ホバー時の背景色を設定 */
-    border-radius: 20px; /* 背景を丸くする */
-    padding: 15px; /* アイコン周りに余白を追加 */
+.deletefile:hover,
+.usechat:hover {
+    background-color: #6654E1;
+    /* ホバー時の背景色を設定 */
+    border-radius: 20px;
+    /* 背景を丸くする */
+    padding: 15px;
+    /* アイコン周りに余白を追加 */
 }
 
 
@@ -68,10 +84,12 @@
     z-index: 120;
     transition: width 0.2s ease;
 }
+
 .threads.hidden {
     width: 0;
     border-right: none;
 }
+
 .new-chat-button {
     display: flex;
     align-items: center;
@@ -84,13 +102,16 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
 .new-chat-button:hover {
     background-color: #3D98BF;
 }
+
 .new-chat-icon {
     margin-right: 10px;
     font-size: 20px;
 }
+
 .thread-list {
     overflow-y: auto;
     padding: 5px;
@@ -110,6 +131,7 @@
     user-select: none;
     transition: background-color 0.3s ease;
 }
+
 .thread-name {
     border: #F0F0F0;
     border-radius: 10px;
@@ -117,12 +139,15 @@
     display: inline-block;
     min-width: 50px;
 }
+
 .thread-name:hover {
     background: #E3E3E3;
 }
+
 .thread-name.active {
     background: #E3E3E3;
 }
+
 .thread-name-input {
     width: 100%;
     padding: 5px;
@@ -170,19 +195,23 @@
     transition: transform 0.3s ease;
     z-index: 1000;
 }
+
 .file-list-container.show {
     transform: translateX(0);
 }
+
 .file-list-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
+
 .file-list-title {
     font-size: 18px;
     font-weight: bold;
 }
+
 .close-file-list {
     background: none;
     border: none;
@@ -190,11 +219,13 @@
     font-size: 20px;
     cursor: pointer;
 }
+
 .file-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
+
 .file-item {
     background-color: #ffffff;
     padding: 10px;
@@ -204,20 +235,25 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
+
 .file-item:hover {
     background-color: #ffffff;
 }
+
 .file-icon {
     margin-right: 10px;
     font-size: 20px;
 }
+
 .file-info {
     display: flex;
     flex-direction: column;
 }
+
 .file-name {
     font-weight: 500;
 }
+
 .file-meta {
     font-size: 12px;
     color: black;
@@ -276,10 +312,12 @@
     /* 初期状態で右向き */
     transition: transform 0.3s ease;
 }
+
 .toggle-threads.open {
     transform: rotate(0deg);
     /* クリックで左向き */
 }
+
 #thread-title {
     margin-left: 7px;
     font-size: 16px;
@@ -317,6 +355,7 @@
     left: 2.5%;
     flex-direction: column;
 }
+
 .input-container {
     position: absolute;
     display: flex;
@@ -330,6 +369,7 @@
     bottom: 3%;
     left: 10%;
 }
+
 #textarea {
     flex-grow: 1;
     max-height: 150px;
@@ -345,6 +385,7 @@
     font-size: 16px;
     line-height: 1.5;
 }
+
 #textarea:empty:before {
     color: #888;
     content: attr(data-placeholder);
@@ -354,21 +395,26 @@
     margin-bottom: 10px;
     display: flex;
 }
+
 .user-message {
     justify-content: flex-end;
 }
+
 .ai-message {
     justify-content: flex-start;
 }
+
 .message-bubble {
     max-width: 70%;
     padding: 10px;
     border-radius: 20px;
 }
+
 .user-message .message-bubble {
     background-color: #e0e0e0;
     border-bottom-right-radius: 0;
 }
+
 .ai-message .message-bubble {
     background-color: #4a90e2;
     color: white;
@@ -387,14 +433,17 @@
     border: var(--tab-border, none);
     padding: var(--tab-padding, 0);
 }
+
 .added-text {
     user-select: none;
     /* テキスト選択を無効化 */
     pointer-events: none;
     /* マウスイベントを無効化 */
 }
+
 .added-text::after {
-    content: var(--suggestion);;
+    content: var(--suggestion);
+    ;
     font-size: 16px;
     color: #999;
 }
@@ -421,7 +470,9 @@
 }
 
 .action-button:hover {
+
 background-color: #3580a0;
+
 }
 
 #refresh-button img {
@@ -470,6 +521,7 @@ background-color: #3580a0;
 #tag-form {
     /* position: relative; */
 }
+
 .tag-options {
     /* スクロール可能な領域のスタイル */
     max-height: 40vh;
@@ -502,9 +554,12 @@ background-color: #3580a0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
-    z-index: 1000; /* ポップアップの背面に表示 */
-    pointer-events: auto; /* オーバーレイのクリックを有効化 */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* 半透明の黒 */
+    z-index: 1000;
+    /* ポップアップの背面に表示 */
+    pointer-events: auto;
+    /* オーバーレイのクリックを有効化 */
 }
 
 /* オーバーレイを非表示にするクラス */
@@ -525,19 +580,23 @@ background-color: #3580a0;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 10000; /* オーバーレイの前面に表示 */
-    width: 80vw; /* 必要に応じて幅を調整 */
+    z-index: 10000;
+    /* オーバーレイの前面に表示 */
+    width: 80vw;
+    /* 必要に応じて幅を調整 */
     height: 80vh;
 }
 
 .upload-popup.hidden {
-    display: none; /* 非表示にするクラス */
+    display: none;
+    /* 非表示にするクラス */
 }
 
 /* ポップアップとオーバーレイが非表示の場合 */
 .hidden {
     display: none;
-    pointer-events: none; /* クリックできないようにする */
+    pointer-events: none;
+    /* クリックできないようにする */
 }
 
 .popup .close {
@@ -560,8 +619,10 @@ background-color: #3580a0;
     top: 60px;
     width: calc(80vw - 100px);
     height: calc(40vh - 100px);
-    display: flex; /* フレックスボックスレイアウトを使用 */
-    justify-content: space-between; /* 左右に要素を配置 */
+    display: flex;
+    /* フレックスボックスレイアウトを使用 */
+    justify-content: space-between;
+    /* 左右に要素を配置 */
     padding: 20px;
     border-radius: 30px;
     background-color: #f1f1f1;
@@ -569,7 +630,8 @@ background-color: #3580a0;
 }
 
 .upload-instructions {
-    width: 50%; /* 左半分 */
+    width: 50%;
+    /* 左半分 */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -591,16 +653,19 @@ background-color: #3580a0;
     cursor: pointer;
     font-size: 16px;
     text-align: center;
-    border: 1.5px solid #a8a8a8; /* 枠線を追加 */
+    border: 1.5px solid #a8a8a8;
+    /* 枠線を追加 */
     margin-top: -50px;
 }
 
 .file-upload-label:hover {
-    background-color: #f1f1f1; /* ホバー時の背景色 */
+    background-color: #f1f1f1;
+    /* ホバー時の背景色 */
 }
 
 #fileUpload {
-    display: none; /* ファイル入力要素を隠す */
+    display: none;
+    /* ファイル入力要素を隠す */
 }
 
 #upload-fileList {
@@ -630,11 +695,16 @@ background-color: #3580a0;
 }
 
 #upload-fileList div span {
-    flex-grow: 1; /* スペースをファイル名部分が占有 */
-    margin-right: 10px; /* ボタンとの間に余白を作る */
-    white-space: nowrap; /* 改行をしない */
-    overflow: hidden; /* 溢れた部分を隠す */
-    text-overflow: ellipsis; /* 溢れた部分を省略する */
+    flex-grow: 1;
+    /* スペースをファイル名部分が占有 */
+    margin-right: 10px;
+    /* ボタンとの間に余白を作る */
+    white-space: nowrap;
+    /* 改行をしない */
+    overflow: hidden;
+    /* 溢れた部分を隠す */
+    text-overflow: ellipsis;
+    /* 溢れた部分を省略する */
 }
 
 #upload-fileList div button {
@@ -644,9 +714,12 @@ background-color: #3580a0;
     color: white;
     padding: 5px 10px;
     cursor: pointer;
-    width: 50px;  /* ボタンの幅を固定 */
-    height: 30px; /* ボタンの高さを固定 */
-    flex-shrink: 0; /* ボタンが小さくならないようにする */
+    width: 50px;
+    /* ボタンの幅を固定 */
+    height: 30px;
+    /* ボタンの高さを固定 */
+    flex-shrink: 0;
+    /* ボタンが小さくならないようにする */
     text-align: center;
 }
 
@@ -661,16 +734,21 @@ background-color: #3580a0;
     height: calc(40vh - 90px);
     padding: 20px;
     padding-bottom: 0px;
-    border: 2px solid #f1f1f1; /* 線の太さと色を設定 */
-    border-radius: 30px; /* 角を丸くする */
+    border: 2px solid #f1f1f1;
+    /* 線の太さと色を設定 */
+    border-radius: 30px;
+    /* 角を丸くする */
     background-color: #ffffff;
-    margin-top: 20px; /* 他の要素とスペースを作るために追加 */
+    margin-top: 20px;
+    /* 他の要素とスペースを作るために追加 */
 }
 
 .upload-tags-container {
     display: flex;
-    flex-wrap: wrap; /* タグを複数行に並べる */
-    gap: 20px; /* タグ間の間隔 */
+    flex-wrap: wrap;
+    /* タグを複数行に並べる */
+    gap: 20px;
+    /* タグ間の間隔 */
     padding: 10px;
     padding-left: 20px;
     margin-bottom: 10px;
@@ -689,19 +767,24 @@ background-color: #3580a0;
 
 /* Webkit系 (Chrome, Safari) */
 .boss-upload-tag-content::-webkit-scrollbar {
-    width: 0px; /* スクロールバーの幅をゼロに */
-    background: transparent; /* スクロールバーの背景を透明に */
+    width: 0px;
+    /* スクロールバーの幅をゼロに */
+    background: transparent;
+    /* スクロールバーの背景を透明に */
 }
 
 /* Firefox */
 .boss-upload-tag-content {
-    scrollbar-width: none; /* スクロールバーの幅を無くす */
-    -ms-overflow-style: none; /* Internet Explorer用のスタイル */
+    scrollbar-width: none;
+    /* スクロールバーの幅を無くす */
+    -ms-overflow-style: none;
+    /* Internet Explorer用のスタイル */
 }
 
 /* Edge, IE 10-11 */
 .boss-upload-tag-content {
-    -ms-overflow-style: none; /* IE, Edge用 */
+    -ms-overflow-style: none;
+    /* IE, Edge用 */
 }
 
 h2 {
@@ -709,51 +792,70 @@ h2 {
     font-size: 20px;
     color: #000000;
     font-weight: 5000;
-    text-align: left; /* 左寄せ */
-    padding-left: 10px; /* liと同じ余白に設定 */
-    margin-left: 20px; /* 左マージンをリセット */
+    text-align: left;
+    /* 左寄せ */
+    padding-left: 10px;
+    /* liと同じ余白に設定 */
+    margin-left: 20px;
+    /* 左マージンをリセット */
     margin-bottom: 0px;
     margin-top: 0;
 }
 
 .upload-new-tag-container {
     position: absolute;
-    bottom: 1px; /* ポップアップの下端からの距離 */
+    bottom: 1px;
+    /* ポップアップの下端からの距離 */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 10px; /* 各要素間の間隔 */
-    align-items: center; /* 垂直方向に中央揃え */
+    gap: 10px;
+    /* 各要素間の間隔 */
+    align-items: center;
+    /* 垂直方向に中央揃え */
     padding: 10px 30px;
     border-radius: 10px;
     background-color: #ffffff;
 }
+
 .upload-tag {
-    background-color: #503CE1; /* 未選択時の背景色 */
-    color: #ffffff; /* 未選択時のテキスト色 */
-    min-width: 90px; /* タグの最小幅を設定 */
+    background-color: #503CE1;
+    /* 未選択時の背景色 */
+    color: #ffffff;
+    /* 未選択時のテキスト色 */
+    min-width: 90px;
+    /* タグの最小幅を設定 */
     padding: 5px 15px;
     padding-bottom: 4px;
     border-radius: 13px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* ボーダーカラーの変更にもトランジションを追加 */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    /* ボーダーカラーの変更にもトランジションを追加 */
     text-align: center;
-    display: flex; /* テキストとアイコンを横並びに */
-    justify-content: space-between; /* テキストとアイコンを左右に配置 */
-    align-items: center; /* コンテンツを垂直方向に中央揃え */
+    display: flex;
+    /* テキストとアイコンを横並びに */
+    justify-content: space-between;
+    /* テキストとアイコンを左右に配置 */
+    align-items: center;
+    /* コンテンツを垂直方向に中央揃え */
     font-size: 16px;
 }
+
 .upload-tag-icon img.plus-purple {
-    width: 25px; /* plus-purpleアイコンの幅 */
-    height: 25px; /* plus-purpleアイコンの高さ */
+    width: 25px;
+    /* plus-purpleアイコンの幅 */
+    height: 25px;
+    /* plus-purpleアイコンの高さ */
     margin-right: -3px;
     margin-left: 3px;
     margin-top: 3px;
 }
 
 .upload-tag-icon img.check {
-    width: 20px; /* checkアイコンの幅を調整 */
-    height: 20px; /* checkアイコンの高さを調整 */
+    width: 20px;
+    /* checkアイコンの幅を調整 */
+    height: 20px;
+    /* checkアイコンの高さを調整 */
     padding: 2.5px;
     margin-top: 3px;
     margin-left: 3px;
@@ -762,18 +864,23 @@ h2 {
 }
 
 .upload-tag.selected {
-    background-color: #503CE1 !important; /* 選択時の背景色を紫に変更 */
-    color: #fff !important; /* テキスト色を白に変更 */
-    padding: 5px 15px; /* 選択時のパディングも同じに設定 */
-    border: 2px solid #503CE1; /* 選択時のボーダー幅も同じに設定 */
-    padding-right:15px;
+    background-color: #503CE1 !important;
+    /* 選択時の背景色を紫に変更 */
+    color: #fff !important;
+    /* テキスト色を白に変更 */
+    padding: 5px 15px;
+    /* 選択時のパディングも同じに設定 */
+    border: 2px solid #503CE1;
+    /* 選択時のボーダー幅も同じに設定 */
+    padding-right: 15px;
 }
 
 
 .upload-color-ball {
     width: 27px;
     height: 27px;
-    background-color: #6654E1; /* デフォルトの色 */
+    background-color: #6654E1;
+    /* デフォルトの色 */
     border-radius: 50%;
     cursor: pointer;
     margin-right: 5px;
@@ -781,8 +888,10 @@ h2 {
 
 .upload-color-palette {
     display: grid;
-    grid-template-columns: repeat(6, 25px); /* 6列のグリッド */
-    grid-template-rows: repeat(2, 25px); /* 2行のグリッド */
+    grid-template-columns: repeat(6, 25px);
+    /* 6列のグリッド */
+    grid-template-rows: repeat(2, 25px);
+    /* 2行のグリッド */
     gap: 3px;
     position: fixed;
     padding: 5px;
@@ -793,7 +902,8 @@ h2 {
     border-radius: 10px;
     left: 33%;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 9999; /* z-indexを高く設定して最前面に表示 */
+    z-index: 9999;
+    /* z-indexを高く設定して最前面に表示 */
     bottom: 150px;
 }
 
@@ -808,7 +918,9 @@ h2 {
     display: none;
 }
 
-.upload-new-tag-genre, .upload-new-genre-input, .upload-new-tag-input {
+.upload-new-tag-genre,
+.upload-new-genre-input,
+.upload-new-tag-input {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -821,12 +933,14 @@ h2 {
 }
 
 .upload-new-genre-input {
-    min-width: 150px; /* 新しいジャンル入力欄の最小幅を設定 */
+    min-width: 150px;
+    /* 新しいジャンル入力欄の最小幅を設定 */
     border-radius: 25px;
 }
 
 .upload-new-tag-input {
-    flex-grow: 1; /* 入力欄が残りのスペースを埋める */
+    flex-grow: 1;
+    /* 入力欄が残りのスペースを埋める */
     border-radius: 25px;
 }
 
@@ -837,9 +951,11 @@ h2 {
     border-radius: 10px;
     cursor: pointer;
     font-size: 15px;
-    width: 120px; /* 幅を固定して変形を防ぐ */
+    width: 120px;
+    /* 幅を固定して変形を防ぐ */
     text-align: center;
-    box-sizing: border-box; /* パディングを含めた幅を計算 */
+    box-sizing: border-box;
+    /* パディングを含めた幅を計算 */
     font-weight: 500;
     bottom: 20px;
 }
@@ -866,20 +982,24 @@ h2 {
     background-color: #1d7ca5;
 }
 
-.close{
+.close {
     position: absolute;
     top: 10px;
     right: 20px;
-    font-size: 30px; /* バツ印のサイズ */
+    font-size: 30px;
+    /* バツ印のサイズ */
     font-weight: bold;
-    color: #aaa; /* バツ印の色 */
+    color: #aaa;
+    /* バツ印の色 */
     cursor: pointer;
-    z-index: 1600; /* 必要に応じて値を調整 */
+    z-index: 1600;
+    /* 必要に応じて値を調整 */
 }
 
 .close:hover,
 .close:focus {
-    color: #000; /* ホバーやフォーカス時の色 */
+    color: #000;
+    /* ホバーやフォーカス時の色 */
     text-decoration: none;
     cursor: pointer;
 }
