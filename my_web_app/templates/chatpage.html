@@ -81,9 +81,10 @@
             {% endfor %}
         </div>
         <div class="input-container">
-            <div id="textarea" class="textarea" contenteditable="true" data-placeholder="Type your message here..."></div>  <!-- contenteditable="true"属性により、ユーザーがこのdiv内に直接テキストを入力できるようになる -->
+            <div id="textarea" class="textarea" contenteditable="true" data-placeholder="ここにメッセージを入力..."></div>  <!-- contenteditable="true"属性により、ユーザーがこのdiv内に直接テキストを入力できるようになる -->
             <div class="button-coutainer">
-                <button class="action-button" id="refresh-button">🔃</button>
+                <button class="action-button" id="refresh-button">
+                    <img src="{{ url_for('static', filename='images/prompt.svg') }}" alt="Refresh"></button>
                 <button class="action-button" id="send-button">▶</button>
             </div>
         </div>
