@@ -42,13 +42,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // batuアイコンをクリックしたときにタグを削除する処理
-    document.querySelectorAll('.tag-icon img.batu').forEach(function(icon) {
-        icon.addEventListener('click', function(event) {
-            event.stopPropagation(); // タグのクリックイベントが発生しないようにする
-            const tag = this.closest('.tag'); // 親のタグ要素を取得
-            tag.remove(); // タグを削除
-        });
+document.querySelectorAll('.tag-icon img.batu').forEach(function(icon) {
+    icon.addEventListener('click', function(event) {
+        event.stopPropagation(); // タグのクリックイベントが発生しないようにする
+        const tag = this.closest('.tag'); // 親のタグ要素を取得
+
+        // 確認ポップアップを表示
+        const confirmDelete = confirm('本当にこのタグを削除してもよろしいですか？');
+        if (confirmDelete) {
+            tag.remove(); // ユーザーがOKを押した場合、タグを削除
+        }
     });
+});
+
 
     // 色パレットのクリックイベント処理
     document.querySelectorAll('.color-option').forEach(function(option) {
