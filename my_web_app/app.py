@@ -183,7 +183,7 @@ def main(directory_or_file_path, api_url, vector_index, auth_token, tenantId, ur
 def register_file_to_index(file_path, index, api_url):
     key = f"Bearer {KEY}"
     headers = {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
         "x-nec-cotomi-tenant-id": TENANT_ID,
         "Authorization": key
     }
@@ -231,7 +231,7 @@ def search_chat(
                 "maxTokens": max_tokens}
 
     # リクエストヘッダのパラメータ指定.
-    headers = { "content-type": "application/json",
+    headers = { "Content-Type": "application/json",
                 "x-nec-cotomi-client-id": client_id,
                 "Authorization": key }
 
@@ -508,7 +508,7 @@ def tag_select():
 
         # HTTPリクエストのヘッダ部分.
         # テナントIDを指定.
-        headers = { "content-type": "application/json",
+        headers = { "Content-Type": "application/json",
                     "x-nec-cotomi-tenant-id": TENANT_ID,
                     "Authorization": key
                 }
@@ -584,7 +584,8 @@ def send_message():
     try:
         conn = sqlite3.connect('chat_app.db')
         cur = conn.cursor()
-        index = f"index_{current_index}"
+        # index = f"index_{current_index}"
+        index = 'index_1'
         print('try5')
 
         # ai_response = search_chat(user_message, index).text

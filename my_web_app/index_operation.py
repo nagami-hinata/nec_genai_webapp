@@ -1,21 +1,22 @@
 import requests
+import os
 
 # KEYはAPIキー.
-KEY = "XXXXXXXXXXXXXX"
+KEY = os.environ.get('COTOMI_API_KEY')
 # GROUP_IDはグループID.
-GROUP_ID = "group_xxxxxxxxxx"
+GROUP_ID = os.environ.get('GROUP_ID')
 # TENANT_IDはテナントID.
-TENANT_ID = "TXXXXXXX"
+TENANT_ID = os.environ.get('TENANT_ID')
 
 # 新規インデックスを作成.
 # インデックス名は半角アルファベット、数字、ハイフンのみで構成される必要がある
 def create_index(index):
     # APIエンドポイントのURL.
     url = "https://api.cotomi.nec-cloud.com/cotomi-search-api/index/createIndex/"
-    
+
     # APIキー. "Bearer"を忘れないこと. エラーになる.
     key = "Bearer " + KEY
-    
+
     # HTTPリクエストのヘッダ部分.
     # テナントIDを指定.
     headers = { "content-type": "application/json",
@@ -28,7 +29,7 @@ def create_index(index):
     payload = { "vectorIndex" : index,
                 "groupId": GROUP_ID
                 }
-    
+
     # HTTPリクエストを送信.
     # ResponseオブジェクトはHTTPレスポンスが入ってくる.
     response = requests.post(url, headers=headers, json=payload)
@@ -112,13 +113,13 @@ def delete_document(index, file_path):
 if __name__ == "__main__":
     import json
     # インデックスの作成
-    create_index("<インデックス名>")
+    # create_index("demo")
     # インデックスリストの表示
-    print(json.dumps(get_index_list().json(), indent=2, ensure_ascii=False))
+    # print(json.dumps(get_index_list().json(), indent=2, ensure_ascii=False))
     # インデックスの削除
-    delete_index("<インデックス名>")
+    # delete_index("<インデックス名>")
     # 登録文書リストの表示
-    print(json.dumps(get_document_list("<インデックス名>").json(), indent=2, ensure_ascii=False))
+    print(json.dumps(get_document_list("demo").json(), indent=2, ensure_ascii=False))
     # 登録文書の削除
-    delete_document("<インデックス名>", "<ファイル名>")
+    # delete_document("<インデックス名>", "<ファイル名>")
     
