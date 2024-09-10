@@ -510,6 +510,22 @@ background-color: #3580a0;
     align-items: center;
 }
 
+.tag-popup-content label{
+    height: 20px;
+    padding: 0 5px;
+    
+
+}
+
+.tag-popup-content label:hover {
+    background-color: #e0e0e0;
+    /* 背景を灰色に変更 */
+    border-radius: 5px;
+    /* 角を少し丸くする（任意） */
+    height: 20px;
+
+}
+
 #confirm-button {
     margin-top: 15px;
     padding: 8px 20px;
@@ -543,10 +559,12 @@ background-color: #3580a0;
     margin: 10px 0;
     font-size: 14px;
     cursor: pointer;
+    margin-bottom: 19px;
 
 }
 
 .tag-options input[type="checkbox"] {
+    margin-top: 3px;
     margin-right: 8px;
 }
 
