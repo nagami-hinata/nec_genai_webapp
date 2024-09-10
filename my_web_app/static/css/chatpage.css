@@ -164,7 +164,7 @@
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: #57b2da;
+    background-color: #3D98BF;
     color: rgb(255, 255, 255);
     border: none;
     padding: 10px 15px;
@@ -175,7 +175,7 @@
 }
 
 .toggle-file-list:hover {
-    background-color: #3D98BF;
+    background-color: #3586a8;
 }
 
 
@@ -492,10 +492,11 @@ background-color: #3580a0;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 300px;
-    background-color: white;
-    border: 1px solid #a3a3a3;
+    background-color: #ffffff; /* 背景色を白に */
+    border: 1px solid #ddd; /* ボーダーを薄い色に */
+    border-radius: 10px; /* 少し角を丸める */
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* ソフトなシャドウを追加 */
     z-index: 1000;
 }
 
@@ -511,11 +512,11 @@ background-color: #3580a0;
 
 #confirm-button {
     margin-top: 15px;
-    padding: 10px 20px;
+    padding: 8px 20px;
     background-color: #3D98BF;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
 }
 
@@ -535,6 +536,22 @@ background-color: #3580a0;
     /* 縦方向のスクロールを有効にする */
     /* padding-right: 10px; */
     /* スクロールバーのためのスペース */
+}
+
+.tag-options label {
+    display: block;
+    margin: 10px 0;
+    font-size: 14px;
+    cursor: pointer;
+
+}
+
+.tag-options input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+#h3{
+    margin-top: -13px;
 }
 
 /* スクロールバーのスタイリング（オプション） */
