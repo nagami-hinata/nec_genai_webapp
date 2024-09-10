@@ -585,7 +585,7 @@ def send_message():
         conn = sqlite3.connect('chat_app.db')
         cur = conn.cursor()
         # index = f"index_{current_index}"
-        index = 'index_1'
+        index = 'demo'
         print('try5')
 
         # ai_response = search_chat(user_message, index).text
