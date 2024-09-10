@@ -6,6 +6,12 @@ const threadTitle = document.getElementById('thread-title');
 const chatContainer = document.querySelector('.chat-container');
 const tagPopup = document.getElementById('tag-popup');
 const confirmButton = document.getElementById('confirm-button');
+const closeButton = document.querySelector('.tag-popup .close');
+
+// タグ選択ポップアップを閉じるための処理
+closeButton.addEventListener('click', function () {
+    tagPopup.classList.add('hidden');  // hiddenクラスを追加してポップアップを閉じる
+});
 
 // upload-popupに関係する部分のコード開始
 
